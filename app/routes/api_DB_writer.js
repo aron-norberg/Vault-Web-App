@@ -152,3 +152,44 @@ exports.cleanGherkin_DB = function(req, res) {
   }); // end db.connect(function(err)
   
 }; // end exports.cleanGherkin_DB = function(req, res)
+
+
+// Resets user's old password with new password
+exports.reset_password = function(req, res) {
+
+  let id = req.query.Id;
+  let email = req.query.email;
+  let pwd = req.query.password;
+
+  // let id = req.params.Id;
+  // let email = req.params.email;
+  // let pwd = req.params.password;
+
+  var db = mysql.createConnection({
+    host: "localhost",
+    port: "3306",
+    dialect: 'mysql',
+    user: "flukeqa",
+    password: "H0lidayApples",
+    database: "test"
+  });
+
+  db.connect(function(err) {
+    if (err) throw err;
+    console.log("Connected!");
+    // var sql = "SELECT * FROM user WHERE email = '"+email+"'";
+    var sql = "UPDATE user SET password = '"+pwd+"' WHERE email = '"+email+"'";
+
+
+    db.query(sql, function (err, result) {
+      if (err) throw err;
+
+      console.log('Result is here - ' + result);
+      
+    }); // end db.query(sql, function (err, result)
+
+    return res.redirect('/login');
+
+  }); // end db.connect(function(err)
+
+}; // end exports.reset_password = function(req, res)
