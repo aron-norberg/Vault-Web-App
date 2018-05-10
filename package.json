@@ -27,6 +27,7 @@
     "@angular/router": "^5.2.9",
     "angular-page-loader": "^1.0.2",
     "async": "^2.6.0",
+    "bcrypt": "^2.0.1",
     "bcrypt-nodejs": "0.0.3",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
