@@ -130,12 +130,19 @@ exports.getExportFromResults = function(req, res, next) {
   let langArray = [];
   let fArray = [];
   let testPass = req.query.testpassid;
-  if(testPass != "All"){
+  // if(testPass != "All"){
     let loopedQuery='SELECT * from Result where TestPassId = ' + testPass + " AND ";
-  } else {
-    let loopedQuery='SELECT * from Result;';
-  }
+  // } else {
+  //   let loopedQuery='SELECT * from Result;';
+  // }
   let results = null;
+
+
+  console.log("language = "+language);    // en-us
+  console.log("feature = "+feature);      // F2
+  console.log("testresult " +testresult); // 
+  console.log("query = " + query);        // 
+  console.log("testPass = "+testPass);    // 1
 
   //---------------------------------------------------------start of multiple choice query builder ------------------>
   //below we are looking to see if multiple choices were selected for either template or language and build a query that works for the selections
@@ -167,7 +174,7 @@ exports.getExportFromResults = function(req, res, next) {
   } else if (feature.includes(",") && !language.includes(",")){// if multiple selections were made for features only
 
     fArray=feature.split(",");
-    loopedQuery +='(Template = ' + "'" + fArray[0] + "'";
+    loopedQuery +='(Template = ' + "'" + fArray[0] + "'";        
     for (var x = 1; x<fArray.length; x++){
       loopedQuery += " OR Template = " + "'" + fArray[x]+ "'";
     }
@@ -175,8 +182,6 @@ exports.getExportFromResults = function(req, res, next) {
   }
   //---------------------------------------------------------end of multiple choice query builder ------------------>
   // if multiple selections were made for either language or template, the first 'if' statement below will run
-
-
 
   query = query.replace(/ /g, "%");
 
@@ -395,17 +400,17 @@ exports.getExportFromResults = function(req, res, next) {
       req.results = results;
       req.language = language;
       req.testresult = testresult;
-      return next();
+      //return next();
 
     }).catch(function(err) {
       console.log('error: ' + err);
       return err;
     })
   }
+  console.log("all is well here");
 };
 
-// Inititally Supportes only a feature 
-// and a language Combination.
+
 exports.export_to_excel = function(req, res) {
 
   /*
@@ -493,11 +498,8 @@ exports.export_to_excel = function(req, res) {
       setTimeout(() => { processItems(j + 1); });
 
     } else {
-
       // close the stream
-
       workbook.commit();
-
       console.log("The Export File has been written.");
       res.end()
 
