@@ -7,13 +7,14 @@ const dateFormat = require('dateformat');
 
 
 // Create a new 'render' controller method
-exports.getOverview = function(req, res) {
+exports.getOverview = function(req, res) {                  // this runs when the user comes to the page, or selects from the dropdown menu of test date options
   
   let feature = "ALL";
   let language = "ALL";
   let lang = [];
   let testPassData = null;
   let testPassId = null;
+  let testPassIds = null;
   let testPassInfo = null;
   let template = null;
   let testCases = null;
@@ -21,6 +22,8 @@ exports.getOverview = function(req, res) {
   let reliability = null;
   let note = null;
   let description = null;
+  let queryString = "";
+  let idArray =[];
 
   let overall = {
     pass: 0,
@@ -35,34 +38,53 @@ exports.getOverview = function(req, res) {
   //  testPassId = results from database
   //  TestPassId = table column
 
-  if (!req.query.testpassid) {
+  if (!req.query.testpassid) { // happens when the user first opens the page
 
-    db.sequelize.query(`select TestPassId from Status where EndTime is not NUll order by RunDate DESC limit 1;`).then(testPassId => {
+    db.sequelize.query(`select TestPassId from Status where EndTime > '1971' order by RunDate DESC;`).then(testPassId => { 
 
+      testPassIds = testPassId[0];
       testPassId = testPassId[0][0].TestPassId;
 
-      GetResultOverview(testPassId);
+      GetResultOverview(testPassId, testPassIds);
+      console.log("first query "+ testPassId);
     });
 
   } else {
+    db.sequelize.query(`select TestPassId from Status where EndTime > '1971' order by RunDate DESC;`).then(testPassId => { 
 
-    testPassId = parseInt(req.query.testpassid); //YAY - I found it!  This was a string before adding parseInt!  WOOT
-    GetResultOverview(testPassId);
+      testPassIds = testPassId[0];
+      testPassId = parseInt(req.query.testpassid); // happens when a user selects from the dropdown
+      
+      GetResultOverview(testPassId, testPassIds);
+      console.log("second thing "+ testPassId);
+    });
   }
 
 
-  function GetResultOverview(testPassId) {
+  function GetResultOverview(testPassId, testPassIds) {
 
     db.sequelize.query(`select distinct Language from Result where TestPassID = ${testPassId};`).then(results => {
 
-      results = results[0];
+      results = results[0];                     // happens when page is opened or a user selects from the dropdown
+      console.log("third thing");
       //console.log(results[0].Language);
 
       lang = results;
       //console.log('The value is - ' + lang[0].Language);
 
-      // Select Run Dates from Status
-      db.sequelize.query('select TestPassId, Template, Language, TestCases, RunDate, Description, Reliable, Note from TestPass order by RunDate DESC').then(results => {
+      if (testPassIds){
+        for (var x =0; x<testPassIds.length; x++){
+          idArray.push(testPassIds[x].TestPassId);
+          console.log(idArray);
+        }
+        let string = idArray.join("' OR TestPassId = '");
+        queryString = "select TestPassId, Template, Language, TestCases, RunDate, Description, Reliable, Note from TestPass where TestPassId = '"+ string +"' order by RunDate DESC;";
+        console.log ("queryString is "+queryString);
+      }
+      else {
+        queryString = 'select TestPassId, Template, Language, TestCases, RunDate, Description, Reliable, Note from TestPass order by RunDate DESC;';
+      }
+      db.sequelize.query(queryString).then(results => {
 
         results = results[0];
 
@@ -86,7 +108,7 @@ exports.getOverview = function(req, res) {
         // select count(*) from results where result = 'PASS';
         db.sequelize.query(`select count(*) from Result where Result = 'PASS' and TestPassID = ${testPassId};`).then(results => {
 
-          results = results[0];
+          results = results[0];              //these are what populate the google chart on the Dashboard (overall...)
 
           overall.pass = JSON.stringify(results[0]);
           overall.pass = overall.pass.replace("{\"count(*)\":", "");
