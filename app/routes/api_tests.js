@@ -52,7 +52,9 @@ function broadcastData(req, res, dataString) {
 
   if (testId) {
 
-    io.sockets.emit('message', testId);
+    // Only emit test start id
+    // and test end id
+    io.sockets.emit('test-run', testId);
     console.log(testId);
   }
 

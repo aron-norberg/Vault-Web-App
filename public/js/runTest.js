@@ -1,24 +1,220 @@
 // Invoke 'strict' JavaScript mode
 'use strict';
 
-function getTimeStamp(){
+// Socket Connections for running tests // 
+
+let socket = io.connect('/');
+socket.on('test-run', function(msg) {
+
+  // Remove temporary loading row
+
+  if (msg.includes("start-id")) {
+
+    console.log(msg);
+
+    $(".temp-loader-row").empty().remove(); // removes the row and the contents within row
+
+    let timestamp = getTimeStamp()
+    let id = msg.replace("start-id:", "");
+
+    let $cell1 = `<td>${id}</td>`;
+    let $cell2 = `<td>${timestamp}</td>`;
+    let $cell3 = '<td><span class="dot-light-on"></span></td>';
+    let $cell4 = `<td><button type="button" class="btn btn-sm btn-primary" onclick="getInfo(${id})">Info</button></td>`;
+    let $cell5 = `<td><button type="button" class="btn btn-sm btn-danger" onclick="stopTest(${id})">Stop</button></td>`;
+
+    let $newRow = $('#test-status-table').prepend($(`<tr id="${id}">`));
+
+    $newRow = $(`#${id}`);
+
+    let $newRowItem = $($newRow).hide().prepend($cell1 + $cell2 + $cell3 + $cell4 + $cell5).fadeIn(1000);
+
+  } else if (msg.includes("complete-id")) {
+
+    console.log(msg);
+
+    let id = msg.replace("complete-id:", "");
+
+    $oldRow = $(`#${id}`);
+
+    $($oldRow).empty().remove(); // removes the row and the contents within row
+
+  }
+
+});
+
+
+// Socket Connections end here //
+
+
+// test run Selection Functions //
+
+
+// this needs work - it currently removes the checkboxes
+// $(document).ready(function(){
+//     $("#langSearch").on("keyup", function() {
+//         var value = $(this).val().toLowerCase();
+//         $("#myUL *").filter(function() {
+//         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+//         });
+//     });
+// });
+
+
+
+
+let langArray = document.getElementsByClassName('lang double');
+let templateArray = document.getElementsByClassName("form-check-input double");
+
+
+let langParagraph = document.getElementById("selectedLanguages");
+let tcParagraph = document.getElementById("selectedTestCases");
+let templateParagraph = document.getElementById("selectedTemplates");
+let urlParagraph = document.getElementById("selectedURLs");
+
+let templateButton = document.getElementById("tb");
+let testCaseButton = document.getElementById("tcb");
+let urlButton = document.getElementById("url");
+
+
+let node = document.createElement("LI");
+
+function showLangs() { //this shows the languages selected in the selections area
+  langParagraph.innerHTML = "Languages: ";
+  for (var x = 0; x < langArray.length; x++) {
+    if (langArray[x].checked == true) {
+      langParagraph.innerHTML = langParagraph.innerHTML + "&nbsp" + langArray[x].id + ", ";
+      templateButton.removeAttribute("disabled");
+    }
+  }
+}
+
+function showTemplates() {
+  let langParagraphLength = document.getElementById("selectedLanguages").innerHTML;
+  templateParagraph.innerHTML = "Template: ";
+  for (var q = 0; q < templateArray.length; q++) {
+    if (templateArray[q].checked == true) {
+      templateParagraph.innerHTML = templateParagraph.innerHTML + "&nbsp" + templateArray[q].id;
+    }
+  }
+
+  //remove any list items that were added to the modal from a previous selection
+  var ulParent = document.getElementById("theTestCases");
+  while (ulParent.hasChildNodes()) {
+    ulParent.removeChild(ulParent.lastChild);
+  }
+  tcParagraph.innerHTML = "Test Cases: ";
+
+  testCaseButton.removeAttribute("disabled");
+  urlButton.removeAttribute("disabled");
+  grabTCsForFeature();
+}
+
+function showTCs() {
+  let testCaseArray = document.getElementsByClassName("list testcasechoice");
+  let caseCheckboxes = document.getElementsByClassName("double testcasechoice");
+  tcParagraph.innerHTML = "Test Cases: ";
+  for (var x = 0; x < testCaseArray.length; x++) {
+    if (caseCheckboxes[x].checked == true) {
+      tcParagraph.innerHTML = tcParagraph.innerHTML + "<br>" + testCaseArray[x].innerText;
+    }
+  }
+}
+
+function showInput() {
+  let box = document.getElementById("typedURL");
+  box.setAttribute("style", "display:block;");
+
+}
+
+function showURLChoice() {
+
+  let urlChoiceArray = document.getElementsByClassName("aURL");
+  urlParagraph.innerHTML = "URLs: ";
+  for (var y = 0; y < urlChoiceArray.length; y++) {
+    if (urlChoiceArray[y].checked == true) {
+      urlParagraph.innerHTML = urlParagraph.innerHTML + urlChoiceArray[y].parentElement.innerText;
+    }
+  }
+  let typedInURL = document.getElementById("enteredURL").value;
+  console.log(typedInURL);
+  if (typedInURL.length > 0) {
+    console.log("something was typed");
+    urlParagraph.innerHTML = "URLs: " + typedInURL;
+  }
+}
+
+function runit() {
+
+  let langs = langParagraph.innerHTML.substring(10);
+  langs = langs.replace(/&nbsp;/g, "");
+  langs = langs.replace(/ /g, "");
+  langs = langs.slice(0, -1);
+  langs = langs.split(",");
+
+  let temp = templateParagraph.innerHTML.substring(9);
+  temp = temp.replace(/&nbsp;/g, "");
+  temp = temp.replace(/ /g, "");
+
+  let tcs = tcParagraph.innerHTML.substring(11);
+  tcs = tcs.replace(/ /g, "");
+  let tcIDs = tcs.split("<br>");
+  for (var x = 0; x < tcIDs.length; x++) {
+    tcIDs[x] = tcIDs[x].split("\|")[0];
+  }
+  tcIDs.shift();
+
+  let urlChoices = urlParagraph.innerHTML.substring(7)
+  urlChoices = urlChoices.replace(/&nbsp;/g, "");
+  urlChoices = urlChoices.replace(" URLs", "");
+
+  let modalObject = {
+    "languages": langs,
+    "features": temp,
+    "TestCaseSelections": tcIDs,
+    "Urls": urlChoices
+  };
+
+  let object = JSON.stringify(modalObject);
+
+  console.log(object);
+
+  $.ajax({
+    url: '/run-test',
+    type: 'POST',
+    data: object,
+    contentType: "application/json",
+    error: function(data) {
+      console.log(data);
+    },
+    success: function(data) {
+      console.log(data);
+      console.log("Successful post request.");
+    }
+  })
+}
+
+/* Test Run Function Ends Here */
+
+
+function getTimeStamp() {
 
   let today = new Date();
   let dd = today.getDate();
-  let mm = today.getMonth()+1; //January is 0!
+  let mm = today.getMonth() + 1; //January is 0!
   let yyyy = today.getFullYear();
 
   let hr = today.getHours();
   let min = today.getMinutes();
   let sec = today.getSeconds();
- 
-  if(dd<10) {
-      dd = '0'+dd
-  } 
 
-  if(mm<10) {
-      mm = '0'+mm
-  } 
+  if (dd < 10) {
+    dd = '0' + dd
+  }
+
+  if (mm < 10) {
+    mm = '0' + mm
+  }
 
   let timestamp = mm + '-' + dd + '-' + yyyy + ' ' + hr + ':' + min + ':' + sec;
 
@@ -29,28 +225,28 @@ function getTimeStamp(){
 function getInfo(id) {
 
 
-  console.log("This is the id"+ id);
+  console.log("This is the id" + id);
   //let id = 
 
-/*
-  $.ajax({
-    url: '/stop-test',
-    type: 'get',
-    data: {
-      testId: id
-    },
-    error: function(data) {
-      console.log(data);
-    },
-    success: function(data) {
+  /*
+    $.ajax({
+      url: '/stop-test',
+      type: 'get',
+      data: {
+        testId: id
+      },
+      error: function(data) {
+        console.log(data);
+      },
+      success: function(data) {
 
-      console.log("Test was a success billbo");
-      console.log(data);
+        console.log("Test was a success billbo");
+        console.log(data);
 
-    }
-  })
+      }
+    })
 
-  */
+    */
 
 }
 
@@ -64,7 +260,7 @@ function stopTest(id) {
     },
     error: function(data) {
       console.log(data);
-      
+
     },
     success: function(data) {
 
@@ -84,18 +280,18 @@ function runTest() {
   let arrayOfObjects = new Array();
   let featureCheckboxes = document.getElementsByClassName('FX');
   let langCheckboxes = document.getElementsByClassName('lang');
-  let checkedLangs =[];
+  let checkedLangs = [];
   let checkedFeats = [];
 
-  for(var q = 0; q<langCheckboxes.length; q++){
-    if (langCheckboxes[q].checked == true){
+  for (var q = 0; q < langCheckboxes.length; q++) {
+    if (langCheckboxes[q].checked == true) {
       checkedLangs.push(langCheckboxes[q].id);
     }
   }
   //console.log(checkedLangs);
 
-  for(var x=0; x<featureCheckboxes.length; x++){
-    if(featureCheckboxes[x].checked == true){
+  for (var x = 0; x < featureCheckboxes.length; x++) {
+    if (featureCheckboxes[x].checked == true) {
       checkedFeats.push(featureCheckboxes[x].id);
     }
   }
@@ -103,18 +299,18 @@ function runTest() {
 
   //We will move to Phase2 after we build in Test Case Selection, and URL selection
   let phase1 = {
-  "features": checkedFeats,
-  "languages": checkedLangs
-  }; 
+    "features": checkedFeats,
+    "languages": checkedLangs
+  };
 
-// var Phase2 = {
-//   "languages": "xx",
-//   "features": "xx",
-//   "TestCaseSelections":["F1":"all", "F2":"all", "F3":"1"],
-//   "NumOfUrls":["F1":"all", "F2":"all", "F3":"1"],
-//   "Urls":"xx",
-//   }; 
-  
+  // var Phase2 = {
+  //   "languages": "xx",
+  //   "features": "xx",
+  //   "TestCaseSelections":["F1":"all", "F2":"all", "F3":"1"],
+  //   "NumOfUrls":["F1":"all", "F2":"all", "F3":"1"],
+  //   "Urls":"xx",
+  //   }; 
+
 
   let testParamsJson = JSON.stringify(phase1);
 
@@ -131,9 +327,9 @@ function runTest() {
     success: function(data) {
       console.log(data);
 
-    let $newRow = $('#test-status-table').append($(`<tr><td colspan="5" class="temp-loader-row">`));
+      let $newRow = $('#test-status-table').append($(`<tr><td colspan="5" class="temp-loader-row">`));
 
-    $(".temp-loader-row").hide().text("...Loading New Test Data").fadeIn(100);
+      $(".temp-loader-row").hide().text("...Loading New Test Data").fadeIn(100);
 
     }
   })
@@ -242,7 +438,7 @@ function exportAll() {
 //     l = l.slice(0, -1);
 //     language = language + "," + l;
 //   }
-  
+
 //   testdate = document.getElementById("dateChild").children[0].id;
 //   testdate = testdate.slice(0, -1);
 //   console.log(testdate +"---------------------------------------------------");
@@ -254,7 +450,7 @@ function exportAll() {
 //   document.getElementById("myhref").href=thehref;
 // }
 
-function exportSelections(){
+function exportSelections() {
 
   let template = '';
   let language = '';
@@ -262,28 +458,28 @@ function exportSelections(){
   let query = "";
   let thehref = "";
 
-  let TchildCount= document.getElementById("pageChildren").children.length;
-  let LchildCount= document.getElementById("langChildren").children.length;
+  let TchildCount = document.getElementById("pageChildren").children.length;
+  let LchildCount = document.getElementById("langChildren").children.length;
 
   template = document.getElementById("pageChildren").children[0].id; // this takes the first child and puts it in 'template'
-  template = template.slice(0,-1);
+  template = template.slice(0, -1);
 
-  for (var x=1; x < TchildCount; x++){  // if there are additional children, we add a comma and the feature page for each child
-    let t = document.getElementById("pageChildren").children[x].id; 
-    t=t.slice(0,-1);
-    template=template + "," + t;
+  for (var x = 1; x < TchildCount; x++) { // if there are additional children, we add a comma and the feature page for each child
+    let t = document.getElementById("pageChildren").children[x].id;
+    t = t.slice(0, -1);
+    template = template + "," + t;
   }
-  
-  
+
+
   language = document.getElementById("langChildren").children[0].id; // this takes the first language child and puts it in 'language'
   language = language.slice(0, -1);
 
-  for (var y=1; y < LchildCount; y++){  // if additional languages were chosen, we add a comma and the language for each one selected
-    let l = document.getElementById("langChildren").children[y].id; 
-    l=l.slice(0,-1);
-    language =language + "," + l;
+  for (var y = 1; y < LchildCount; y++) { // if additional languages were chosen, we add a comma and the language for each one selected
+    let l = document.getElementById("langChildren").children[y].id;
+    l = l.slice(0, -1);
+    language = language + "," + l;
   }
-  
+
   var testdate = document.getElementById("dateChild").children[0].id;
   testdate = testdate.slice(0, -1);
 
@@ -292,6 +488,6 @@ function exportSelections(){
 
 
   //thehref="/export?feature="+ template + "&language=" + language + "&testresult=" + testresult + "&query=" + query + "&testpassid=" + testdate;
-  thehref="/export?feature="+ template + "&language=" + language + "&testresult=" + testresult + "&query=" + query + "&testpassid=" + testdate;
-  document.getElementById("myhref").href=thehref;
+  thehref = "/export?feature=" + template + "&language=" + language + "&testresult=" + testresult + "&query=" + query + "&testpassid=" + testdate;
+  document.getElementById("myhref").href = thehref;
 }
