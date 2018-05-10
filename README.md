@@ -1,6 +1,7 @@
 # delete versioning? deployment? contributing? License?
 
-James and Aron are awesome!   WOOT!  I love Droop the Goblin.
+# James and Aron are awesome!
+# I am  Groot!
 
 ##################################################
 # QA Website Testing
