@@ -193,15 +193,15 @@
       <!-- Module for Specific Language -->
       <% if(language != "ALL"){ %>
       <div class="drill-down passFailSkipLegend">
-        <a href="/results/locale/<%= language %>/testresult/PASS">
+        <a href="/results/locale/<%= language %>/testresult/PASS?testpassid=<%= testPassId %>">
           <span class="legend Pass"></span>
           <span class="LinksToResults">Pass</span>
         </a>
-        <a href="/results/locale/<%= language %>/testresult/FAIL">
+        <a href="/results/locale/<%= language %>/testresult/FAIL?testpassid=<%= testPassId %>">
           <span class="legend Fail"></span>
           <span class="LinksToResults">Fail</span>
         </a>
-        <a href="/results/locale/<%= language %>/testresult/SKIP">
+        <a href="/results/locale/<%= language %>/testresult/SKIP?testpassid=<%= testPassId %>">
           <span class="legend Skip"></span>
           <span class="LinksToResults">Skip</span>
         </a>
