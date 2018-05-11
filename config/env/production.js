@@ -19,3 +19,4 @@ module.exports = {
 		clientSecret: 'Google Application Secret',
 		callbackURL: '/oauth/google/callback'
 	}
+};
