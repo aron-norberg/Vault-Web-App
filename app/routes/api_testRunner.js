@@ -22,7 +22,7 @@ exports.getTestCases = function(req, res) {
 
   // let jsonObject = JSON.stringify(req.body);
   let template = (req.body[0].theTemplate);
-  // console.log("hello i have a template " + template);  // f8
+  console.log("hello i have a template " + template);  // f8
 
   db.sequelize.query("select * from Template where Id = '" + template + "';").then(templates => {
     let list = templates[0];

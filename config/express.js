@@ -182,8 +182,6 @@ module.exports = function() {
 
   // TODO:: 
   //app.get('/results/feature/:template', api_results.getResultByLanguage);
-
-
   //app.get('/results/feature/:template/testresult/:testresult', api_results.getResultByLangAndTestResult);
 
   // feature - query - ok

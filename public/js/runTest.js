@@ -1,9 +1,9 @@
-// Invoke 'strict' JavaScript mode
 'use strict';
-
+// Invoke 'strict' JavaScript mode
 // Socket Connections for running tests // 
 
 let socket = io.connect('/');
+
 socket.on('test-run', function(msg) {
 
   // Remove temporary loading row
@@ -60,12 +60,8 @@ socket.on('test-run', function(msg) {
 //     });
 // });
 
-
-
-
-let langArray = document.getElementsByClassName('lang double');
+let langArrayTestRunner = document.getElementsByClassName('lang double');
 let templateArray = document.getElementsByClassName("form-check-input double");
-
 
 let langParagraph = document.getElementById("selectedLanguages");
 let tcParagraph = document.getElementById("selectedTestCases");
@@ -79,11 +75,63 @@ let urlButton = document.getElementById("url");
 
 let node = document.createElement("LI");
 
+function grabTCsForFeature(testCaseButton) {
+
+  let reader = new FileReader();
+  let templateParagraph = document.getElementById("selectedTemplates");
+  let template = templateParagraph.innerHTML.toLowerCase();
+
+  //console.log(template);
+  template = template.slice(16); //this cuts out the "template: " part, including the &nbsp - space
+
+
+
+  var templateChoice = { //  creating an object to feed into the database so that we can get an ID for the new TestCase
+    "theTemplate": template
+  };
+  var arrayOfObjects = new Array();
+  arrayOfObjects.push(templateChoice);
+  let finalObject = JSON.stringify(arrayOfObjects);
+
+  console.log("lets go get test cases.");
+  // console.log(finalObject + "-----------this is the final object ------------");
+
+  // This function sends the data from the runTestsModal page, per the express.js page to the getTestCases() function on runTestsModal.js where the database is accessed and updated
+  $.ajax({
+    url: '/getTestCases',
+    type: 'POST',
+    data: finalObject,
+    contentType: "application/json",
+    error: function(data) {
+      console.log(data + "------------ it didn't work -----------------");
+    },
+    success: function(data) {
+      // console.log(data);
+      console.log("I got Test Case IDs from the database.");
+
+      console.log("the data is: " + data.length);
+
+      for (var x = 0; x < data.length; x++) {
+        var node = document.createElement("LI"); // Create a <li> node
+        node.setAttribute("class", "list testcasechoice");
+        var inputItem = document.createElement("input");
+        inputItem.setAttribute("class", "double testcasechoice");
+        inputItem.setAttribute("type", "checkbox");
+
+        var textnode = document.createTextNode("  " + data[x].TestCaseId + " | " + data[x].TestCaseDescription); // Create a text node
+        node.appendChild(inputItem);
+        node.appendChild(textnode); // Append the text to <li>
+        document.getElementById("theTestCases").appendChild(node); // Append <li> to <ul> with id="myList"
+      }
+    }
+  })
+}
+
 function showLangs() { //this shows the languages selected in the selections area
   langParagraph.innerHTML = "Languages: ";
-  for (var x = 0; x < langArray.length; x++) {
-    if (langArray[x].checked == true) {
-      langParagraph.innerHTML = langParagraph.innerHTML + "&nbsp" + langArray[x].id + ", ";
+  for (var x = 0; x < langArrayTestRunner.length; x++) {
+    if (langArrayTestRunner[x].checked == true) {
+      langParagraph.innerHTML = langParagraph.innerHTML + "&nbsp" + langArrayTestRunner[x].id + ", ";
       templateButton.removeAttribute("disabled");
     }
   }
@@ -107,7 +155,7 @@ function showTemplates() {
 
   testCaseButton.removeAttribute("disabled");
   urlButton.removeAttribute("disabled");
-  grabTCsForFeature();
+  grabTCsForFeature(testCaseButton);
 }
 
 function showTCs() {
@@ -179,6 +227,8 @@ function runit() {
 
   console.log(object);
 
+  /*
+
   $.ajax({
     url: '/run-test',
     type: 'POST',
@@ -192,6 +242,8 @@ function runit() {
       console.log("Successful post request.");
     }
   })
+
+  */
 }
 
 /* Test Run Function Ends Here */

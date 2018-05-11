@@ -105,7 +105,7 @@
                     'es-bo', 'es-cl', 'es-co', 'es-cr', 'es-do', 'es-ec', 'es-gt', 'es-pe','es-sv','es-us','es-uy','es-ve','fi-fi','fr-fr','fr','fr-be','fr-ca','fr-ch','id-id','it-it','ja-jp','ko-kr','nl-nl','nl-be','no-no',
                     'pl-pl','pt-br','pt-pt','ru-ru','sv-se','th-th','tr-tr','vi-vn','zh-cn','cn','zh-tw'];%>
                     <li class="width-set columnized">
-                      <input id="allLanguages" class="lang double" onclick="" type="checkbox" />&nbsp;all</a>
+                      <input id="all" class="lang double" onclick="" type="checkbox" />&nbsp;all</a>
                     </li>
                     <% for(var i=0; i < allLangs.length; i++) { %>
                       <li class="width-set columnized">
@@ -138,6 +138,15 @@
                 </button>
               </div>
               <div class="modal-body">
+                
+              <!-- Use If statement to check if user has appropriate permissions. --> 
+                <div class="form-check">
+                  <label for="all">
+                    <input class="form-check-input double" type="radio" name="featureRadios" id="all" value="all"> All Features
+                  </label>
+                </div>
+                <!-- Use If statement to check if user has appropriate permissions. --> 
+
                 <div class="form-check">
                   <label for="F1">
                     <input class="form-check-input double" type="radio" name="featureRadios" id="F1" value="F1"> (F1) Home Page

@@ -124,7 +124,7 @@
         <select class="form-control dashboardDropdown" name="testpassid" id="testpassid" onchange="this.form.submit()">
           <% for(var i=0; i < testPassData.length; i++) { %> 
           
-          <option name="testpassid" value="<%= testPassData[i].TestPassId %>+ <%= testPassData[i].Template %>+ <%= testPassData[i].Language %>+ <%= testPassData[i].TestCases %>+ <%= testPassData[i].RunDate %>+ <%= testPassData[i].Reliable %>+ <%= testPassData[i].Note %>+ <%= testPassData[i].Description %>">
+          <option name="testpassid" value="<%= testPassData[i].TestPassId %>">
           
           <%= testPassData[i].RunDate %> | Description: <%= testPassData[i].Description %>
           </option>
