@@ -111,7 +111,7 @@ function EvaluateTestPassIdAndGetResults(testPassId) {
 
   if (!testPassId) {
     return new Promise((resolve, reject) => {
-      db.sequelize.query(`select TestPassId from Status where EndTime is not NUll order by RunDate DESC limit 1;`).then(testPassId => {
+      db.sequelize.query(`select TestPassId from Status where EndTime > '1971' order by RunDate DESC limit 1;`).then(testPassId => {
         testPassId = testPassId[0][0].TestPassId;
 
         if (!testPassId) {
@@ -161,7 +161,10 @@ function renderPage(renderPageData, req, res) {
   let results = renderPageData.results.results;
   // RETURN THE LANGUAGE VARIABLE TO HUMAN READABLE
   if (language === "%") {
-    language = "All";
+    language = "all";
+  }
+  if (template === "%") {
+    template = "all";
   }
 
   let paginationData = paginationProcess2of2(page, total, start, rowsToReturn, length);
@@ -390,12 +393,15 @@ exports.getResultByIdLanguageCustom = function(req, res) {
     if (language === "all") {
       language = "%";
     }
+    if (template === "all") {
+      template = "%";
+    }
 
     async.parallel({
 
       results: function(cb) {
 
-        db.sequelize.query(`SELECT * FROM Result WHERE Template = '${template}' AND Language = '${language}' AND Output like '%${custom}%' AND TestPassId = '${testPassId}' ORDER BY TestCaseId, URLs limit ${paginationData.start}, ${rowsToReturn};`).then(results => {
+        db.sequelize.query(`SELECT * FROM Result WHERE Template LIKE '${template}' AND Language LIKE '${language}' AND Output like '%${custom}%' AND TestPassId = '${testPassId}' ORDER BY TestCaseId, URLs limit ${paginationData.start}, ${rowsToReturn};`).then(results => {
 
           results = results[0];
 
@@ -472,7 +478,7 @@ exports.getResultByIdLanguageCustom = function(req, res) {
 
 exports.getResultByLanguage = function(req, res) {
 
-  let template = "All";
+  let template = "all";
   let custom = req.params.custom;
   let testresult = req.params.testresult;
   let language = req.params.locale;
@@ -603,12 +609,15 @@ exports.getResultByIdAndLanguage = function(req, res) {
     if (language === "all") {
       language = "%";
     }
+    if (template === "all") {
+      template = "%";
+    }
 
     async.parallel({
 
       results: function(cb) {
-        db.sequelize.query(`SELECT * FROM Result WHERE Template = '${template}' AND Language LIKE '${language}' AND TestPassId = '${testPassId}' ORDER BY TestCaseId, URLs limit ${paginationData.start}, ${rowsToReturn};`).then(results => {
-
+        db.sequelize.query(`SELECT * FROM Result WHERE Template LIKE '${template}' AND Language LIKE '${language}' AND TestPassId = '${testPassId}' ORDER BY TestCaseId, URLs limit ${paginationData.start}, ${rowsToReturn};`).then(results => {
+          console.log(`SELECT * FROM Result WHERE Template LIKE '${template}' AND Language LIKE '${language}' AND TestPassId = '${testPassId}' ORDER BY TestCaseId, URLs limit ${paginationData.start}, ${rowsToReturn};`);
           results = results[0];
 
           // Convert Result back to string
@@ -709,11 +718,14 @@ exports.getResultByLangFeatureAndTestResult = function(req, res) {
     if (language === "all") {
       language = "%";
     }
+    if (template === "all") {
+      template = "%";
+    }
 
     async.parallel({
 
       results: function(cb) {
-        db.sequelize.query(`SELECT * FROM Result WHERE Template = '${template}' AND Language LIKE '${language}' AND Result = '${testresult}' AND TestPassId = '${testPassId}' ORDER BY TestCaseId, URLs limit ${paginationData.start}, ${rowsToReturn};`).then(results => {
+        db.sequelize.query(`SELECT * FROM Result WHERE Template LIKE '${template}' AND Language LIKE '${language}' AND Result = '${testresult}' AND TestPassId = '${testPassId}' ORDER BY TestCaseId, URLs limit ${paginationData.start}, ${rowsToReturn};`).then(results => {
 
           results = results[0];
 
@@ -791,7 +803,7 @@ exports.getResultByTemplateCustom = function(req, res) {
 
 
   let template = req.params.template;
-  let language = "All";
+  let language = "all";
   let testPassId = req.query.testpassid;
   let page = req.query.page;
   let custom = req.params.custom;
@@ -895,7 +907,7 @@ exports.getResultByTemplateCustomAndTestResult = function(req, res) {
 
 
   let template = req.params.template;
-  let language = "All";
+  let language = "all";
   let testPassId = req.query.testpassid;
   let page = req.query.page;
   let custom = req.params.custom;
@@ -1120,11 +1132,14 @@ exports.getResultByIdLanguageCustomTestResult = function(req, res) {
     if (language === "all") {
       language = "%";
     }
+    if (template === "all") {
+      template = "%";
+    }
 
     async.parallel({
 
       results: function(cb) {
-        db.sequelize.query(`SELECT * FROM Result WHERE Language = '${language}' AND Template = '${template}' AND Output like '%${custom}%' AND Result = '${testresult}' AND TestPassId = '${testPassId}' ORDER BY TestCaseId, URLs limit ${paginationData.start}, ${rowsToReturn};`).then(results => {
+        db.sequelize.query(`SELECT * FROM Result WHERE Language LIKE '${language}' AND Template LIKE '${template}' AND Output like '%${custom}%' AND Result = '${testresult}' AND TestPassId = '${testPassId}' ORDER BY TestCaseId, URLs limit ${paginationData.start}, ${rowsToReturn};`).then(results => {
 
           results = results[0];
 
