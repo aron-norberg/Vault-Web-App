@@ -1,3 +1,4 @@
+
 // test Status
 
 'use strict';
@@ -51,7 +52,9 @@ function broadcastData(req, res, dataString) {
 
   if (testId) {
 
-    io.sockets.emit('message', testId);
+    // Only emit test start id
+    // and test end id
+    io.sockets.emit('test-run', testId);
     console.log(testId);
   }
 
@@ -206,7 +209,7 @@ exports.startProcess = function(req, res) {
   script.stdout.on('data', (data) => {
     //script.stdin.write(data);
     let dataString = String(data)
-    //console.log(dataString);
+    console.log(dataString);
     broadcastData(req, res, dataString);
 
   });

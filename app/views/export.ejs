@@ -2,20 +2,30 @@
 
 <script>
 
-  // This function populates the languages and template pages for display in the drop-down menus.
+  // This function populates the languages and templates for display in the drop-down menus.
 function displayInfo(data, id){
   document.getElementById("testData").innerHTML = (data);
   document.getElementById("langButton").disabled = false;
   document.getElementById("mybutton").disabled = false;
   document.getElementById("runTest").disabled = false;
+  var lkids = document.getElementById("langChildren");
+  var pkids = document.getElementById("pageChildren");
+
+  while (lkids.firstChild){
+    lkids.removeChild(lkids.firstChild);
+  }
+  while (pkids.firstChild){
+    pkids.removeChild(pkids.firstChild);
+  }
   
+  //clear out any content in the language and template dropdowns
   var langParent = document.getElementById("langList");
-    while(langParent.hasChildNodes()){
+    while(langParent.hasChildNodes() && langParent.lastChild.id !="langAll"){
       langParent.removeChild(langParent.lastChild);
     }
-
+  
   var templateParent = document.getElementById("featureUL");
-    while(templateParent.hasChildNodes()){
+    while(templateParent.hasChildNodes() && templateParent.lastChild.id !="tempAll"){
       templateParent.removeChild(templateParent.lastChild);
     }
 
@@ -37,26 +47,31 @@ function displayInfo(data, id){
       success: function(data) {
         console.log(data);
 
-        // -----------------------------------------------------------------------------------------------------
+        // if the query was successful, populate the lang and template dropdowns with the results
         var theTemplates = data[0].Template.split(",");
         var theLanguages = data[0].Language.split(",");
         console.log(theTemplates+"<---");
         console.log(theLanguages +"<---");
+        
 
         for (var x = 0; x<theLanguages.length; x++){
-          var node = document.createElement("LI");                 // Create a <li> node
+          var node = document.createElement("LI"); 
           node.setAttribute("class", "width-set dropdown-item");         
 
+          var span = document.createElement("SPAN");
+          span.setAttribute("id", "langParent-"+[x]);
+          
           var langinputItem = document.createElement("input");
           langinputItem.setAttribute("class", "lang double");
           langinputItem.setAttribute("type", "checkbox");
-          langinputItem.setAttribute("id", "L"+[x]);
-          langinputItem.setAttribute("onclick", "displayChecked(this.id, 'langList', 'LAll', 'langChildren')");
+          langinputItem.setAttribute("id", theLanguages[x]);
+          langinputItem.setAttribute("onclick", "displayChecked(this.id, 'langParent-" + [x] + "', 'LAll', 'langChildren')");
           
-          var langtextnode = document.createTextNode("  " + theLanguages[x]);         // Create a text node
-          node.appendChild(langinputItem);
-          node.appendChild(langtextnode);                              // Append the text to <li>
-          document.getElementById("langList").appendChild(node);     // Append <li> to <ul> with id="myList"
+          var langtextnode = document.createTextNode("  " + theLanguages[x]);  
+          node.appendChild(span);
+          span.appendChild(langinputItem);
+          span.appendChild(langtextnode);                         
+          document.getElementById("langList").appendChild(node); 
         }
 
         for (var x = 0; x<theTemplates.length; x++){
@@ -64,15 +79,14 @@ function displayInfo(data, id){
           var node2 = document.createElement("LI"); 
           node2.setAttribute("class", "width-set dropdown-item");
           
-          var span = document.createElement("SPAN");
-          span.setAttribute("id", "templateParent-"+[x]);
-          myString = "displayChecked(this.id, 'templateParent-" + [x] + "','ALll','pageChildren')";
+          var span2 = document.createElement("SPAN");
+          span2.setAttribute("id", "templateParent-"+[x]);
 
           var templateItem=document.createElement("input");
           templateItem.setAttribute("class", "FX double");
           templateItem.setAttribute("type", "checkbox");
-          templateItem.setAttribute("id", "T"+[x]);
-          templateItem.setAttribute("onclick", myString);
+          templateItem.setAttribute("id", theTemplates[x]);
+          templateItem.setAttribute("onclick", "displayChecked(this.id, 'templateParent-" + [x] + "','All','pageChildren')");
 
           var thePage="";
           switch (theTemplates[x]){
@@ -155,13 +169,12 @@ function displayInfo(data, id){
               thePage="unknown";
           }
 
-          var templateTextNode = document.createTextNode("  " + thePage);         // Create a text node
-          node2.appendChild(span);
-          span.appendChild(templateItem);
-          span.appendChild(templateTextNode);       
+          var templateTextNode = document.createTextNode("  " + thePage);       
+          node2.appendChild(span2);
+          span2.appendChild(templateItem);
+          span2.appendChild(templateTextNode);       
           document.getElementById("featureUL").appendChild(node2); 
         }
-        // -----------------------------------------------------------------------------------------------------
 
         console.log("I am a success.");
       }
@@ -206,11 +219,11 @@ function displayInfo(data, id){
         <button type="button" style="border: 1px solid green;" class="btn btn-lg dropdown-toggle width-set" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">Test Date</button>
         <ul class="dropdown-menu btn-block width-set" id="dateUL">
           <% for(var i=0; i < dates.length; i++) {
-            if (statusEndTime[i] != "Fri Jan 02 1970 00:00:00 GMT-0800 (PST)"){ %>
+            console.log(String(statusEndTime[i]));
+            if (String(statusEndTime[i]) != "Fri Jan 02 1970 00:00:00 GMT-0800 (Pacific Standard Time)"){ %>
               <li class="dropdown-item">
               <span id="dateParent-<%=[i]%>">
                   <input id="<%= dateIds[i] %>" class="date double" value="<%=testDescription[i] %>" onclick="displayChecked(this.id, 'dateParent-<%=[i]%>', 'none', 'dateChild'); displayInfo(this.value, this.id);" type="radio" name="date" />&nbsp; <%= dates[i] %></span>
-
               </li>
           <% }} %>
         </ul>
@@ -231,9 +244,9 @@ function displayInfo(data, id){
         <ul class="dropdown-menu btn-block width-set" id="langList">
 
           <!-- the 'ALL' option has to be available for the displaychecked.js funciton to work properly - set to style="display:none;" -->
-                <li class="dropdown-item" style="display:none;"> 
+                <li class="width-set dropdown-item" id="langAll" style="display:none;"> 
                   <span id="Lang">
-                    <input id="LAll" class="lang double" onclick="displayChecked(this.id, 'langList', 'LAll', 'langChildren')" type="checkbox" />&nbsp; All</span>
+                    <input id="LAll" class="lang double" onclick="displayChecked(this.id, 'Lang', 'LAll', 'langChildren')" type="checkbox" />&nbsp; All</span>
                 </li>
 
 
@@ -254,7 +267,7 @@ function displayInfo(data, id){
         <ul class="dropdown-menu btn-block width-set" id="featureUL">
 
           <!-- the 'ALL' option has to be available for the displaychecked.js funciton to work properly - set to display:none;-->
-                <li class="dropdown-item" style="display:none;">   
+                <li class="dropdown-item" id="tempAll" style="display:none;">   
                   <span>
                     <input id="All" class="FX double" onclick="displayChecked(this.id, 'featureUL', 'All', 'pageChildren')" type="checkbox" />&nbsp; All</span>
                 </li>

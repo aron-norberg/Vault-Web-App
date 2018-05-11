@@ -35,8 +35,6 @@ const authenticate = require('../app/routes/authentication');
 const testRunner = require('../app/routes/api_testRunner');
 // const api_login = require('../app/routes/api_login');
 const test_case_editor = require('../app/routes/test_case_editor');
-const runTestsModal = require('../app/routes/runTestsModal');
-
 
 // Angular App Routes
 const angular_results = require('../app/routes/angular_results')
@@ -199,8 +197,6 @@ module.exports = function() {
 
   // TODO:: 
   //app.get('/results/feature/:template', api_results.getResultByLanguage);
-
-
   //app.get('/results/feature/:template/testresult/:testresult', api_results.getResultByLangAndTestResult);
 
   // feature - query - ok
@@ -241,9 +237,7 @@ module.exports = function() {
   app.get('/test-runner/:script/:locale', isLoggedIn, api_file_data.runTest);
   app.get('/test-runner', isLoggedIn, testRunner.getOverview);
 
-  // test runner modal - to be deleted later
-  app.get('/modal', isLoggedIn, runTestsModal.modal);
-  app.post('/getTestCases', isLoggedIn, runTestsModal.getTestCases)
+  app.post('/getTestCases', isLoggedIn, testRunner.getTestCases)
 
   app.get('/test-status', isLoggedIn, api_tests.getTestStatus);
   app.get('/getprocesses', isLoggedIn, api_tests.getProcesses);

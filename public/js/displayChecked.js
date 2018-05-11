@@ -165,17 +165,10 @@
 
 
 function displayChecked(checkedID, parentID, allID, destinationID) {
-	console.log("this is the id " + checkedID);
-	console.log("this is the parentID " + parentID);
-	console.log("this is the All Id "+ allID);
-	console.log("this is the destinationID " + destinationID);
-
 	var checkBox = document.getElementById(checkedID);  // Get the selected item
 	var parent = document.getElementById(parentID); 
 	var parentClass=checkBox.parentNode.parentNode.className;
 	var text = parent.textContent; // Get the checkbox's text
-
-	console.log("this is the parent's text " + text);
 	var paragraph = document.createElement("p");  //create a paragraph
 	var content = document.createTextNode(text);   //create text (for the new paragraph)    
 	var checkboxes = new Array();
@@ -183,13 +176,11 @@ function displayChecked(checkedID, parentID, allID, destinationID) {
 	var checkboxes = document.getElementsByTagName('input');
 	var placement = document.getElementById(destinationID);
 
-	console.log("this is the parentClass -----> " +parentClass);
-
 	// If the checkbox is checked, create a paragraph element and input the checkbox's text
 	if (checkBox.checked == true){ 
-		// if (parentClass =="dates" && document.getElementById("dateChild").hasChildNodes()){//if a radio button for the date was selected, remove any other dates from the display section
-		// 	document.getElementById("dateChild").innerHTML="";
-		// }
+		if (parentClass =="dropdown-item" && document.getElementById("dateChild").hasChildNodes()){//if a radio button for the date was selected, remove any other dates from the display section
+			document.getElementById("dateChild").innerHTML="";
+		}
 		paragraph.appendChild(content);
 		paragraph.setAttribute('id',checkedID+'x');
 		placement.appendChild(paragraph);
@@ -222,10 +213,11 @@ function displayChecked(checkedID, parentID, allID, destinationID) {
 
 			//If I'm un-checking anything other than the "all" boxes
 			else if (checkedID != allID){ 
-			console.log("I'm not unchecking an All option");
+			console.log("I'm not unchecking an All option" + checkedID + "--"+allID);
 
 				//If the "all" box HAD been checked for the Feature Page section
-				if (allBox.checked == true){  // && parentID == parentID                                   <------------------------------------------???
+				console.log(allBox.id);
+				if (allBox.checked == true){  // && parentID == parentID              <-----------???
 				console.log("I've unchecked something when ALL HAD been chosen");
 					allBox.checked = false;  // un-check the "all" box and remove it from the pages selected section
 					var allChild = document.getElementById(allID + "x");
@@ -258,7 +250,4 @@ function displayChecked(checkedID, parentID, allID, destinationID) {
 				console.log("the end");
 			}  //end else if
 		}  //end else
-
-
-
 }

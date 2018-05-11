@@ -122,9 +122,11 @@
         <div class="form-group">
 
         <select class="form-control dashboardDropdown" name="testpassid" id="testpassid" onchange="this.form.submit()">
+          <option name="testpassid" value=""> Select a Set of Test Results </option>
+          
           <% for(var i=0; i < testPassData.length; i++) { %> 
           
-          <option name="testpassid" value="<%= testPassData[i].TestPassId %>+ <%= testPassData[i].Template %>+ <%= testPassData[i].Language %>+ <%= testPassData[i].TestCases %>+ <%= testPassData[i].RunDate %>+ <%= testPassData[i].Reliable %>+ <%= testPassData[i].Note %>+ <%= testPassData[i].Description %>">
+          <option name="testpassid" value="<%= testPassData[i].TestPassId %>">
           
           <%= testPassData[i].RunDate %> | Description: <%= testPassData[i].Description %>
           </option>
@@ -191,17 +193,18 @@
     <div class="col-lg-4 offset-lg-2 col-xl-4 offset-xl-2">
       <br /><br />
       <!-- Module for Specific Language -->
-      <% if(language != "ALL"){ %>
+      <% if(language != "ALL"){ console.log("this is the url: " +  currentUrl);%>
       <div class="drill-down passFailSkipLegend">
-        <a href="/results/locale/<%= language %>/testresult/PASS?testpassid=<%= testPassInfo.TestPassId %>">
+        
+        <a href="/results/feature/<%= feature %>/locale/<%= language %>/testresult/PASS?testpassid=<%= testPassId %>">
           <span class="legend Pass"></span>
           <span class="LinksToResults">Pass</span>
         </a>
-        <a href="/results/locale/<%= language %>/testresult/FAIL?testpassid=<%= testPassInfo.TestPassId %>">
+        <a href="/results/feature/<%= feature %>/locale/<%= language %>/testresult/FAIL?testpassid=<%= testPassId %>">
           <span class="legend Fail"></span>
           <span class="LinksToResults">Fail</span>
         </a>
-        <a href="/results/locale/<%= language %>/testresult/SKIP?testpassid=<%= testPassInfo.TestPassId %>">
+        <a href="/results/feature/<%= feature %>/locale/<%= language %>/testresult/SKIP?testpassid=<%= testPassId %>">
           <span class="legend Skip"></span>
           <span class="LinksToResults">Skip</span>
         </a>
