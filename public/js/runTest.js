@@ -221,8 +221,6 @@ function runit() {
 
   console.log(object);
 
-  /*
-
   $.ajax({
     url: '/run-test',
     type: 'POST',
@@ -237,7 +235,6 @@ function runit() {
     }
   })
 
-  */
 }
 
 /* Test Run Function Ends Here */
