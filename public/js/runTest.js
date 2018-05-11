@@ -493,44 +493,4 @@ function exportAll() {
 //   document.getElementById("myhref").href=thehref;
 // }
 
-function exportSelections() {
 
-  let template = '';
-  let language = '';
-  let testresult = "";
-  let query = "";
-  let thehref = "";
-
-  let TchildCount = document.getElementById("pageChildren").children.length;
-  let LchildCount = document.getElementById("langChildren").children.length;
-
-  template = document.getElementById("pageChildren").children[0].id; // this takes the first child and puts it in 'template'
-  template = template.slice(0, -1);
-
-  for (var x = 1; x < TchildCount; x++) { // if there are additional children, we add a comma and the feature page for each child
-    let t = document.getElementById("pageChildren").children[x].id;
-    t = t.slice(0, -1);
-    template = template + "," + t;
-  }
-
-
-  language = document.getElementById("langChildren").children[0].id; // this takes the first language child and puts it in 'language'
-  language = language.slice(0, -1);
-
-  for (var y = 1; y < LchildCount; y++) { // if additional languages were chosen, we add a comma and the language for each one selected
-    let l = document.getElementById("langChildren").children[y].id;
-    l = l.slice(0, -1);
-    language = language + "," + l;
-  }
-
-  var testdate = document.getElementById("dateChild").children[0].id;
-  testdate = testdate.slice(0, -1);
-
-  //the href will contain a list of each languages as 'en-us,de-de' and features will be 'f1,f3,f5' 
-  // in the getExportFromResults() function on 'api_export.js' these commas are watched for, so that the string can be split to an array and a query created for all the selections
-
-
-  //thehref="/export?feature="+ template + "&language=" + language + "&testresult=" + testresult + "&query=" + query + "&testpassid=" + testdate;
-  thehref = "/export?feature=" + template + "&language=" + language + "&testresult=" + testresult + "&query=" + query + "&testpassid=" + testdate;
-  document.getElementById("myhref").href = thehref;
-}
