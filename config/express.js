@@ -16,7 +16,9 @@ const config = require('./config'),
   db = require('./sequelize'),
   Sequelize = require('sequelize'),
   cors = require('cors'),
+  nodemailer = require('nodemailer'),
   SequelizeStore = require('connect-session-sequelize')(session.Store);
+
 
 //  Main Site Routes
 const api_results = require('../app/routes/api_results');
@@ -31,7 +33,7 @@ const api_dashboard = require('../app/routes/api_dashboard');
 const api_dashboardTWO = require('../app/routes/api_dashboardTWO');
 const authenticate = require('../app/routes/authentication');
 const testRunner = require('../app/routes/api_testRunner');
-const api_login = require('../app/routes/api_login');
+// const api_login = require('../app/routes/api_login');
 const test_case_editor = require('../app/routes/test_case_editor');
 
 // Angular App Routes
@@ -153,6 +155,19 @@ module.exports = function() {
   }));
 
   app.get('/logout', authenticate.logout);
+  
+  app.get('/reset_password', authenticate.reset_password);
+  // app.post('/reset_password', api_emailer.pwd_emailer);
+  // app.get('/reset_password', api_DB_writer.reset_password);
+  
+  app.post('/reset_password', passport.authenticate('local-reset-password', {
+    successRedirect: '/login',
+    failureRedirect: 'http://live-igcommerce.pantheonsite.io/en-us/'
+  }));
+
+
+
+  app.post('/reset_password', api_DB_writer.reset_password);
 
   // Temporary page settup for login
   //app.get('/login', api_login.getLogin);
