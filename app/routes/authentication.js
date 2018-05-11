@@ -2,7 +2,6 @@
 
 exports.signup = function(req, res) {
   res.render('signup', {
-
     title: 'sign up'
   });
 }
@@ -19,3 +18,10 @@ exports.logout = function(req, res) {
   });
 
 }
+
+exports.reset_password = function(req, res) {
+  res.render('reset_password', {
+    title: 'reset password'
+  });
+
+} // end exports.reset_password = function(req, res)

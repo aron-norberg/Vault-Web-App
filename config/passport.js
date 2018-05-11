@@ -117,4 +117,57 @@ module.exports = function(passport, user) {
       });
     }
   ));
-}
+
+
+  //RESET PASSWORD
+  passport.use('local-reset-password', new LocalStrategy(
+
+    {
+      usernameField: 'email',
+      passwordField: 'password',
+      passReqToCallback: true // allows us to pass back the entire request to the callback
+    },
+
+    function(req, email, password, done) {
+      // console.log('\n' + email + ' - ' + password + '\n');
+
+      var generateHash = function(password) {
+        return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
+      };
+
+      User.findOne({ where: { email: email } }).then(function(user) {
+
+        if (!user) {
+          console.log('Email does not exist');
+          return done(null, false, { message: 'Email does not exist' });
+
+        }
+        else {
+          let userPassword = generateHash(password);
+          // console.log('\n' + email + ' - ' + userPassword + '\n');
+
+          User.update({ password: userPassword }, { where: { email: email }}).then(function(User) {
+
+            if (user) {
+              console.log('\n' + "Password successfully updated" + '\n');
+              done(null, user.get());
+
+            }
+            else {
+              console.log('\n' + "Something went wrong, please try again" + '\n');
+              done(user.errors, null);
+
+            } // end if/else
+
+          }); // end User.update({ password: userPassword }, { where: { email: email }}).then(function(User)
+
+
+        } // end if/else
+
+      }); // END User.findOne({ where: { email: email } }).then(function(user)
+
+    } // END function(req, email, password, done)
+
+  )); // END passport.use('local-reset-password', new LocalStrategy()
+
+} // END module.exports = function(passport, user)

@@ -61,6 +61,7 @@
     "mysql2": "^1.5.3",
     "node-async-loop": "^1.2.2",
     "node-datetime": "^2.0.6",
+    "nodemailer": "^4.6.4",
     "npm": "^5.8.0",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
