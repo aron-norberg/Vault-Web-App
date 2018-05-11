@@ -113,7 +113,8 @@
             }else{
               var r = results[i].Output;
               r = r.replace("Scenario:",'');
-            } %> 
+            } 
+            r= r.replace("?",""); %> 
           <a href="/results/feature/<%= template %>/locale/<%= language %>/query/<%= r %>?testpassid=<%= testPassId %>"><%=r%></a>
         </td>
 

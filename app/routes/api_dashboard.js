@@ -46,7 +46,7 @@ exports.getOverview = function(req, res) {                  // this runs when th
       testPassId = testPassId[0][0].TestPassId;
 
       GetResultOverview(testPassId, testPassIds);
-      console.log("first query "+ testPassId);
+      // console.log("first query "+ testPassId);
     });
 
   } else {
@@ -56,7 +56,7 @@ exports.getOverview = function(req, res) {                  // this runs when th
       testPassId = parseInt(req.query.testpassid); // happens when a user selects from the dropdown
       
       GetResultOverview(testPassId, testPassIds);
-      console.log("second thing "+ testPassId);
+      // console.log("second thing "+ testPassId);
     });
   }
 
@@ -66,7 +66,7 @@ exports.getOverview = function(req, res) {                  // this runs when th
     db.sequelize.query(`select distinct Language from Result where TestPassID = ${testPassId};`).then(results => {
 
       results = results[0];                     // happens when page is opened or a user selects from the dropdown
-      console.log("third thing");
+      // console.log("third thing");
       //console.log(results[0].Language);
 
       lang = results;
@@ -75,11 +75,11 @@ exports.getOverview = function(req, res) {                  // this runs when th
       if (testPassIds){
         for (var x =0; x<testPassIds.length; x++){
           idArray.push(testPassIds[x].TestPassId);
-          console.log(idArray);
+          // console.log(idArray);
         }
         let string = idArray.join("' OR TestPassId = '");
         queryString = "select TestPassId, Template, Language, TestCases, RunDate, Description, Reliable, Note from TestPass where TestPassId = '"+ string +"' order by RunDate DESC;";
-        console.log ("queryString is "+queryString);
+        // console.log ("queryString is "+queryString);
       }
       else {
         queryString = 'select TestPassId, Template, Language, TestCases, RunDate, Description, Reliable, Note from TestPass order by RunDate DESC;';
