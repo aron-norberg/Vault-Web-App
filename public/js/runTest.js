@@ -85,7 +85,6 @@ function grabTCsForFeature(testCaseButton) {
   template = template.slice(16); //this cuts out the "template: " part, including the &nbsp - space
 
 
-
   var templateChoice = { //  creating an object to feed into the database so that we can get an ID for the new TestCase
     "theTemplate": template
   };
@@ -93,7 +92,6 @@ function grabTCsForFeature(testCaseButton) {
   arrayOfObjects.push(templateChoice);
   let finalObject = JSON.stringify(arrayOfObjects);
 
-  console.log("lets go get test cases.");
   // console.log(finalObject + "-----------this is the final object ------------");
 
   // This function sends the data from the runTestsModal page, per the express.js page to the getTestCases() function on runTestsModal.js where the database is accessed and updated

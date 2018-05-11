@@ -20,6 +20,8 @@ rootPath = rootPath + 'temp_directory';
 
 exports.getTestCases = function(req, res) {
 
+  console.log("I am called.")
+
   // let jsonObject = JSON.stringify(req.body);
   let template = (req.body[0].theTemplate);
   console.log("hello i have a template " + template);  // f8
