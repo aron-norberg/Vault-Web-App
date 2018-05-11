@@ -75,7 +75,7 @@ let urlButton = document.getElementById("url");
 
 let node = document.createElement("LI");
 
-function grabTCsForFeature(testCaseButton) {
+function grabTCsForFeature() {
 
   let reader = new FileReader();
   let templateParagraph = document.getElementById("selectedTemplates");
@@ -83,7 +83,6 @@ function grabTCsForFeature(testCaseButton) {
 
   //console.log(template);
   template = template.slice(16); //this cuts out the "template: " part, including the &nbsp - space
-
 
   var templateChoice = { //  creating an object to feed into the database so that we can get an ID for the new TestCase
     "theTemplate": template
@@ -105,10 +104,7 @@ function grabTCsForFeature(testCaseButton) {
     },
     success: function(data) {
       // console.log(data);
-      console.log("I got Test Case IDs from the database.");
-
-      console.log("the data is: " + data.length);
-
+      console.log("successful response from test case request")
       for (var x = 0; x < data.length; x++) {
         var node = document.createElement("LI"); // Create a <li> node
         node.setAttribute("class", "list testcasechoice");
@@ -153,7 +149,7 @@ function showTemplates() {
 
   testCaseButton.removeAttribute("disabled");
   urlButton.removeAttribute("disabled");
-  grabTCsForFeature(testCaseButton);
+  grabTCsForFeature();
 }
 
 function showTCs() {

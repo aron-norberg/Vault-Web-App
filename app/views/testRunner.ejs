@@ -46,7 +46,7 @@
       <div class="col-lg-12">
         <br>
         <p>Make your selections before running a test.
-          <br \> You must first save your Language and Template selections before choosing Test Cases and URLs. </p>
+          <br /> You must first save your Language and Template selections before choosing Test Cases and URLs. </p>
       </div>
     </div>
     <!--  ------------------------------------------------------Button Options ---------------------------- -->
@@ -56,7 +56,7 @@
         <button style="display:none;" type="button" class="btn btn-lg btn-warning width-set" data-toggle="modal" data-target="#nameModal">
           Test Names
         </button>
-        <br \>
+        <br />
         <!-- Modal Test Names-->
         <div class="modal fade" id="nameModal" tabindex="-1" role="dialog" aria-labelledby="nameModalTitle" aria-hidden="true">
           <div class="modal-dialog" role="document">
@@ -86,7 +86,7 @@
         <button type="button" style="border: 1px solid green;" class="btn btn-lg width-set topSpace" data-toggle="modal" data-target="#langModal">
           Languages
         </button>
-        <br \>
+        <br />
         <!-- Modal Languages-->
         <div class="modal fade" id="langModal" tabindex="-1" role="dialog" aria-labelledby="langTitle" aria-hidden="true">
           <div class="modal-dialog" role="document">
@@ -126,7 +126,7 @@
         <button type="button" id="tb" style="border: 1px solid green;" class="btn btn-lg width-set topSpace" data-toggle="modal" data-target="#FxModal" disabled>
           F(x) Template
         </button>
-        <br \>
+        <br />
         <!-- Modal Templates-->
         <div class="modal fade" id="FxModal" tabindex="-1" role="dialog" aria-labelledby="FxTitle" aria-hidden="true">
           <div class="modal-dialog" role="document">
@@ -138,15 +138,13 @@
                 </button>
               </div>
               <div class="modal-body">
-                
-              <!-- Use If statement to check if user has appropriate permissions. --> 
+                <!-- Use If statement to check if user has appropriate permissions. -->
                 <div class="form-check">
                   <label for="all">
                     <input class="form-check-input double" type="radio" name="featureRadios" id="all" value="all"> All Features
                   </label>
                 </div>
-                <!-- Use If statement to check if user has appropriate permissions. --> 
-
+                <!-- Use If statement to check if user has appropriate permissions. -->
                 <div class="form-check">
                   <label for="F1">
                     <input class="form-check-input double" type="radio" name="featureRadios" id="F1" value="F1"> (F1) Home Page
@@ -284,7 +282,7 @@
         <button type="button" id="tcb" style="border: 1px solid green;" class="btn btn-lg width-set topSpace" data-toggle="modal" data-target="#casesModal" disabled>
           Test Cases
         </button>
-        <br \>
+        <br />
         <!-- Modal Test Cases-->
         <div class="modal fade" id="casesModal" tabindex="-1" role="dialog" aria-labelledby="casesTitle" aria-hidden="true">
           <div class="modal-dialog" role="document">
@@ -307,11 +305,11 @@
             </div>
           </div>
         </div>
-        <!--  ------------------------------------------------------URLs ---------------------------- -->
+        <!--------------------------------------------------------URLs ---------------------------- -->
         <button type="button" id="url" style="border: 1px solid green;" class="btn btn-lg width-set topSpace" data-toggle="modal" data-target="#urlsModal" disabled>
           URLs
         </button>
-        <br \>
+        <br />
         <!-- Modal URLs-->
         <div class="modal fade" id="urlsModal" tabindex="-1" role="dialog" aria-labelledby="urlsTitle" aria-hidden="true">
           <div class="modal-dialog" role="document">
@@ -325,10 +323,13 @@
               <div class="modal-body">
                 <ul style="text-align:left; list-style-type: none;">
                   <li>
-                    <input id="alltheURLs" class="double aURL" type="radio" name="urlRadios" /> &nbsp;All URLs
+                    <input id="all" class="double aURL" type="radio" name="urlRadios" /> &nbsp;all URLs
                   </li>
                   <li>
-                    <input id="tenURLs" class="double topSpace aURL" type="radio" name="urlRadios" /> &nbsp;Ten URLs
+                    <input id="10" class="double topSpace aURL" type="radio" name="urlRadios" /> &nbsp;10 URLs
+                  </li>
+                  <li>
+                    <input id="1" class="double topSpace aURL" type="radio" name="urlRadios" /> &nbsp;1 URL
                   </li>
                   <li style="display:none;">
                     <input id="oneURL" onclick="showInput()" class="double topSpace aURL" type="radio" name="urlRadios" /> &nbsp;Enter a URL for testing
@@ -351,17 +352,16 @@
             </div>
           </div>
         </div>
-        <br \>
+        <br />
         <div style="display:none;">
           <label for="name">Name: </label>
           <textarea style="margin-left:5px;" id="name" rows="1" cols="38" placeholder="Enter new test name here"></textarea>
         </div>
-        <br \>
+        <br />
         <button style="display:none;" type="button" class="btn btn-lg btn-warning" onclick="">save</button>
         <button type="button" class="btn btn-lg btn-success width-set" onclick="runit()">run</button>
-        <br \>
+        <br />
       </div>
-
       <div class="col-lg-4 option-box">
         <p id="testNames"></p>
         <p id="selectedLanguages">Languages: </p>
@@ -427,7 +427,5 @@
   <!-- end .container-fluid -->
   <br>
   <br>
-
   <script src="/js/runTest.js"></script>
-  
-<%- include('footer') %>
+  <%- include('footer') %>
