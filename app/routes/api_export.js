@@ -131,7 +131,7 @@ exports.getExportFromResults = function(req, res, next) {
   let fArray = [];
   let testPass = req.query.testpassid;
   // if(testPass != "All"){
-    let loopedQuery='SELECT * from Result where TestPassId = ' + testPass + " AND ";
+    let loopedQuery='SELECT * FROM Result WHERE TestPassId = ' + testPass + " AND ";
   // } else {
   //   let loopedQuery='SELECT * from Result;';
   // }
@@ -201,8 +201,8 @@ exports.getExportFromResults = function(req, res, next) {
       console.log('error: ' + err);
       return err;
     })
-  }else if (feature ==="All" && language ==="All"){ 
-      db.sequelize.query(`SELECT * from Result where TestPassId = '${testPass}';`).then(results => {
+  }else if (feature ==="all" && language ==="all"){ 
+      db.sequelize.query(`SELECT * FROM Result WHERE TestPassId = '${testPass}';`).then(results => {
         results = results[0];
         // Needed To convert the blob object into a string 
         // Otherwise it returns a buffer array object.
@@ -220,8 +220,8 @@ exports.getExportFromResults = function(req, res, next) {
       })    
 
 
-  }else if (feature === "All" && testresult === "") {
-    db.sequelize.query(`SELECT * from Result where TestPassId = '${testPass}' AND Language = '${language}';`).then(results => {
+  }else if (feature === "all" && testresult === "") {
+    db.sequelize.query(`SELECT * FROM Result WHERE TestPassId = '${testPass}' AND Language = '${language}';`).then(results => {
       results = results[0];
       // Needed To convert the blob object into a string 
       // Otherwise it returns a buffer array object.
@@ -241,9 +241,9 @@ exports.getExportFromResults = function(req, res, next) {
     })
 
     ///results/locale/:locale/testresult/:testresult'
-  } else if (feature === "All" && testresult !== "") {
+  } else if (feature === "all" && testresult !== "") {
 
-    db.sequelize.query(`SELECT * from Result where TestPassId = '${testPass}' AND Language = '${language}' and Result = '${testresult}';`).then(results => {
+    db.sequelize.query(`SELECT * FROM Result WHERE TestPassId = '${testPass}' AND Language = '${language}' AND Result = '${testresult}';`).then(results => {
 
       results = results[0];
 
@@ -264,9 +264,9 @@ exports.getExportFromResults = function(req, res, next) {
     })
 
     //results/feature/:template/query/:custom
-  } else if (feature !== "All" && language === "All" && testresult === "" && query !== "") {
+  } else if (feature !== "all" && language === "all" && testresult === "" && query !== "") {
 
-    db.sequelize.query(`SELECT * from Result where TestPassId = '${testPass}' AND Template = '${feature}' and Output like '%${query}%';`).then(results => {
+    db.sequelize.query(`SELECT * FROM Result WHERE TestPassId = '${testPass}' AND Template = '${feature}' AND Output LIKE '%${query}%';`).then(results => {
 
       results = results[0];
 
@@ -288,9 +288,9 @@ exports.getExportFromResults = function(req, res, next) {
     })
 
     //results/feature/:template/query/:custom/testresult/:testresult
-  } else if (feature !== "All" && language === "All" && testresult !== "" && query !== "") {
+  } else if (feature !== "all" && language === "all" && testresult !== "" && query !== "") {
 
-    db.sequelize.query(`SELECT * from Result where TestPassId = '${testPass}' and Template = '${feature}' and Result = '${testresult}'and Output like '%${query}%';`).then(results => {
+    db.sequelize.query(`SELECT * FROM Result WHERE TestPassId = '${testPass}' AND Template = '${feature}' AND Result = '${testresult}'AND Output LIKE '%${query}%';`).then(results => {
 
       results = results[0];
 
@@ -311,9 +311,9 @@ exports.getExportFromResults = function(req, res, next) {
       return err;
     })
 
-  } else if (feature !== "All" && language !== "All" && testresult === "" && query === "") {  // if only one selection was made for language and one for feature
+  } else if (feature !== "all" && language !== "all" && testresult === "" && query === "") {  // if only one selection was made for language and one for feature
    
-    db.sequelize.query(`SELECT * from Result where TestPassId = '${testPass}' and Template = '${feature}' and language = '${language}';`).then(results => {
+    db.sequelize.query(`SELECT * FROM Result WHERE TestPassId = '${testPass}' AND Template = '${feature}' AND Language = '${language}';`).then(results => {
 
       results = results[0];
 
@@ -334,9 +334,9 @@ exports.getExportFromResults = function(req, res, next) {
       return err;
     })
 
-  }else if (feature !== "All" && language !== "All" && testresult !== "" && query === "") {
+  }else if (feature !== "all" && language !== "all" && testresult !== "" && query === "") {
 
-    db.sequelize.query(`SELECT * from Result where TestPassId = '${testPass}' and Template = '${feature}' and Result = '${testresult}' and language = '${language}';`).then(results => {
+    db.sequelize.query(`SELECT * FROM Result WHERE TestPassId = '${testPass}' AND Template = '${feature}' AND Result = '${testresult}' AND Language = '${language}';`).then(results => {
 
       results = results[0];
 
@@ -357,11 +357,11 @@ exports.getExportFromResults = function(req, res, next) {
       return err;
     })
 
-  }else if (feature !== "All" && language !== "All" && query !== "" && testresult === "" ) {
+  }else if (feature !== "all" && language !== "all" && query !== "" && testresult === "" ) {
 
     console.log("I am executing.\n\n\n");
 
-    db.sequelize.query(`SELECT * from Result where TestPassId = '${testPass}' and Template = '${feature}' and Language = '${language}' and Output like '%${query}%';`).then(results => {
+    db.sequelize.query(`SELECT * FROM Result WHERE TestPassId = '${testPass}' AND Template = '${feature}' AND Language = '${language}' AND Output LIKE '%${query}%';`).then(results => {
 
       results = results[0];
 
@@ -382,11 +382,11 @@ exports.getExportFromResults = function(req, res, next) {
       return err;
     })
 
-  }else if (feature !== "All" && language !== "All" && query !== "" && testresult !== "" ) {
+  }else if (feature !== "all" && language !== "all" && query !== "" && testresult !== "" ) {
 
     console.log("I am executing.\n\n\n");
 
-    db.sequelize.query(`SELECT * from Result where TestPassId = '${testPass}' and Template = '${feature}' and Language = '${language}' and Output like '%${query}%' and Result = '${testresult}';`).then(results => {
+    db.sequelize.query(`SELECT * FROM Result WHERE TestPassId = '${testPass}' AND Template = '${feature}' AND Language = '${language}' AND Output LIKE '%${query}%' AND Result = '${testresult}';`).then(results => {
 
       results = results[0];
 
@@ -514,7 +514,7 @@ exports.getLangsAndTemps = function (req, res) {
 
   let testPass = (req.body.testPass);
 
-  db.sequelize.query("select Template, Language from TestPass where TestPassID = '"+ testPass + "';").then(testPassInfo => {
+  db.sequelize.query("SELECT Template, Language FROM TestPass WHERE TestPassID = '"+ testPass + "';").then(testPassInfo => {
     let info = testPassInfo[0];
     // console.log(info);
 
