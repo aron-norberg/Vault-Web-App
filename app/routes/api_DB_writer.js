@@ -126,8 +126,8 @@ exports.cleanGherkin_DB = function(req, res) {
   let id = req.query.Id;
 
   var db = mysql.createConnection({
-    host: "http://ec2-35-168-52-214.compute-1.amazonaws.com",
-    port: "3000",
+    host: "localhost",
+    port: "3306",
     dialect: 'mysql',
     user: "flukeqa",
     password: "H0lidayApples",
