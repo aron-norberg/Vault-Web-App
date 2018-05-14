@@ -1,0 +1,29 @@
+<%- include('header') %>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 loginAndSignupTxtAlign">
+      <br /><br />
+      <h1>Email reset password link</h1>
+      
+    </div><!-- end .col-sm-12 -->
+  </div><!-- end .row -->
+  <br />
+  <div class="row">
+    <div class="col-lg-6 offset-lg-3 col-md-6 offset-md-3 form-group">
+        <div class="loginAndSignupForm">
+          <form id="emailer" name="emailer" method="post" action="/emailer" >
+            <h4>Enter your email below and a reset password link will be sent to the email you provided.</h4>
+            
+            <label for="email">Email:</label>
+            <input class="text" name="email" type="text" size="25" /><br />
+
+            <button type="submit" class="btn btn-primary login" value="Send">Send</button>
+          </form>
+        </div><!-- end loginDiv -->
+    </div><!-- end .col-md-6 offset-md-3 -->
+  </div><!-- end .row -->
+</div><!-- end .container-fluid -->
+
+
+<%- include('footer') %>
