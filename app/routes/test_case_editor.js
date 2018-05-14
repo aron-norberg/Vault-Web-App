@@ -88,15 +88,19 @@ exports.postGherkin = function(req, res) {  // the user clicked on "Save Edits"
             gherkinData = gherkinData[0];
             whereUsed = whereUsed[0];
             let CompleteGherkin = (req.body[0].theScenario + req.body[0].theGherkin);
+            let wipedGherkin = CompleteGherkin.replace(/ /g, "");
+            wipedGherkin = wipedGherkin.replace (/\n/g,"");
 
-            //****************TO BE WORKED ON - HAVE TO WRITE TO DATABASE AFTER CHECKING HASHTAG VALUE****************
-            //     --------------------------------------------TEST TO SEE IF THE GHERKIN IS IN THE DATABASE ALREADY - INCOMPLETE
-            // for (var x = 0; x<gherkinData.length; x++){
-            //     console.log(gherkinData[x].Gherkin); // this is the Gherkin in the database which includes the @javascript and Scenario parts
-            //     if (gherkinData[x].Gherkin == CompleteGherkin){
-            //         console.log("--------------------------------------found it ---------------------------");
-            //     }
-            // }
+            for (var x = 0; x<gherkinData.length; x++){
+                let myvar = gherkinData[x].Gherkin.replace(/ /g,"")
+                myvar = myvar.replace (/\n/g,"");
+                if ( myvar == wipedGherkin ){
+                    console.log("--------------------------------------found it ---------------------------"+myvar);
+                    throw new Error("Please do not enter duplicative Code.  It looks like the code you entered is the same as Test Case # "+gherkinData[x].TestCaseId);
+                    res.send("Please do not enter duplicative Code.  It looks like the code you entered is the same as Test Case # "+gherkinData[x].TestCaseId).end();
+                    return err;
+                }
+            }
             
             console.log("got this far");
             //if there already IS an ID, we are updating the TestCase table
@@ -114,7 +118,7 @@ exports.postGherkin = function(req, res) {  // the user clicked on "Save Edits"
                 // "isItChecked": isItChecked
             
             // remove tests cases that would run on a template (remove them from the Template table)
-            if(req.body[0].removals != null){
+            if(req.body[0].removals != null && error ==0){
                 for (var y = 0; y<req.body[0].removals.length; y++ ){//looping through the REMOVAL requests
                     for (var x = 0; x<whereUsed.length; x++){//looping through the database TEMPLATE TABLE
                         if (whereUsed[x].Id == req.body[0].removals[y]){
@@ -124,7 +128,7 @@ exports.postGherkin = function(req, res) {  // the user clicked on "Save Edits"
                             var whereIsIt = caseArray.indexOf(req.body[0].theID);
                             caseArray.splice(whereIsIt,1);
                             caseArray = caseArray.join(",");
-                            console.log(caseArray);
+                            // console.log(caseArray);
                             db.sequelize.query("UPDATE Template SET TestCaseId = '" + caseArray + "' WHERE Id = '" + req.body[0].removals[y] + "'; "  ).catch(function(err) {
                                 console.log('error: ' + err);
                                 return err;
@@ -134,12 +138,12 @@ exports.postGherkin = function(req, res) {  // the user clicked on "Save Edits"
                 }
             }
             // add test cases that would run on a template (add to the Template table)
-            if(req.body[0].newPages != null){
+            if(req.body[0].newPages != null && error == 0){
                 for (var y = 0; y<req.body[0].newPages.length; y++ ){//looping through the ADDITION requests
                     for (var x = 0; x<whereUsed.length; x++){//looping through the database TEMPLATE TABLE
                         if (whereUsed[x].Id == req.body[0].newPages[y]){
                             caseArray = whereUsed[x].TestCaseId.concat("," + req.body[0].theID);
-                            console.log(caseArray);
+                            // console.log(caseArray);
                             db.sequelize.query("UPDATE Template SET TestCaseId = '" + caseArray + "' WHERE Id = '" + req.body[0].newPages[y] + "'; "  ).catch(function(err) {
                                 console.log('error: ' + err);
                                 return err;
@@ -160,5 +164,6 @@ exports.postGherkin = function(req, res) {  // the user clicked on "Save Edits"
         return err;
     })
 
-    res.send("We did it!  We used POST and got a reponse!");
+        res.send("The database has been updated!");
+
 }
