@@ -400,7 +400,7 @@ exports.getExportFromResults = function(req, res, next) {
       req.results = results;
       req.language = language;
       req.testresult = testresult;
-      //return next();
+      return next();
 
     }).catch(function(err) {
       console.log('error: ' + err);
