@@ -230,7 +230,7 @@ function exportGherkin() {
 
     // This function sends the data from the Test Case Editor page, through the express.js page to the postGherkin() function on test_case_editor.js where the database is accessed and updated
     $.ajax({
-      url: 'http://localhost:3000/post-gherkin',
+      url: '/post-gherkin',
       type: 'POST',
       data: finalObject,
       contentType: "application/json",
@@ -239,8 +239,8 @@ function exportGherkin() {
       },
       success: function(data) {
         console.log(data);
-        if(alert(data)){}
-        else window.location.reload();
+        alert(data);
+        window.location.reload();
       }
     })
   
