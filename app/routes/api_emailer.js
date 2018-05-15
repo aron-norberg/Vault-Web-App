@@ -46,7 +46,7 @@ exports.pwd_emailer = function(req, res) {
   var mailOptions = {
     from: '"Vault password reset" <vault.qa.automation@gmail.com>',
     to: email,
-    subject: 'Sending Email using Node.js',
+    subject: 'Password reset link from Vault',
     //text: 'Please click on the link below to get access to Vault\'s reset password page.',
     html: '<p>Please click <a href="http://localhost:3000/reset_password">reset password</a> access to Vault\'s reset password page.</p>'
 
