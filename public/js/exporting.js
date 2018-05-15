@@ -130,7 +130,7 @@ function createTc(){   //unhide the 'hiddenRow' section and put into it the basi
   
     // This function sends the data from the Test Case Editor page, through the express.js page to the newGherkin() function on test_case_editor.js where the database is accessed and updated
     $.ajax({
-      url: 'http://localhost:3000/new-gherkin',
+      url: '/new-gherkin',
       type: 'POST',
       data: finalObject,
       contentType: "application/json",
@@ -157,7 +157,7 @@ function cleanGherkin() {
   var id = 1138;
 
   $.ajax({
-    url: 'http://localhost:3000/clean-gherkin',
+    url: '/clean-gherkin',
     type: 'POST',
     data: id,
     success: function(data) {

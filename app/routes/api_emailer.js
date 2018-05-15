@@ -46,9 +46,9 @@ exports.pwd_emailer = function(req, res) {
   var mailOptions = {
     from: '"Vault password reset" <vault.qa.automation@gmail.com>',
     to: email,
-    subject: 'Sending Email using Node.js',
+    subject: 'Password reset link from Vault',
     //text: 'Please click on the link below to get access to Vault\'s reset password page.',
-    html: '<p>Please click <a href="http://localhost:3000/reset_password">reset password</a> access to Vault\'s reset password page.</p>'
+    html: '<p>Please click <a href="http://ec2-35-168-52-214.compute-1.amazonaws.com/reset_password">reset password</a> access to Vault\'s reset password page.</p>'
 
   };
 
@@ -63,7 +63,7 @@ exports.pwd_emailer = function(req, res) {
     }
     else {
       console.log('Email sent: ' + info.response);
-      res.redirect('/reset_password');
+      res.redirect('/login');
     }
     
   });
