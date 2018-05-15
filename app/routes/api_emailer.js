@@ -51,7 +51,7 @@ exports.pwd_emailer = function(req, res) {
     html: '<p>Please click <a href="http://ec2-35-168-52-214.compute-1.amazonaws.com/reset_password">reset password</a> access to Vault\'s reset password page.</p>'
 
   };
-
+  
 
   // send mail with defined transport object
   transporter.sendMail(mailOptions, function(error, info){
