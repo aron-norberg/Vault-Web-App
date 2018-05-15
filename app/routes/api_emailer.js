@@ -1,75 +1,58 @@
 // Invoke 'strict' JavaScript mode
 'use strict';
 
-const bodyParser = require("body-parser");
+//const bodyParser = require("body-parser");
 const nodemailer = require('nodemailer');
+const xoauth2 = require('xoauth2');
 
 exports.pwd_emailer = function(req, res) {
 
-  // let email = req.query.email;
-  let email = req.body.email;
-
+  // let email = req.query.email; //GET method
+  let email = req.body.email; //POST method
   //console.log(email);
 
-  //var transporter = nodemailer.createTransport('smtps://user%40gmail.com:pass@smtp.gmail.com');
-
-
+  //var transporter = nodemailer.createTransport('smtps://vault.qa.automation@gmail.com:vault@Fluke2018@smtp.gmail.com');
+  
   // create reusable transporter object using the default SMTP transport
   var transporter = nodemailer.createTransport( {
     host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, // use SSL
     auth: {
       user: 'vault.qa.automation@gmail.com',
       pass: 'vault@Fluke2018'
     },
     tls: { 
-      rejectUnauthorized: false 
-    },
-    proxy: 'socks5://localhost:1080/'
+      rejectUnauthorized: false
+    }
+    //proxy: 'socks5://localhost:1080/'
 
   });
 
 
-  // create reusable transporter object using the default SMTP transport
   /*var transporter = nodemailer.createTransport( {
-    host: 'smtp.gmail.com',
-    port:465,
-    path: '/',
-    method: 'POST',
-    secure: true,
-    headers: {
-      'Content-Type': 'text/html',
-      'Content-Length': Buffer.byteLength("")
-    }, 
+    service: 'smtp.gmail.com',
     auth: {
+      type: 'OAuth2',
       user: 'vault.qa.automation@gmail.com',
-      pass: 'vault@Fluke2018'
-    },
-    tls: { 
-      rejectUnauthorized: false 
+      clientId: '996457250318-bksvs91m9vkm16j1n4ntcp0vgr4at75g.apps.googleusercontent.com',
+      clientSecret: 'U-SnGN035lKJlVRZbnLHw9Q0',
+      refreshToken: '1/ssANI4mCzScXSZ-2VWo6P208GFkrpO5mRcqMMD77--Q'
     }
-
   });*/
-  
+
 
   // setup e-mail data with unicode symbols
   var mailOptions = {
     from: '"Vault password reset" <vault.qa.automation@gmail.com>',
     to: email,
     subject: 'Sending Email using Node.js',
-    text: 'That was easy!'
+    //text: 'Please click on the link below to get access to Vault\'s reset password page.',
+    html: '<p>Please click <a href="http://localhost:3000/reset_password">reset password</a> access to Vault\'s reset password page.</p>'
+
   };
 
 
-  // verify connection configuration
-  /*transporter.verify(function(error, success) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log('Server is ready to take our messages');
-    }
-  });*/
-
-  
   // send mail with defined transport object
   transporter.sendMail(mailOptions, function(error, info){
     console.log(mailOptions);
@@ -77,8 +60,10 @@ exports.pwd_emailer = function(req, res) {
 
     if (error) {
       console.log(error);
-    } else {
+    }
+    else {
       console.log('Email sent: ' + info.response);
+      res.redirect('/reset_password');
     }
     
   });
