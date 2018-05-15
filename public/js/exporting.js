@@ -187,14 +187,10 @@ function filterFunction() {
 
 function exportGherkin() {
 
-    // console.log("exporting.");
     var arrayOfObjects = new Array();
     var theCaseID = document.getElementById("theID").innerHTML;
-    // console.log(theCaseID + "  ----   This is the ID -----");
     var newScenario = document.getElementById("theScenario").value;
-    // console.log(newScenario + "  ------   This is the Scenario ---");
     var newGherkin = document.getElementById("theGherkin").value;
-    // console.log(newGherkin + "------  the Gherkin -----");
     var isItChecked = 2;
     var newPagesArray=[];
     var removePagesArray = [];
@@ -219,7 +215,7 @@ function exportGherkin() {
         removePagesArray[q]=removePagesArray[q].replace(/^[^f]*/, '');
         removePagesArray[q]=removePagesArray[q].replace(/[^\d+]+$/, '');
     }
-    // console.log("is it checked = " + isItChecked);
+
     var objBunnyEars = { //  for James and Aron  :P
         "theID": theCaseID, 
         "theScenario": newScenario, 
@@ -230,13 +226,8 @@ function exportGherkin() {
     };
 
     arrayOfObjects.push(objBunnyEars);
-    // console.log(arrayOfObjects);
-    // console.log(objBunnyEars.newPages[1] + "-----------this is a page that was selected to be added to ----------");
-
     let finalObject = JSON.stringify(arrayOfObjects);
-  
-    // console.log(finalObject + "-----------this is the final object ------------");
-  
+
     // This function sends the data from the Test Case Editor page, through the express.js page to the postGherkin() function on test_case_editor.js where the database is accessed and updated
     $.ajax({
       url: 'http://localhost:3000/post-gherkin',
@@ -248,9 +239,9 @@ function exportGherkin() {
       },
       success: function(data) {
         console.log(data);
-        if(alert("The Test database has been updated.")){}
+        if(alert(data)){}
         else window.location.reload();
       }
     })
   
-  };
+};

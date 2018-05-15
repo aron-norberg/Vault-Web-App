@@ -19,6 +19,13 @@ exports.logout = function(req, res) {
 
 }
 
+exports.emailer = function(req, res) {
+  res.render('emailer', {
+    title: 'Send email'
+  });
+
+} // end exports.emailer = function(req, res)
+
 exports.reset_password = function(req, res) {
   res.render('reset_password', {
     title: 'reset password'
