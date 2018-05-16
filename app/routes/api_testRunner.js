@@ -122,7 +122,7 @@ function checkProcessByName(processName, nameToMatch) {
     });
 
     ps.stderr.on('data', (data) => {
-
+      console.log("pattern. not working on ubuntu");
       console.log(`ps stderr: ${data}`);
     });
 
@@ -194,6 +194,7 @@ function checkProcessByPID(pid, item) {
     });
 
     ps.stderr.on('data', (data) => {
+
       console.log(`ps stderr: ${data}`);
     });
 
