@@ -413,7 +413,7 @@ function checkTestProcessWithSystemPS(testPassTableResults) {
 
       let pid = item.Note.replace(/PID: /, '');
 
-      console.log("the pid is ${pid}");
+      console.log(`the pid is ${pid}`);
 
       checkProcessByPID(pid, item).then(successItem => {
 
