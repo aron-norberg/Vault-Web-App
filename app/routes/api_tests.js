@@ -67,7 +67,7 @@ exports.getTestStatus = function(req, res) {
 
     status: function(cb) {
 
-      db.sequelize.query(`SELECT * from Status ORDER BY TestPassId DESC;`).then(status => {
+      db.sequelize.query(`SELECT * FROM Status WHERE EndTime > "1971" ORDER BY TestPassId DESC;`).then(status => {
 
         status = status[0];
 
