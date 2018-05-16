@@ -27,6 +27,9 @@ exports.getExport = function(req, res) {
 
   // Need to verify that where is working correctly...
 
+  // Need to re evaluate approach, Note will be used at a later date...for unreliable results.
+  // 
+
   db.TestPass.findAll({
     where: {
       Note: {
@@ -38,7 +41,7 @@ exports.getExport = function(req, res) {
     db.Status.findAll({
       where: {
         EndTime: {
-          [Op.gt]: 1972
+          [Op.gt]: "1972"
         }
       }
     }).then(statuses => {
