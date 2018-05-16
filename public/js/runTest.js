@@ -71,6 +71,7 @@ let urlParagraph = document.getElementById("selectedURLs");
 let templateButton = document.getElementById("tb");
 let testCaseButton = document.getElementById("tcb");
 let urlButton = document.getElementById("url");
+let descriptionBox = document.getElementById("description");
 
 
 let node = document.createElement("LI");
@@ -188,15 +189,19 @@ function showURLChoice() {
 
 function runit() {
 
+  let description = descriptionBox.value;
+  // console.log("description = "+description);
   let langs = langParagraph.innerHTML.substring(10);
   langs = langs.replace(/&nbsp;/g, "");
   langs = langs.replace(/ /g, "");
   langs = langs.slice(0, -1);
   langs = langs.split(",");
+  console.log(langs[0].length +" langs = " + langs);
 
   let temp = templateParagraph.innerHTML.substring(9);
   temp = temp.replace(/&nbsp;/g, "");
   temp = temp.replace(/ /g, "");
+  console.log(temp.length+" temp = " + temp);
 
   let tcs = tcParagraph.innerHTML.substring(11);
   tcs = tcs.replace(/ /g, "");
@@ -205,16 +210,31 @@ function runit() {
     tcIDs[x] = tcIDs[x].split("\|")[0];
   }
   tcIDs.shift();
+  console.log(tcIDs.length +" tcIDs = " + tcIDs);
 
   let urlChoices = urlParagraph.innerHTML.substring(7)
   urlChoices = urlChoices.replace(/&nbsp;/g, "");
   urlChoices = urlChoices.replace(" URLs", "");
+  console.log(urlChoices.length+" urlChoices = " + urlChoices);
+  if(langs.length == 0 ||tcIDs.length ==0 || urlChoices.length ==0){
+    if (langs[0].length ==0){
+      alert("Please select at least one language to test.");
+    }
+    if (tcIDs.length ==0){
+      alert("Please select at least one test case to run.");
+    }
+    if (urlChoices.length ==0){
+      alert("Please select at least one URL to test.");
+    }
+    return;
+  }
 
   let modalObject = {
     "languages": langs,
     "features": temp,
     "TestCaseSelections": tcIDs,
-    "Urls": urlChoices
+    "Urls": urlChoices,
+    "description": description
   };
 
   let object = JSON.stringify(modalObject);
