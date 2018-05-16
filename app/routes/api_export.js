@@ -412,6 +412,7 @@ exports.getExportFromResults = function(req, res, next) {
       req.results = results;
       req.language = language;
       req.testresult = testresult;
+      req.testpassid = testPass;
       return next();
 
     }).catch(function(err) {
@@ -425,8 +426,9 @@ exports.getExportFromResults = function(req, res, next) {
 exports.export_to_excel = function(req, res) {
 
   let results = req.results;
+  let testPassId = req.testpassid;
 
-  let fileName = "export.xlsx";
+  let fileName = `export-test-pass-id-${testPassId}.xlsx`;
   let datetime = new Date();
   //console.log(datetime);
 
