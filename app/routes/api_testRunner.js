@@ -183,6 +183,8 @@ function checkProcessByPID(pid, item) {
     const { spawn } = require('child_process');
     const ps = spawn('ps', [`q ${pid}`]);
 
+    console.log("The command is " + ps);
+
     // get output 
     ps.stdout.on('data', (data) => {
 
