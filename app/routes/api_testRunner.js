@@ -184,6 +184,7 @@ function checkProcessByPID(pid, item) {
     const ps = spawn('ps', [`q ${pid}`]);
 
     console.log("The command is " + ps);
+    console.log(util.inspect(ps, false, null))
 
     // get output 
     ps.stdout.on('data', (data) => {
