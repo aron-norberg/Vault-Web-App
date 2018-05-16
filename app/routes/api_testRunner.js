@@ -194,7 +194,7 @@ function checkProcessByPID(pid, item) {
     });
 
     ps.stderr.on('data', (data) => {
-
+      console.log("check to see if a process is running fails @ ps");
       console.log(`ps stderr: ${data}`);
     });
 
