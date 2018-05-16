@@ -73,6 +73,7 @@ let testCaseButton = document.getElementById("tcb");
 let urlButton = document.getElementById("url");
 let descriptionBox = document.getElementById("description");
 
+let noticeBox = document.getElementById("notice");
 
 let node = document.createElement("LI");
 
@@ -224,9 +225,12 @@ function runit() {
       alert("Please select at least one test case to run.");
     }
     if (urlChoices.length ==0){
-      alert("Please select at least one URL to test.");
+      alert("Please make a URL selection.");
     }
     return;
+  }
+  else{
+    noticeBox.innerHTML=" one moment... ";
   }
 
   let modalObject = {
@@ -253,6 +257,7 @@ function runit() {
     success: function(data) {
       console.log(data);
       console.log("Successful post request.");
+      document.getElementById("notice").innerHTML="";
     }
   })
 
