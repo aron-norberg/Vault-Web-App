@@ -122,7 +122,6 @@ function checkProcessByName(processName, nameToMatch) {
     });
 
     ps.stderr.on('data', (data) => {
-      console.log("pattern. not working on ubuntu");
       console.log(`ps stderr: ${data}`);
     });
 
@@ -194,7 +193,6 @@ function checkProcessByPID(pid, item) {
     });
 
     ps.stderr.on('data', (data) => {
-      console.log("check to see if a process is running fails @ ps");
       console.log(`ps stderr: ${data}`);
     });
 
@@ -415,6 +413,8 @@ function checkTestProcessWithSystemPS(testPassTableResults) {
 
       let pid = item.Note.replace(/PID: /, '');
 
+      console.log("the pid is ${pid}");
+
       checkProcessByPID(pid, item).then(successItem => {
 
         let statusObject = new Object();
@@ -444,24 +444,14 @@ function checkTestProcessWithSystemPS(testPassTableResults) {
 
       if (err) {
 
-
         reject("error checking pids");
 
       } else {
 
-        //console.log("this is the end result of the async function::" + statusResults.length)
-
-        /*
-        for (let i = 0; i < statusResults.length; i++) {
-
-          console.log(util.inspect(statusResults[i], false, null))
-
-        }
-
-        */
-
         resolve(statusResults);
       }
+
+
     });
   })
 }
