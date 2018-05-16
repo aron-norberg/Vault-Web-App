@@ -122,7 +122,6 @@ function checkProcessByName(processName, nameToMatch) {
     });
 
     ps.stderr.on('data', (data) => {
-
       console.log(`ps stderr: ${data}`);
     });
 
@@ -182,13 +181,12 @@ function checkProcessByPID(pid, item) {
 
     //return new Promise(function(resolve, reject) {
     const { spawn } = require('child_process');
-    const ps = spawn('ps', [`p ${pid}`]);
+    const ps = spawn('ps', [`${pid}`]);
 
     // get output 
     ps.stdout.on('data', (data) => {
 
       let output = data.toString();
-
       processList.push(output);
 
     });
@@ -202,7 +200,6 @@ function checkProcessByPID(pid, item) {
       let matchFlag = 0;
 
       for (let i = 0; i < processList.length; i++) {
-
         if (processList[i].includes("perl")) {
           matchFlag += 1;
         }
@@ -307,7 +304,10 @@ function checkEnvironmentSettings() {
 
       console.log("selenium is not running...starting");
 
-      startProcess(process1);
+      if (process.platform == "darwin" || process.plaform == "linux") {
+
+        startProcess(process1);
+      }
 
     });
 
@@ -321,7 +321,10 @@ function checkEnvironmentSettings() {
 
       console.log("phantomjs is not running...starting");
 
-      startProcess(process2);
+      if (process.platform == "darwin" || process.plaform == "linux") {
+
+        startProcess(process1);
+      }
 
     });
 
@@ -443,24 +446,14 @@ function checkTestProcessWithSystemPS(testPassTableResults) {
 
       if (err) {
 
-
         reject("error checking pids");
 
       } else {
 
-        //console.log("this is the end result of the async function::" + statusResults.length)
-
-        /*
-        for (let i = 0; i < statusResults.length; i++) {
-
-          console.log(util.inspect(statusResults[i], false, null))
-
-        }
-
-        */
-
         resolve(statusResults);
       }
+
+
     });
   })
 }

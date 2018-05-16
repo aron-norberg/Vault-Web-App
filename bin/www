@@ -12,9 +12,10 @@ var http = require('http');
  */
 var port = normalizePort(process.env.PORT || '3000');
 
-
-
-console.log("app variable is " + process.env.PORT);
+if(process.env.PORT){
+  console.log("app variable is " + process.env.PORT);
+}
+console.log("the platform is " + process.platform);
 
 app.set('port', port);
 /**

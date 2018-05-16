@@ -35,7 +35,7 @@ socket.on('test-run', function(msg) {
 
     let id = msg.replace("complete-id:", "");
 
-    $oldRow = $(`#${id}`);
+    let $oldRow = $(`#${id}`);
 
     $($oldRow).empty().remove(); // removes the row and the contents within row
 
@@ -221,6 +221,7 @@ function runit() {
 
   console.log(object);
 
+  
   $.ajax({
     url: '/run-test',
     type: 'POST',
