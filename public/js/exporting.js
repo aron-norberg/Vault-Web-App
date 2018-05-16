@@ -146,7 +146,6 @@ function createTc(){   //unhide the 'hiddenRow' section and put into it the basi
     })
 
     //setTimeout(function() { cleanGherkin(); }, 5000);
-
 } //end createTc()
 
 

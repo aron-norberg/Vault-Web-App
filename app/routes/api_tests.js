@@ -220,6 +220,7 @@ exports.startProcess = function(req, res) {
 
   script.on('close', (code) => {
     if (code !== 0) {
+
       console.log(`start Script process exited with code ${code}`);
     }
     script.stdin.end();
