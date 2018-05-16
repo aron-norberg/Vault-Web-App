@@ -140,7 +140,7 @@ exports.getExportFromResults = function(req, res, next) {
 
   console.log("language = "+language);    // en-us
   console.log("feature = "+feature);      // F2
-  console.log("testresult " +testresult); // 
+  console.log("testresult= " +testresult); // 
   console.log("query = " + query);        // 
   console.log("testPass = "+testPass);    // 1
 
@@ -267,7 +267,6 @@ exports.getExportFromResults = function(req, res, next) {
   } else if (feature !== "all" && language === "all" && testresult === "" && query !== "") {
 
     db.sequelize.query(`SELECT * FROM Result WHERE TestPassId = '${testPass}' AND Template = '${feature}' AND Output LIKE '%${query}%';`).then(results => {
-
       results = results[0];
 
       // Needed To convert the blob object into a string 
@@ -289,9 +288,7 @@ exports.getExportFromResults = function(req, res, next) {
 
     //results/feature/:template/query/:custom/testresult/:testresult
   } else if (feature !== "all" && language === "all" && testresult !== "" && query !== "") {
-
     db.sequelize.query(`SELECT * FROM Result WHERE TestPassId = '${testPass}' AND Template = '${feature}' AND Result = '${testresult}'AND Output LIKE '%${query}%';`).then(results => {
-
       results = results[0];
 
       // Needed To convert the blob object into a string 
@@ -314,14 +311,12 @@ exports.getExportFromResults = function(req, res, next) {
   } else if (feature !== "all" && language !== "all" && testresult === "" && query === "") {  // if only one selection was made for language and one for feature
    
     db.sequelize.query(`SELECT * FROM Result WHERE TestPassId = '${testPass}' AND Template = '${feature}' AND Language = '${language}';`).then(results => {
-
       results = results[0];
 
       // Needed To convert the blob object into a string 
       // Otherwise it returns a buffer array object.
       for (var i = 0; i < results.length; i++) {
         results[i].Output = String(results[i].Output);
-
       }
 
       req.results = results;
@@ -337,7 +332,6 @@ exports.getExportFromResults = function(req, res, next) {
   }else if (feature !== "all" && language !== "all" && testresult !== "" && query === "") {
 
     db.sequelize.query(`SELECT * FROM Result WHERE TestPassId = '${testPass}' AND Template = '${feature}' AND Result = '${testresult}' AND Language = '${language}';`).then(results => {
-
       results = results[0];
 
       // Needed To convert the blob object into a string 
@@ -384,7 +378,10 @@ exports.getExportFromResults = function(req, res, next) {
 
   }else if (feature !== "all" && language !== "all" && query !== "" && testresult !== "" ) {
 
-    console.log("I am executing.\n\n\n");
+    console.log(`FEATURE: ${feature}\n`);
+    console.log(`LANGUAGE: ${language}\n`);
+    console.log(`QUERY: ${query}\n`);
+    console.log(`TEST RESULT: ${testresult}\n`);
 
     db.sequelize.query(`SELECT * FROM Result WHERE TestPassId = '${testPass}' AND Template = '${feature}' AND Language = '${language}' AND Output LIKE '%${query}%' AND Result = '${testresult}';`).then(results => {
 
@@ -407,7 +404,6 @@ exports.getExportFromResults = function(req, res, next) {
       return err;
     })
   }
-  console.log("all is well here");
 };
 
 
@@ -425,7 +421,7 @@ exports.export_to_excel = function(req, res) {
   let results = req.results;
   //let fileName = `Report-${results[0].Template}-${results[0].Language}.xlsx`;
 
-  let fileName = 'export.xlsx';
+  let fileName = 'export-new.xlsx';
   let filepath = rootPath + '/' + 'SelectedTestResults.xlsx';
   let status = "fail";
 
@@ -493,7 +489,6 @@ exports.export_to_excel = function(req, res) {
         URLs: results[j].URLs,
         Output: results[j].Output
       }).commit();
-
 
       setTimeout(() => { processItems(j + 1); });
 

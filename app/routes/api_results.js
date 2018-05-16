@@ -1108,7 +1108,6 @@ exports.getResultByLangAndTestResult = function(req, res) {
 
 exports.getResultByIdLanguageCustomTestResult = function(req, res) {
 
-
   let template = req.params.template;
   let language = req.params.locale;
   let testPassId = req.query.testpassid;
@@ -1117,6 +1116,11 @@ exports.getResultByIdLanguageCustomTestResult = function(req, res) {
   let testresult = req.params.testresult;
   let pfsUrl = `/results/feature/${template}/locale/${language}/query/${custom}/testresult/`;
   let reqUrl = req.url;
+
+
+  // Clean custom string to remove white space
+
+  custom.replace(/ /g,"%20");
 
   let localUrlData = processLocalPageUrls(reqUrl);
   let paginationData = paginationProcess1of2(page, rowsToReturn);
@@ -1137,8 +1141,10 @@ exports.getResultByIdLanguageCustomTestResult = function(req, res) {
     }
 
     async.parallel({
-
       results: function(cb) {
+
+        console.log("The query is " + `SELECT * FROM Result WHERE Language LIKE '${language}' AND Template LIKE '${template}' AND Output like '%${custom}%' AND Result = '${testresult}' AND TestPassId = '${testPassId}' ORDER BY TestCaseId, URLs limit ${paginationData.start}, ${rowsToReturn};`)
+
         db.sequelize.query(`SELECT * FROM Result WHERE Language LIKE '${language}' AND Template LIKE '${template}' AND Output like '%${custom}%' AND Result = '${testresult}' AND TestPassId = '${testPassId}' ORDER BY TestCaseId, URLs limit ${paginationData.start}, ${rowsToReturn};`).then(results => {
 
           results = results[0];
@@ -1147,6 +1153,8 @@ exports.getResultByIdLanguageCustomTestResult = function(req, res) {
           for (let i = results.length - 1; i >= 0; i--) {
             results[i].Output = String(results[i].Output);
             results[i].RunDate = dateFormat(results[i].RunDate, "mm-dd-yy h:MM:ss TT"); // + " PST";
+
+            console.log(" should loop through")
           }
 
           cb(null, results);
