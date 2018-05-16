@@ -211,12 +211,13 @@ exports.getExportFromResults = function(req, res, next) {
       req.results = results;
       req.language = language;
       req.testresult = testresult;
+      req.testPassId = testPass;
       return next();
     }).catch(function(err) {
       console.log('error: ' + err);
       return err;
     })
-  } else if (feature === "all" && language === "all") {
+  } else if (feature === "all" && language === "all" && testresult === "" && query === "") {
     db.sequelize.query(`SELECT * FROM Result WHERE TestPassId = '${testPass}';`).then(results => {
       results = results[0];
       // Needed To convert the blob object into a string 
@@ -228,6 +229,7 @@ exports.getExportFromResults = function(req, res, next) {
       req.results = results;
       req.language = language;
       req.testresult = testresult;
+      req.testPassId = testPass;
       return next();
     }).catch(function(err) {
       console.log('error: ' + err);
@@ -247,7 +249,7 @@ exports.getExportFromResults = function(req, res, next) {
       req.results = results;
       req.language = language;
       req.testresult = testresult;
-
+      req.testPassId = testPass;
       return next();
 
     }).catch(function(err) {
@@ -271,6 +273,8 @@ exports.getExportFromResults = function(req, res, next) {
       req.results = results;
       req.language = language;
       req.testresult = testresult;
+      req.testPassId = testPass;
+
       return next();
 
     }).catch(function(err) {
@@ -294,6 +298,8 @@ exports.getExportFromResults = function(req, res, next) {
       req.results = results;
       req.language = language;
       req.testresult = testresult;
+      req.testPassId = testPass;
+
       return next();
 
     }).catch(function(err) {
@@ -316,6 +322,8 @@ exports.getExportFromResults = function(req, res, next) {
       req.results = results;
       req.language = language;
       req.testresult = testresult;
+      req.testPassId = testPass;
+
       return next();
 
     }).catch(function(err) {
@@ -337,6 +345,8 @@ exports.getExportFromResults = function(req, res, next) {
       req.results = results;
       req.language = language;
       req.testresult = testresult;
+      req.testPassId = testPass;
+
       return next();
 
     }).catch(function(err) {
@@ -359,6 +369,8 @@ exports.getExportFromResults = function(req, res, next) {
       req.results = results;
       req.language = language;
       req.testresult = testresult;
+      req.testPassId = testPass;
+
       return next();
 
     }).catch(function(err) {
@@ -384,6 +396,8 @@ exports.getExportFromResults = function(req, res, next) {
       req.results = results;
       req.language = language;
       req.testresult = testresult;
+      req.testPassId = testPass;
+
       return next();
 
     }).catch(function(err) {
@@ -412,7 +426,8 @@ exports.getExportFromResults = function(req, res, next) {
       req.results = results;
       req.language = language;
       req.testresult = testresult;
-      req.testpassid = testPass;
+      req.testPassId = testPass;
+
       return next();
 
     }).catch(function(err) {
@@ -426,7 +441,7 @@ exports.getExportFromResults = function(req, res, next) {
 exports.export_to_excel = function(req, res) {
 
   let results = req.results;
-  let testPassId = req.testpassid;
+  let testPassId = req.testPassId;
 
   let fileName = `export-test-pass-id-${testPassId}.xlsx`;
   let datetime = new Date();
@@ -447,10 +462,10 @@ exports.export_to_excel = function(req, res) {
 
   let worksheet = workbook.addWorksheet('Raw_Data', {
     views: [
-    {state: 'frozen', ySplit: 1}
+      { state: 'frozen', ySplit: 1 }
     ]
-    
-    });
+
+  });
 
   worksheet.columns = [
     { header: 'Test Case Id:', key: 'TestCaseId', width: 12 },
