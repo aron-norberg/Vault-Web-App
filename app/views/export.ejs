@@ -22,7 +22,6 @@
       template = template + "," + t;
     }
 
-
     language = document.getElementById("langChildren").children[0].id; // this takes the first language child and puts it in 'language'
     language = language.slice(0, -1);
 
@@ -40,13 +39,10 @@
     //the href will contain a list of each languages as 'en-us,de-de' and features will be 'f1,f3,f5' 
     // in the getExportFromResults() function on 'api_export.js' these commas are watched for, so that the string can be split to an array and a query created for all the selections
 
-
     //thehref="/export?feature="+ template + "&language=" + language + "&testresult=" + testresult + "&query=" + query + "&testpassid=" + testdate;
     thehref = "/export?feature=" + template + "&language=" + language + "&testresult=" + testresult + "&query=" + query + "&testpassid=" + testdate;
     document.getElementById("myhref").href = thehref;
   }
-
-
 
   // This function populates the languages and templates for display in the drop-down menus.
   function displayInfo(data, id){
@@ -75,7 +71,6 @@
         templateParent.removeChild(templateParent.lastChild);
       }
 
-
     let exportObject = {
     "testPass": id
     }; 
@@ -99,7 +94,6 @@
           console.log(theTemplates+"<---");
           console.log(theLanguages +"<---");
           
-
           for (var x = 0; x<theLanguages.length; x++){
             var node = document.createElement("LI"); 
             node.setAttribute("class", "width-set dropdown-item");         
@@ -122,7 +116,7 @@
 
           for (var x = 0; x<theTemplates.length; x++){
 
-            var node2 = document.createElement("LI"); 
+            var node2 = document.createElement("LI");
             node2.setAttribute("class", "width-set dropdown-item");
             
             var span2 = document.createElement("SPAN");

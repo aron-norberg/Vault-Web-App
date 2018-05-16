@@ -302,11 +302,15 @@ function checkEnvironmentSettings() {
 
     }).catch(function(response) {
 
-      console.log("selenium is not running...starting");
-
       if (process.platform == "darwin" || process.plaform == "linux") {
 
+        console.log("selenium is not running...starting");
+
         startProcess(process1);
+      } else {
+
+        console.log("selenium is not running...you need to start it manually");
+
       }
 
     });
@@ -319,11 +323,15 @@ function checkEnvironmentSettings() {
 
     }).catch(function(response) {
 
-      console.log("phantomjs is not running...starting");
-
       if (process.platform == "darwin" || process.plaform == "linux") {
 
+        console.log("phantomjs is not running...starting");
+
         startProcess(process1);
+      } else {
+
+        console.log("phantomjs is not running...you need to start it manually");
+
       }
 
     });

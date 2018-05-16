@@ -4,10 +4,9 @@ const db = require('../../config/sequelize');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const Excel = require('exceljs');
-const XLSX = require('xlsx')
-const streamify = require('stream-array');
 const os = require('os');
 const dateFormat = require('dateformat');
+const async = require('async');
 
 // Read Excel File Data
 const fs = require('fs');
@@ -24,10 +23,25 @@ rootPath = rootPath + 'temp_directory';
 // on express.js we have - app.get('/export-tool', isLoggedIn, api_export.getExport);
 // This function provides the Test Date options for the user.  Results information is commented out
 exports.getExport = function(req, res) {
-
   //db.Result.findAll().then(results => {
-  db.TestPass.findAll().then(dateTimes => {
-    db.Status.findAll().then(statuses => {
+
+  // Need to verify that where is working correctly...
+
+  db.TestPass.findAll({
+    where: {
+      Note: {
+        [Op.ne]: null
+      }
+    }
+  }).then(dateTimes => {
+
+    db.Status.findAll({
+      where: {
+        EndTime: {
+          [Op.gt]: 1972
+        }
+      }
+    }).then(statuses => {
 
       // var features = [];
       // var languages = [];
@@ -407,47 +421,22 @@ exports.getExportFromResults = function(req, res, next) {
 
 exports.export_to_excel = function(req, res) {
 
-  /*
-  // read from a file
-  var workbook = new Excel.Workbook();
-  workbook.xlsx.readFile(filename)
-    .then(function() {
-      // use workbook
-    });
-  */
-
   let results = req.results;
-  //let fileName = `Report-${results[0].Template}-${results[0].Language}.xlsx`;
 
-  let fileName = 'export-new.xlsx';
-  let filepath = rootPath + '/' + 'SelectedTestResults.xlsx';
-  let status = "fail";
+  let fileName = "export.xlsx";
+  let datetime = new Date();
+  //console.log(datetime);
 
-  res.status(200);
-
-  res.writeHead(200, {
-    'Content-Disposition': 'attachment; filename="export.xlsx"',
-    'Transfer-Encoding': 'chunked',
-    'Content-Type': 'application/vnd.ms-excel',
-    'responseType': 'arraybuffer'
-  })
-
-  //res.setHeader('Content-type', 'application/vnd.openxmlformats');
-  //res.setHeader('Content-type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-  //res.setHeader('Content-type', 'application/vnd.ms-excel');
-  //res.setHeader('Content-disposition', `attachment; filename=${fileName}`);
-  //res.setHeader('responseType', 'arraybuffer');
+  res.setHeader('Content-type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  res.setHeader('Content-disposition', `attachment; filename=${fileName}`);
 
   // Set options for Streaming large files
   let streamOptions = {
-    filename: filepath,
+    filename: fileName,
     stream: res, // write to server response
     useStyles: false,
     useSharedStrings: false,
-    bookType: 'xlsx',
-    type: 'buffer'
   };
-
 
   let workbook = new Excel.stream.xlsx.WorkbookWriter(streamOptions);
 
@@ -469,36 +458,33 @@ exports.export_to_excel = function(req, res) {
     { header: 'Scenario:', key: 'Output', width: 100 }
   ];
 
-  console.log("the size of results is " + results.length);
-
-  processItems(0);
-
-  function processItems(j) {
-
-    if (j < results.length) {
+  async function processExcelExport(results) {
+    // map array to promises 
+    const promises = results.map((item) => {
 
       worksheet.addRow({
-        TestCaseId: results[j].TestCaseId,
-        TestRunId: results[j].TestPassId,
-        RunDate: results[j].RunDate,
-        Template: results[j].Template,
-        Language: results[j].Language,
-        Result: results[j].Result,
-        URLs: results[j].URLs,
-        Output: results[j].Output
-      }).commit();
+        TestCaseId: item.TestCaseId,
+        TestRunId: item.TestPassId,
+        RunDate: item.RunDate,
+        Template: item.Template,
+        Language: item.Language,
+        Result: item.Result,
+        URLs: item.URLs,
+        Output: item.Output
+      }).commit()
 
-      setTimeout(() => { processItems(j + 1); });
+    });
 
-    } else {
-      // close the stream
-      workbook.commit();
-      console.log("The Export File has been written.");
-      res.end()
+    await Promise.all(promises);
+    console.log("export operation complete.");
+    workbook.commit();
 
-    }
-  };
-};
+  }
+
+  processExcelExport(results);
+
+}
+
 
 
 // This function posts back to the Export Results page (export.ejs) sending back the Languages and Templates related to the selected Test Pass
