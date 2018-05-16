@@ -181,18 +181,13 @@ function checkProcessByPID(pid, item) {
 
     //return new Promise(function(resolve, reject) {
     const { spawn } = require('child_process');
-    const ps = spawn('ps', [`p ${pid}`]);
+    const ps = spawn('ps', [`${pid}`]);
 
     // get output 
     ps.stdout.on('data', (data) => {
 
       let output = data.toString();
-      console.log(output + "\n");
       processList.push(output);
-
-      if(output){
-        ps.kill();
-      }
 
     });
 
