@@ -58,7 +58,7 @@ exports.newGherkin = function (req, res) {
             if(req.body[0].theID == ""){  // if there wasn't an ID, create the new test case
                 db.sequelize.query("INSERT INTO TestCase (HashValue,TestCaseDescription,Live,Gherkin,IsFunctionalTest) VALUES ('" + gherkinData.length +"-new', '" + req.body[0].theScenario + "' , 1 , '" + CompleteGherkin + "', '" + req.body[0].isItChecked + "');" ).then(newTestCase =>{
                     console.log("this is the new test case id " + newTestCase[0]);
-                    console.log("INSERT INTO TestCase (HashValue,TestCaseDescription,Live,Gherkin,IsFunctionalTest) VALUES ('" + gherkinData.length +"-new', '" + req.body[0].theScenario + "' , 1 , '" + CompleteGherkin + "', '" + req.body[0].isItChecked + "');" );
+                    // console.log("INSERT INTO TestCase (HashValue,TestCaseDescription,Live,Gherkin,IsFunctionalTest) VALUES ('" + gherkinData.length +"-new', '" + req.body[0].theScenario + "' , 1 , '" + CompleteGherkin + "', '" + req.body[0].isItChecked + "');" );
                     var newId = newTestCase[0];   
                     newId = JSON.stringify(newId);     
                     res.send(newId);
@@ -194,11 +194,11 @@ exports.postGherkin = function(req, res) {  // the user clicked on "Save Edits"
 
         // evaluate response  
         console.log("return from update test case and template function.");     
-        console.log(response);
+        console.log("the response is "+response);
         res.send(response);
 
     }).catch(function(err) {
-        console.log('error: ' + err);
+        console.log('error fou d: ' + err);
         res.send(err);
     })
 

@@ -238,8 +238,8 @@ function exportGherkin() {
       },
       success: function(data) {
         console.log(data);
-        if(alert(data)){}
-        else window.location.reload();
+        alert(data);
+        window.location.reload();
       }
     })
   
