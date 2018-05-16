@@ -226,9 +226,6 @@ module.exports = function() {
   app.get('/export', isLoggedIn, api_export.getExportFromResults, api_export.export_to_excel);
   app.post('/getTemplatesAndLangFromTestPass', isLoggedIn, api_export.getLangsAndTemps);
 
-  // old .. deprececated
-  //app.post('/export', isLoggedIn, api_results.postResults, api_results.export_to_excel);
-
   // Test Information Routes
   app.get('/files', isLoggedIn, api_file_data.getAvailableTests);
 

@@ -309,61 +309,6 @@ exports.postResults = function(req, res, next) {
   }
 };
 
-
-// Inititally Supportes only a feature 
-// and a language Combination.
-exports.export_to_excel = function(req, res, next) {
-
-  let results = req.results;
-  const filepath = rootPath + '/' + `Report-${results[0].Template}-${results[0].Language}.xlsx`;
-
-  let workbook = new Excel.Workbook();
-
-  workbook.created = new Date();
-  workbook.properties.date1904 = true;
-
-  let status = "fail";
-
-  var worksheet = workbook.addWorksheet('Test report');
-
-  worksheet.columns = [
-    { header: 'Test Case Id:', key: 'TestCaseId', width: 20 },
-    { header: 'Test Pass Id:', key: 'TestPassId', width: 32 },
-    { header: 'Run Date/Time:', key: 'RunDate', width: 10 },
-    { header: 'Template:', key: 'Template', width: 10 },
-    { header: 'Language:', key: 'Language', width: 10 },
-    { header: 'Result:', key: 'Result', width: 10 },
-    { header: 'URL:', key: 'URLs', width: 50 },
-    { header: 'Output:', key: 'Output', width: 100 }
-  ];
-
-  processItems(0);
-
-  function processItems(j) {
-
-    if (j < results.length) {
-
-      worksheet.addRow({
-        id: results[j].TestCaseId,
-        TestRunId: results[j].TestPassId,
-        RunDate: results[j].RunDate,
-        Template: results[j].Template,
-        Language: results[j].Language,
-        Result: results[j].Result,
-        URLs: results[j].URLs,
-        Output: results[j].Output,
-      });
-      setTimeout(() => { processItems(j + 1); });
-
-    } else {
-      workbook.xlsx.writeFile(filepath).then(() => {
-        console.log("The Export File has been written.");
-      });
-    }
-  };
-};
-
-
 ///results/feature/:template/locale/:locale/query/:custom
 exports.getResultByIdLanguageCustom = function(req, res) {
 
@@ -678,9 +623,6 @@ exports.getResultByIdAndLanguage = function(req, res) {
         page: paginationData.page
 
       }
-
-
-
       renderPage(renderPageData, req, res);
 
     });
