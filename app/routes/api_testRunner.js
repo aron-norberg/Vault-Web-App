@@ -304,7 +304,10 @@ function checkEnvironmentSettings() {
 
       console.log("selenium is not running...starting");
 
-      startProcess(process1);
+      if (process.platform == "darwin" || process.plaform == "linux") {
+
+        startProcess(process1);
+      }
 
     });
 
@@ -318,7 +321,10 @@ function checkEnvironmentSettings() {
 
       console.log("phantomjs is not running...starting");
 
-      startProcess(process2);
+      if (process.platform == "darwin" || process.plaform == "linux") {
+
+        startProcess(process1);
+      }
 
     });
 
