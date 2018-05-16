@@ -187,12 +187,14 @@ function checkProcessByPID(pid, item) {
     ps.stdout.on('data', (data) => {
 
       let output = data.toString();
-
+      console.log("Output:");
+      console.log(output + "\n");
       processList.push(output);
 
     });
 
     ps.stderr.on('data', (data) => {
+      console.log("Error Data:");
       console.log(`ps stderr: ${data}`);
     });
 
@@ -201,7 +203,6 @@ function checkProcessByPID(pid, item) {
       let matchFlag = 0;
 
       for (let i = 0; i < processList.length; i++) {
-
         if (processList[i].includes("perl")) {
           matchFlag += 1;
         }
@@ -412,8 +413,6 @@ function checkTestProcessWithSystemPS(testPassTableResults) {
     async.each(testPassTableResults, function(item, callback, self) {
 
       let pid = item.Note.replace(/PID: /, '');
-
-      console.log(`the pid is ${pid}`);
 
       checkProcessByPID(pid, item).then(successItem => {
 
