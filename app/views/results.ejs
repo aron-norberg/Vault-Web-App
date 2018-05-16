@@ -48,9 +48,15 @@
         <ul class="pagination">
           <% if(page <= 1 ) { %>
             <li class="page-item disabled">
+              <a class="page-link" href="<%= currentUrl %>?page=<%= 1 %>&testpassid=<%= testPassId %>" tabindex="-2">First Page</a>
+            </li>
+            <li class="page-item disabled">
               <a class="page-link" href="#" tabindex="-1">Previous</a>
             </li>
           <% } else { %>
+            <li class="page-item">
+              <a class="page-link" href="<%= currentUrl %>?page=<%= 1 %>&testpassid=<%= testPassId %>" tabindex="-2">First Page</a>
+            </li>
             <li class="page-item">
               <a class="page-link" href="<%= currentUrl %>?page=<%= page-1 %>&testpassid=<%= testPassId %>" tabindex="-1">Previous</a>
             </li>
@@ -62,9 +68,15 @@
             <li class="page-item disabled">
               <a class="page-link" href="#">Next</a>
             </li>
+            <li class="page-item page-number disabled">
+              <a class="page-link" href="<%= currentUrl %>?page=<%= pages %>&testpassid=<%= testPassId %>">Last Page</a>
+            </li>
           <% }else{ %>
             <li class="page-item page-number">
               <a class="page-link" href="<%= currentUrl %>?page=<%= page+1 %>&testpassid=<%= testPassId %>">Next</a>
+            </li>
+            <li class="page-item page-number">
+              <a class="page-link" href="<%= currentUrl %>?page=<%= pages %>&testpassid=<%= testPassId %>">Last Page</a>
             </li>
           <% } %>
         </ul>
@@ -282,9 +294,15 @@
         <ul class="pagination">
           <% if(page <= 1 ) { %>
             <li class="page-item disabled">
+              <a class="page-link" href="<%= currentUrl %>?page=<%= 1 %>&testpassid=<%= testPassId %>" tabindex="-2">First Page</a>
+            </li>
+            <li class="page-item disabled">
               <a class="page-link" href="#" tabindex="-1">Previous</a>
             </li>
           <% } else { %>
+            <li class="page-item">
+              <a class="page-link" href="<%= currentUrl %>?page=<%= 1 %>&testpassid=<%= testPassId %>" tabindex="-2">First Page</a>
+            </li>
             <li class="page-item">
               <a class="page-link" href="<%= currentUrl %>?page=<%= page-1 %>&testpassid=<%= testPassId %>" tabindex="-1">Previous</a>
             </li>
@@ -296,9 +314,15 @@
             <li class="page-item disabled">
               <a class="page-link" href="#">Next</a>
             </li>
+            <li class="page-item page-number disabled">
+              <a class="page-link" href="<%= currentUrl %>?page=<%= pages %>&testpassid=<%= testPassId %>">Last Page</a>
+            </li>
           <% }else{ %>
             <li class="page-item page-number">
               <a class="page-link" href="<%= currentUrl %>?page=<%= page+1 %>&testpassid=<%= testPassId %>">Next</a>
+            </li>
+            <li class="page-item page-number">
+              <a class="page-link" href="<%= currentUrl %>?page=<%= pages %>&testpassid=<%= testPassId %>">Last Page</a>
             </li>
           <% } %>
         </ul>

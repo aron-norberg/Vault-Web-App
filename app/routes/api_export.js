@@ -452,19 +452,11 @@ exports.export_to_excel = function(req, res) {
   let workbook = new Excel.stream.xlsx.WorkbookWriter(streamOptions);
 
   let worksheet = workbook.addWorksheet('Raw_Data', {
-<<<<<<< HEAD
     views: [
     {state: 'frozen', ySplit: 1}
     ]
     
     });
-=======
-    // views: [
-    // {state: 'frozen', ySplit: 1}
-    // ]
-
-  });
->>>>>>> e7002ea7c4e2bc325334cbe2d2a1e9c49d1b8f02
 
   worksheet.columns = [
     { header: 'Test Case Id:', key: 'TestCaseId', width: 12 },
