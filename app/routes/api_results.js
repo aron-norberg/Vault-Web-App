@@ -309,61 +309,6 @@ exports.postResults = function(req, res, next) {
   }
 };
 
-
-// Inititally Supportes only a feature 
-// and a language Combination.
-exports.export_to_excel = function(req, res, next) {
-
-  let results = req.results;
-  const filepath = rootPath + '/' + `Report-${results[0].Template}-${results[0].Language}.xlsx`;
-
-  let workbook = new Excel.Workbook();
-
-  workbook.created = new Date();
-  workbook.properties.date1904 = true;
-
-  let status = "fail";
-
-  var worksheet = workbook.addWorksheet('Test report');
-
-  worksheet.columns = [
-    { header: 'Test Case Id:', key: 'TestCaseId', width: 20 },
-    { header: 'Test Pass Id:', key: 'TestPassId', width: 32 },
-    { header: 'Run Date/Time:', key: 'RunDate', width: 10 },
-    { header: 'Template:', key: 'Template', width: 10 },
-    { header: 'Language:', key: 'Language', width: 10 },
-    { header: 'Result:', key: 'Result', width: 10 },
-    { header: 'URL:', key: 'URLs', width: 50 },
-    { header: 'Output:', key: 'Output', width: 100 }
-  ];
-
-  processItems(0);
-
-  function processItems(j) {
-
-    if (j < results.length) {
-
-      worksheet.addRow({
-        id: results[j].TestCaseId,
-        TestRunId: results[j].TestPassId,
-        RunDate: results[j].RunDate,
-        Template: results[j].Template,
-        Language: results[j].Language,
-        Result: results[j].Result,
-        URLs: results[j].URLs,
-        Output: results[j].Output,
-      });
-      setTimeout(() => { processItems(j + 1); });
-
-    } else {
-      workbook.xlsx.writeFile(filepath).then(() => {
-        console.log("The Export File has been written.");
-      });
-    }
-  };
-};
-
-
 ///results/feature/:template/locale/:locale/query/:custom
 exports.getResultByIdLanguageCustom = function(req, res) {
 
@@ -678,9 +623,6 @@ exports.getResultByIdAndLanguage = function(req, res) {
         page: paginationData.page
 
       }
-
-
-
       renderPage(renderPageData, req, res);
 
     });
@@ -1108,7 +1050,6 @@ exports.getResultByLangAndTestResult = function(req, res) {
 
 exports.getResultByIdLanguageCustomTestResult = function(req, res) {
 
-
   let template = req.params.template;
   let language = req.params.locale;
   let testPassId = req.query.testpassid;
@@ -1117,6 +1058,11 @@ exports.getResultByIdLanguageCustomTestResult = function(req, res) {
   let testresult = req.params.testresult;
   let pfsUrl = `/results/feature/${template}/locale/${language}/query/${custom}/testresult/`;
   let reqUrl = req.url;
+
+
+  // Clean custom string to remove white space
+
+  custom.replace(/ /g,"%20");
 
   let localUrlData = processLocalPageUrls(reqUrl);
   let paginationData = paginationProcess1of2(page, rowsToReturn);
@@ -1137,8 +1083,10 @@ exports.getResultByIdLanguageCustomTestResult = function(req, res) {
     }
 
     async.parallel({
-
       results: function(cb) {
+
+        console.log("The query is " + `SELECT * FROM Result WHERE Language LIKE '${language}' AND Template LIKE '${template}' AND Output like '%${custom}%' AND Result = '${testresult}' AND TestPassId = '${testPassId}' ORDER BY TestCaseId, URLs limit ${paginationData.start}, ${rowsToReturn};`)
+
         db.sequelize.query(`SELECT * FROM Result WHERE Language LIKE '${language}' AND Template LIKE '${template}' AND Output like '%${custom}%' AND Result = '${testresult}' AND TestPassId = '${testPassId}' ORDER BY TestCaseId, URLs limit ${paginationData.start}, ${rowsToReturn};`).then(results => {
 
           results = results[0];
@@ -1147,6 +1095,8 @@ exports.getResultByIdLanguageCustomTestResult = function(req, res) {
           for (let i = results.length - 1; i >= 0; i--) {
             results[i].Output = String(results[i].Output);
             results[i].RunDate = dateFormat(results[i].RunDate, "mm-dd-yy h:MM:ss TT"); // + " PST";
+
+            console.log(" should loop through")
           }
 
           cb(null, results);

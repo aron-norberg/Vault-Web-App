@@ -35,7 +35,7 @@ socket.on('test-run', function(msg) {
 
     let id = msg.replace("complete-id:", "");
 
-    $oldRow = $(`#${id}`);
+    let $oldRow = $(`#${id}`);
 
     $($oldRow).empty().remove(); // removes the row and the contents within row
 
@@ -71,7 +71,9 @@ let urlParagraph = document.getElementById("selectedURLs");
 let templateButton = document.getElementById("tb");
 let testCaseButton = document.getElementById("tcb");
 let urlButton = document.getElementById("url");
+let descriptionBox = document.getElementById("description");
 
+let noticeBox = document.getElementById("notice");
 
 let node = document.createElement("LI");
 
@@ -188,15 +190,19 @@ function showURLChoice() {
 
 function runit() {
 
+  let description = descriptionBox.value;
+  // console.log("description = "+description);
   let langs = langParagraph.innerHTML.substring(10);
   langs = langs.replace(/&nbsp;/g, "");
   langs = langs.replace(/ /g, "");
   langs = langs.slice(0, -1);
   langs = langs.split(",");
+  console.log(langs[0].length +" langs = " + langs);
 
   let temp = templateParagraph.innerHTML.substring(9);
   temp = temp.replace(/&nbsp;/g, "");
   temp = temp.replace(/ /g, "");
+  console.log(temp.length+" temp = " + temp);
 
   let tcs = tcParagraph.innerHTML.substring(11);
   tcs = tcs.replace(/ /g, "");
@@ -205,22 +211,41 @@ function runit() {
     tcIDs[x] = tcIDs[x].split("\|")[0];
   }
   tcIDs.shift();
+  console.log(tcIDs.length +" tcIDs = " + tcIDs);
 
   let urlChoices = urlParagraph.innerHTML.substring(7)
   urlChoices = urlChoices.replace(/&nbsp;/g, "");
   urlChoices = urlChoices.replace(" URLs", "");
+  console.log(urlChoices.length+" urlChoices = " + urlChoices);
+  if(langs.length == 0 ||tcIDs.length ==0 || urlChoices.length ==0){
+    if (langs[0].length ==0){
+      alert("Please select at least one language to test.");
+    }
+    if (tcIDs.length ==0){
+      alert("Please select at least one test case to run.");
+    }
+    if (urlChoices.length ==0){
+      alert("Please make a URL selection.");
+    }
+    return;
+  }
+  else{
+    noticeBox.innerHTML=" one moment... ";
+  }
 
   let modalObject = {
     "languages": langs,
     "features": temp,
     "TestCaseSelections": tcIDs,
-    "Urls": urlChoices
+    "Urls": urlChoices,
+    "description": description
   };
 
   let object = JSON.stringify(modalObject);
 
   console.log(object);
 
+  
   $.ajax({
     url: '/run-test',
     type: 'POST',
@@ -232,6 +257,7 @@ function runit() {
     success: function(data) {
       console.log(data);
       console.log("Successful post request.");
+      document.getElementById("notice").innerHTML="";
     }
   })
 

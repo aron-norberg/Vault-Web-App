@@ -32,7 +32,7 @@ const output = require('../app/routes/output');
 const api_dashboard = require('../app/routes/api_dashboard');
 const api_dashboardTWO = require('../app/routes/api_dashboardTWO');
 const authenticate = require('../app/routes/authentication');
-const testRunner = require('../app/routes/api_testRunner');
+const api_testRunner = require('../app/routes/api_testRunner');
 const api_emailer = require('../app/routes/api_emailer');
 
 // const api_login = require('../app/routes/api_login');
@@ -226,9 +226,6 @@ module.exports = function() {
   app.get('/export', isLoggedIn, api_export.getExportFromResults, api_export.export_to_excel);
   app.post('/getTemplatesAndLangFromTestPass', isLoggedIn, api_export.getLangsAndTemps);
 
-  // old .. deprececated
-  //app.post('/export', isLoggedIn, api_results.postResults, api_results.export_to_excel);
-
   // Test Information Routes
   app.get('/files', isLoggedIn, api_file_data.getAvailableTests);
 
@@ -236,9 +233,9 @@ module.exports = function() {
   //app.get('/test-runner', isLoggedIn, api_file_data.getAvailableTests, api_file_data.getProcesses);
   app.get('/test-runner/:script', isLoggedIn, api_file_data.runTest);
   app.get('/test-runner/:script/:locale', isLoggedIn, api_file_data.runTest);
-  app.get('/test-runner', isLoggedIn, testRunner.getOverview);
+  app.get('/test-runner', isLoggedIn, api_testRunner.getOverview);
 
-  app.post('/getTestCases', isLoggedIn, testRunner.getTestCases)
+  app.post('/getTestCases', isLoggedIn, api_testRunner.getTestCases)
 
   app.get('/test-status', isLoggedIn, api_tests.getTestStatus);
   app.get('/getprocesses', isLoggedIn, api_tests.getProcesses);

@@ -103,7 +103,6 @@ exports.getOverview = function(req, res) {                  // this runs when th
           }
         
         }
-        
 
         // select count(*) from results where result = 'PASS';
         db.sequelize.query(`select count(*) from Result where Result = 'PASS' and TestPassID = ${testPassId};`).then(results => {
