@@ -158,6 +158,17 @@ function renderPage(renderPageData, req, res) {
   let total = renderPageData.results.count;
 
 
+  // console.log(users + "users");
+  console.log(testPassData + "testPassData");
+  console.log(length + "length");  
+  //console.log(language +"language");
+  // console.log(page + "page");
+  // console.log(start + "start");
+  console.log(rowsToReturn + "rowsToReturn");
+  console.log(testresult + "testresult");
+  console.log(total+"total");  
+  console.log("the results are " + renderPageData.results);
+
   let results = renderPageData.results.results;
   // RETURN THE LANGUAGE VARIABLE TO HUMAN READABLE
   if (language === "%") {
@@ -172,6 +183,8 @@ function renderPage(renderPageData, req, res) {
   let pages = paginationData.pages;
   let end = paginationData.end;
   page = paginationData.page;
+  console.log(page + "page");
+  console.log(length + "length");
 
   // Pagination Logic Part II Ends Here
 
@@ -668,8 +681,9 @@ exports.getResultByLangFeatureAndTestResult = function(req, res) {
 
       results: function(cb) {
         db.sequelize.query(`SELECT * FROM Result WHERE Template LIKE '${template}' AND Language LIKE '${language}' AND Result = '${testresult}' AND TestPassId = '${testPassId}' ORDER BY TestCaseId, URLs limit ${paginationData.start}, ${rowsToReturn};`).then(results => {
-
+          console.log (`SELECT * FROM Result WHERE Template LIKE '${template}' AND Language LIKE '${language}' AND Result = '${testresult}' AND TestPassId = '${testPassId}' ORDER BY TestCaseId, URLs limit ${paginationData.start}, ${rowsToReturn};`);
           results = results[0];
+          console.log ("when I query the database the results length is " + results.length);
 
           // Convert Result back to string
           for (let i = results.length - 1; i >= 0; i--) {
@@ -695,7 +709,7 @@ exports.getResultByLangFeatureAndTestResult = function(req, res) {
         });
       },
       count: function(cb) {
-        db.sequelize.query(`select count(*) from Result WHERE Template = '${template}' AND Language LIKE '${language}' AND Result = '${testresult}' AND TestPassId = '${testPassId}';`).then(count => {
+        db.sequelize.query(`select count(*) from Result WHERE Template LIKE '${template}' AND Language LIKE '${language}' AND Result = '${testresult}' AND TestPassId = '${testPassId}';`).then(count => {
 
           count = count[0][0]['count(*)'];
 
