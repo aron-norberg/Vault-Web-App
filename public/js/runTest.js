@@ -28,6 +28,7 @@ socket.on('test-run', function(msg) {
     $newRow = $(`#${id}`);
 
     let $newRowItem = $($newRow).hide().prepend($cell1 + $cell2 + $cell3 + $cell4 + $cell5).fadeIn(1000);
+    document.getElementById("notice").innerHTML="";
 
   } else if (msg.includes("complete-id")) {
 
@@ -257,7 +258,7 @@ function runit() {
     success: function(data) {
       console.log(data);
       console.log("Successful post request.");
-      document.getElementById("notice").innerHTML="";
+      
     }
   })
 
