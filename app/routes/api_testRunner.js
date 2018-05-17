@@ -175,6 +175,8 @@ function checkProcessByName(processName, nameToMatch) {
 
 function checkProcessByPID(pid, item) {
 
+  //console.log("the pid in question is " + pid);
+
   return new Promise(function(resolve, reject) {
 
     let processList = new Array();
@@ -206,11 +208,11 @@ function checkProcessByPID(pid, item) {
       }
 
       if (matchFlag) {
-        //console.log("We really have a match");  
+        //console.log("pid finds a match.");  
         resolve(item);
 
       } else {
-
+        //console.log("pid does not find a match.")
         reject("fail");
       }
 
