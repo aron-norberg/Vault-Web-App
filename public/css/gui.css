@@ -53,11 +53,19 @@
     width: 80% !important;
   }
 }
+
 @media (min-width: 1200px) {
   .dashboardDropdown {
     width: 70% !important;
   }
 }
+
+@media (min-width: 1300px) {
+  .export_results_dropdown {
+    width: 70% !important;
+  }
+}
+
 
 ::-webkit-scrollbar {
   -webkit-appearance: none;
@@ -329,6 +337,9 @@ button[type=submit]:hover.login {
 .exportToolBtn {
   margin-top: 10px;
   margin-left: 0px;
+}
+.export_results_dropdown {
+  width: 100%;
 }
 
 
