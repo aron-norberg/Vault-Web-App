@@ -250,18 +250,18 @@
 
   <div class="row exportTool">
     <div class="col-lg-12">
-        <p>Make your selections.<br />Next, click "Export Data".</p>
+      <p>Make your selections.<br />Next, click "Export Data".</p>
     </div><!-- end .col-sm-12 -->
   </div><!-- end .row -->
 
   
 <!--  ------------------------------------------------------Date Drop Down Options ---------------------------- -->
-<div class="row exportTool">
-    <div class="col-lg-12">
+  <div class="row exportTool">
+    <div class="col-sm-12 col-lg-6 offset-lg-3">
         <% if(dates){ %>
       <div class="button-group">
-        <button type="button" style="border: 1px solid green;" class="btn btn-lg dropdown-toggle width-set" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">Test Date</button>
-        <ul class="dropdown-menu btn-block width-set" id="dateUL">
+        <button type="button" style="border: 1px solid green;" class="btn btn-lg dropdown-toggle width-set export_results_dropdown" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown" >Test Date</button>
+        <ul class="dropdown-menu btn-block width-set export_results_dropdown" id="dateUL">
           <% for(var i=0; i < dates.length; i++) {
             console.log(String(statusEndTime[i]));
             if (String(statusEndTime[i]) != "Fri Jan 02 1970 00:00:00 GMT-0800 (Pacific Standard Time)"){ %>
@@ -271,54 +271,47 @@
               </li>
           <% }} %>
         </ul>
-      </div>
+      </div><!-- end .button-group -->
       <% } %>
       <p id="testData"></p>
-    </div>
-  </div>
-  </div>
+    </div><!-- end .col-sm-12 col-lg-6 offset-lg-3 -->
+  </div><!-- end .row -->
+  
 
 
 <!--  ------------------------------------------------------Language / Locale Drop Down Options ---------------------------- -->
   <div class="row exportTool">
-    <div class="col-lg-12">
-
+    <div class="col-sm-12 col-lg-6 offset-lg-3">
       <div class="button-group">
-        <button type="button" id ="langButton" class="btn btn-lg dropdown-toggle width-set bottomSpace topSpace" data-toggle="dropdown" disabled >Language Locale <span class="caret"></span></button>
-        <ul class="dropdown-menu btn-block width-set" id="langList">
+        <button type="button" id ="langButton" class="btn btn-lg dropdown-toggle width-set bottomSpace topSpace export_results_dropdown" data-toggle="dropdown" disabled >Language Locale <span class="caret"></span></button>
+        <ul class="dropdown-menu btn-block width-set export_results_dropdown" id="langList">
 
           <!-- the 'ALL' option has to be available for the displaychecked.js funciton to work properly - set to style="display:none;" -->
-                <li class="width-set dropdown-item" id="langAll" style="display:none;"> 
-                  <span id="Lang">
-                    <input id="LAll" class="lang double" onclick="displayChecked(this.id, 'Lang', 'LAll', 'langChildren')" type="checkbox" />&nbsp; All</span>
-                </li>
-
-
-       
+          <li class="width-set dropdown-item" id="langAll" style="display:none;"> 
+            <span id="Lang">
+              <input id="LAll" class="lang double" onclick="displayChecked(this.id, 'Lang', 'LAll', 'langChildren')" type="checkbox" />&nbsp; All</span>
+          </li>
         </ul>
       </div><!-- end .button-group -->
-
-    </div><!-- end .col-sm-12 -->
+    </div><!-- end .col-sm-12 col-lg-6 offset-lg-3 -->
   </div><!-- end .row -->
 
 
 <!--  ------------------------------------------------------Feature/Template Drop Down Options ---------------------------- -->
   <div class="row exportTool">
-    <div class="col-lg-12">
-      
+    <div class="col-sm-12 col-lg-6 offset-lg-3">
       <div class="button-group">
-        <button type="button" id="mybutton" class="btn btn-lg dropdown-toggle width-set bottomSpace" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown" disabled>(FX) Page <span class="caret"></span></button>
-        <ul class="dropdown-menu btn-block width-set" id="featureUL">
+        <button type="button" id="mybutton" class="btn btn-lg dropdown-toggle width-set bottomSpace export_results_dropdown" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown" disabled>(FX) Page <span class="caret"></span></button>
+        <ul class="dropdown-menu btn-block width-set export_results_dropdown" id="featureUL">
 
           <!-- the 'ALL' option has to be available for the displaychecked.js funciton to work properly - set to display:none;-->
-                <li class="dropdown-item" id="tempAll" style="display:none;">   
-                  <span>
-                    <input id="All" class="FX double" onclick="displayChecked(this.id, 'featureUL', 'All', 'pageChildren')" type="checkbox" />&nbsp; All</span>
-                </li>
+          <li class="dropdown-item" id="tempAll" style="display:none;">   
+          <span>
+            <input id="All" class="FX double" onclick="displayChecked(this.id, 'featureUL', 'All', 'pageChildren')" type="checkbox" />&nbsp; All</span>
+          </li>
         </ul>
       </div><!-- end .button-group -->
-        
-    </div><!-- end .col-sm-12 -->
+    </div><!-- end .col-sm-12 col-lg-6 offset-lg-3 -->
   </div><!-- end .row -->
 
 
