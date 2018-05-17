@@ -1,4 +1,3 @@
-
 // test Status
 
 'use strict';
@@ -155,7 +154,9 @@ exports.postTest = function(req, res, next) {
   let jsonTestparams = JSON.stringify(req.body);
 
 
-  console.log("This is the json object you are reading:\n");
+  req.testParams = jsonTestparams;
+
+  //console.log("This is the json object you are reading:\n");
 
   // Get time down to millisecond, preventing duplication.
 
@@ -185,14 +186,84 @@ exports.postTest = function(req, res, next) {
       });
     }
   });
-
 }
+
+function getTotalNumberOfTestCases(testParameterObject) {
+
+  return new Promise((resolve, reject) => {
+    let count = 0;
+    let finalCount = 0;
+    let limit = 0;
+
+    async function getCount(testParameterObject) {
+
+      // map array to promises 
+      const promises = testParameterObject.languages.map((languageSelection) => {
+        // evaulate if features is f4, if so, limit to 100
+        if (testParameterObject.features == "F4" && testParameterObject.Urls == "all" || (testParameterObject.features == "F4" && testParameterObject.Urls > 100)) {
+
+          limit = 100;
+
+          // convert string to large number if all
+        } else if (testParameterObject.Urls == "all") {
+          // 10 million/ should never come close to or exceed this value
+          limit = 10000000;
+        }
+
+        // evaulate if language is all
+
+        if (languageSelection == "all") {
+          languageSelection = "%";
+        }
+        // evaulate if feature is all
+
+        if (testParameterObject.features == "all") {
+          testParameterObject.features = "%";
+        }
+
+        return db.sequelize.query(`select count(*) from (select Url from Urls where language like '${languageSelection}' and TemplateId like '${testParameterObject.features}' limit 10000000) As a;`).then(count => {
+          count = count[0][0]['count(*)'];
+          return count
+
+        }).catch((err) => {
+          console.log("error querying test case count");
+          console.log('error: ' + err);
+        })
+      });
+
+      await Promise.all(promises).then(count => {
+        // Count is an array of results
+        // sum up all results to obtain answers
+        for (let i = 0; i < count.length; i++) {
+          finalCount += count[i];
+        }
+
+        // multiple final count by test Cases 
+        finalCount = finalCount * testParameterObject.TestCaseSelections.length;
+        console.log("The final count is " + finalCount);
+
+      })
+
+      if (finalCount) {
+        resolve(finalCount)
+
+      } else {
+
+        reject(finalCount);
+      }
+    }
+
+    getCount(testParameterObject);
+
+  });
+}
+
 
 exports.startProcess = function(req, res) {
 
   let jsonPath = req.jsonpath;
 
-  console.log(jsonPath);
+  // read json data and get test parameters
 
   // Expiremental Spawn Process Behavior 
   let options = {
@@ -226,12 +297,21 @@ exports.startProcess = function(req, res) {
     script.stdin.end();
   });
 
-  //* Expiremental Spawn Process Behavior 
+  // query db for number of tests to run based on user selection
+  getTotalNumberOfTestCases(JSON.parse(req.testParams)).then(count => {
 
-  res.sendStatus(200);
-  //res.send("start process complete.");
+    console.log("this is the actual count of test cases to run: " + count);
 
+    res.sendStatus(200);
+
+  }).catch((err) => {
+
+    console.log('error: ' + err);
+    return err;
+
+  })
 }
+
 
 exports.stopTest = function(req, res) {
 
@@ -273,11 +353,20 @@ exports.stopTest = function(req, res) {
 
     */
 
-    res.sendStatus(200);
+    getTotalNumberOfTestCases(req.testParams).then(testPassData => {
+
+      res.sendStatus(200);
+
+    }).catch((err) => {
+
+      console.log('error: ' + err);
+      return err;
+
+    })
 
     return null;
 
-  }).catch(function(err) {
+  }).catch((err) => {
     console.log('error: ' + err);
     return err;
 

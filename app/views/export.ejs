@@ -3,7 +3,7 @@
 <script>
 
   function exportSelections() { //this function is triggered on the "Export Data" button.
-
+    
     let template = '';
     let language = '';
     let testresult = "";
@@ -42,7 +42,11 @@
     //thehref="/export?feature="+ template + "&language=" + language + "&testresult=" + testresult + "&query=" + query + "&testpassid=" + testdate;
     thehref = "/export?feature=" + template + "&language=" + language + "&testresult=" + testresult + "&query=" + query + "&testpassid=" + testdate;
     document.getElementById("myhref").href = thehref;
-  }
+
+    location.reload(); //resets the export selection tool
+
+  } // end exportSelections()
+
 
   // This function populates the languages and templates for display in the drop-down menus.
   function displayInfo(data, id){
