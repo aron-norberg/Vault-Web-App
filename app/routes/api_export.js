@@ -487,8 +487,8 @@ exports.export_to_excel = function(req, res) {
   }
 
   processExcelExport(results);
-
-}
+  
+} // end exports.export_to_excel = function(req, res)
 
 
 
