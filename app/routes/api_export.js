@@ -455,7 +455,7 @@ exports.export_to_excel = function(req, res) {
   };
 
 
-  let workbook = new Excel.stream.xlsx.WorkbookWriter(streamOptions);
+  let workbook = new Excel.stream.xlsx.WorkbookWriter(streamOptions); 
   
   let worksheet = workbook.addWorksheet('Raw_Data', {
     // views: [
