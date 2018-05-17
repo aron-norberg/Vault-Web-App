@@ -31,7 +31,7 @@
       language = language + "," + l;
     }
 
-    var testdate = document.getElementById("dateChild").children[0].id;
+    var testdate = document.getElementById("radialChild").children[0].id;
     testdate = testdate.slice(0, -1);
     // testdate = testdate.substring(0, testdate.indexOf(' | '))
     console.log("the testdate is "+testdate);
@@ -109,7 +109,7 @@
             langinputItem.setAttribute("class", "lang double");
             langinputItem.setAttribute("type", "checkbox");
             langinputItem.setAttribute("id", theLanguages[x]);
-            langinputItem.setAttribute("onclick", "displayChecked(this.id, 'langParent-" + [x] + "', 'LAll', 'langChildren')");
+            langinputItem.setAttribute("onclick", "displayChecked(this.id, 'langList', 'LAll', 'langChildren')");
             
             var langtextnode = document.createTextNode("  " + theLanguages[x]);  
             node.appendChild(span);
@@ -130,7 +130,7 @@
             templateItem.setAttribute("class", "FX double");
             templateItem.setAttribute("type", "checkbox");
             templateItem.setAttribute("id", theTemplates[x]);
-            templateItem.setAttribute("onclick", "displayChecked(this.id, 'templateParent-" + [x] + "','All','pageChildren')");
+            templateItem.setAttribute("onclick", "displayChecked(this.id, 'featureUL','All','pageChildren')");
 
             var thePage="";
             switch (theTemplates[x]){
@@ -265,9 +265,9 @@
           <% for(var i=0; i < dates.length; i++) {
             console.log(String(statusEndTime[i]));
             if (String(statusEndTime[i]) != "Fri Jan 02 1970 00:00:00 GMT-0800 (Pacific Standard Time)"){ %>
-              <li class="dropdown-item">
+              <li class="dropdown-item radial">
               <span id="dateParent-<%=[i]%>">
-                  <input id="<%= dateIds[i] %>" class="date double" value="<%=testDescription[i] %>" onclick="displayChecked(this.id, 'dateParent-<%=[i]%>', 'none', 'dateChild'); displayInfo(this.value, this.id);" type="radio" name="date" />&nbsp; <%= dates[i] %> | <%=testDescription[i] %></span>
+                  <input id="<%= dateIds[i] %>" class="date double" value="<%=testDescription[i] %>" onclick="displayChecked(this.id, 'dateParent-<%=[i]%>', 'none', 'radialChild'); displayInfo(this.value, this.id);" type="radio" name="date" />&nbsp; <%= dates[i] %> | <%=testDescription[i] %></span>
               </li>
           <% }} %>
         </ul>
@@ -287,9 +287,10 @@
         <ul class="dropdown-menu btn-block width-set export_results_dropdown" id="langList">
 
           <!-- the 'ALL' option has to be available for the displaychecked.js funciton to work properly - set to style="display:none;" -->
-          <li class="width-set dropdown-item" id="langAll" style="display:none;"> 
-            <span id="Lang">
-              <input id="LAll" class="lang double" onclick="displayChecked(this.id, 'Lang', 'LAll', 'langChildren')" type="checkbox" />&nbsp; All</span>
+          <li class="width-set dropdown-item" id="langAll"> 
+            <span>
+              <input id="LAll" class="lang double" onclick="displayChecked(this.id, 'langList', 'LAll', 'langChildren')" type="checkbox" />&nbsp; All
+            </span>
           </li>
         </ul>
       </div><!-- end .button-group -->
@@ -305,9 +306,10 @@
         <ul class="dropdown-menu btn-block width-set export_results_dropdown" id="featureUL">
 
           <!-- the 'ALL' option has to be available for the displaychecked.js funciton to work properly - set to display:none;-->
-          <li class="dropdown-item" id="tempAll" style="display:none;">   
-          <span>
-            <input id="All" class="FX double" onclick="displayChecked(this.id, 'featureUL', 'All', 'pageChildren')" type="checkbox" />&nbsp; All</span>
+          <li class="dropdown-item" id="tempAll">   
+            <span>
+              <input id="All" class="FX double" onclick="displayChecked(this.id, 'featureUL', 'All', 'pageChildren')" type="checkbox" />&nbsp; All
+            </span>
           </li>
         </ul>
       </div><!-- end .button-group -->
@@ -322,7 +324,7 @@
           <a id="myhref" download>
             <% console.log("I'm just about to see the exportSelections funciton"); %>
             <button type="button" class="btn btn-lg width-set bottomSpace" id="runTest" onclick="exportSelections()" disabled><b>Export Data</b></button> 
-            <!-- the exportSelections() function is in the "runTests.js" file, the api_export.js file has the database query -->
+            <!-- the exportSelections() function WAS in the "runTests.js" file but is now above, the api_export.js file has the database query -->
           </a><br>
           <!--<button type="button" class="btn btn-md" id="exportLanguageSet" onclick="exportLanguageSet()"><b>Export Language Set</b></button>&nbsp;-->
 
@@ -348,7 +350,7 @@
 
         <div class="col-md-4 col-lg-4 center" >
           <h3>Date Selection</h3>
-          <div id="dateChild"></div>
+          <div id="radialChild"></div>
         </div>
           
         <div class="col-md-4 col-lg-4 center">

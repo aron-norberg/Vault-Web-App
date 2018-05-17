@@ -164,11 +164,10 @@
 // } //end function displayChecked
 
 
-function displayChecked(checkedID, parentID, allID, destinationID) {
+function displayChecked(checkedID, ULID, allID, destinationID) {
 	var checkBox = document.getElementById(checkedID);  // Get the selected item
-	var parent = document.getElementById(parentID); 
-	var parentClass=checkBox.parentNode.parentNode.className;
-	var text = parent.textContent; // Get the checkbox's text
+	var parentClass=checkBox.parentNode.parentNode.className; // grabs the UL's class
+	var text = checkBox.parentNode.textContent; // Get the checkbox's text (in the <span>)
 	var paragraph = document.createElement("p");  //create a paragraph
 	var content = document.createTextNode(text);   //create text (for the new paragraph)    
 	var checkboxes = new Array();
@@ -178,24 +177,25 @@ function displayChecked(checkedID, parentID, allID, destinationID) {
 
 	// If the checkbox is checked, create a paragraph element and input the checkbox's text
 	if (checkBox.checked == true){ 
-		if (parentClass =="dropdown-item" && document.getElementById("dateChild").hasChildNodes()){//if a radio button for the date was selected, remove any other dates from the display section
-			document.getElementById("dateChild").innerHTML="";
+		if (parentClass =="dropdown-item radial" && document.getElementById("radialChild").hasChildNodes()){//if a radio button was selected, remove any other radio choices from the display section
+			document.getElementById("radialChild").innerHTML="";
 		}
 		paragraph.appendChild(content);
 		paragraph.setAttribute('id',checkedID+'x');
 		placement.appendChild(paragraph);
 
-		// if the ALL button was clicked, remove anything else from the paragraph section and check every box
-		if (checkedID == allID){			
+		// if the ALL button was clicked, check every box and remove anything else from the paragraph section
+		if (checkedID == allID){
+			for(var i=0; i<checkboxes.length; i++){
+				if(checkboxes[i].parentNode.parentNode.parentNode.id == ULID){// if the UL, above the Span and Input == ULID
+					checkboxes[i].checked = true;
+				}
+			}				
 			while (placement.firstChild){
 				placement.removeChild(placement.firstChild);
 			}
 			placement.appendChild(paragraph);
-			for(var i=0; i<checkboxes.length; i++){
-				if(checkboxes[i].parentNode.id == parentID){
-					checkboxes[i].checked = true;
-				}
-			}		
+				
 		} else{}
 
 	} else { // If you are un-checking the box, you will remove the child paragraph element that had been created.
@@ -203,7 +203,7 @@ function displayChecked(checkedID, parentID, allID, destinationID) {
 			//If I'm un-checking the PAGE "all" box, uncheck ALL the boxes
 			if (checkedID == allID){  
 				for(var i=0; i<checkboxes.length; i++){
-					if (checkboxes[i].parentNode.id == parentID){
+					if (checkboxes[i].parentNode.parentNode.parentNode.id == ULID){
 						checkboxes[i].checked = false;  // un-check all the boxes 
 					}
 				}
@@ -217,7 +217,7 @@ function displayChecked(checkedID, parentID, allID, destinationID) {
 
 				//If the "all" box HAD been checked for the Feature Page section
 				console.log(allBox.id);
-				if (allBox.checked == true){  // && parentID == parentID              <-----------???
+				if (allBox.checked == true){  // && ULID == ULID              <-----------???
 				console.log("I've unchecked something when ALL HAD been chosen");
 					allBox.checked = false;  // un-check the "all" box and remove it from the pages selected section
 					var allChild = document.getElementById(allID + "x");
@@ -227,13 +227,13 @@ function displayChecked(checkedID, parentID, allID, destinationID) {
 									
 					//goes through all the possibilities, and if there was a checkbox for it, but it wasn't the ALL or Eliminator, add a paragraph for it
 					for(var i=1; i<checkboxes.length-1; i++){
-						if(checkboxes[i].checked && checkboxes[i].parentNode.id == parentID){
+						if(checkboxes[i].checked && checkboxes[i].parentNode.parentNode.parentNode.id == ULID){
 							var text = checkboxes[i].id;
 							var paragraph = document.createElement("p");
 							var content = document.createTextNode(text);
 							var placement = document.getElementById(destinationID);
 
-							if (ID != eliminator){
+							if (checkboxes[i].id != eliminator){
 								paragraph.appendChild(content);
 								paragraph.setAttribute('id',checkboxes[i].id+'x');
 								placement.appendChild(paragraph);
