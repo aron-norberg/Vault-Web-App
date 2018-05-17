@@ -251,3 +251,13 @@ function displayChecked(checkedID, parentID, allID, destinationID) {
 			}  //end else if
 		}  //end else
 }
+// function hide(thisID, targetID){
+// 	var target = getElementById(targetID);
+// 	var ThisItem = getElementById(thisID);
+// 	if(ThisItem.checked == true){
+// 		target.setAttribute('display','none');
+// 	}
+// 	else {
+// 		target.setAttribute('display', 'block');
+// 	}
+// }
