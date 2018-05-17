@@ -25,8 +25,7 @@ exports.pwd_emailer = function(req, res) {
     tls: { 
       rejectUnauthorized: false
     }
-    //proxy: 'socks5://localhost:1080/'
-
+    
   });
 
 
