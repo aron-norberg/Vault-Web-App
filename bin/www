@@ -29,7 +29,7 @@ const io = require('socket.io').listen(server);
 io.sockets.setMaxListeners(0);
 
 // Specify Max Listeners :: 
-//io.sockets.setMaxListeners(15);
+//io.sockets.setMaxListeners(100);
 
 app.set('socketio', io);
 

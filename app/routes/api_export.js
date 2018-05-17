@@ -492,7 +492,6 @@ exports.export_to_excel = function(req, res) {
         URLs: item.URLs,
         Output: item.Output
       }).commit()
-
     });
 
     await Promise.all(promises);

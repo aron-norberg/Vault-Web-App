@@ -102,7 +102,7 @@ function grabTCsForFeature() {
     data: finalObject,
     contentType: "application/json",
     error: function(data) {
-      console.log(data + "------------ it didn't work -----------------");
+      console.log(data + "------------ GET TEST CASES FAILED -----------------");
     },
     success: function(data) {
       // console.log(data);
