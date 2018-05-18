@@ -35,6 +35,7 @@
     testdate = testdate.slice(0, -1);
     // testdate = testdate.substring(0, testdate.indexOf(' | '))
     console.log("the testdate is "+testdate);
+    console.log("/export?feature=" + template + "&language=" + language + "&testresult=" + testresult + "&query=" + query + "&testpassid=" + testdate);
 
     //the href will contain a list of each languages as 'en-us,de-de' and features will be 'f1,f3,f5' 
     // in the getExportFromResults() function on 'api_export.js' these commas are watched for, so that the string can be split to an array and a query created for all the selections
@@ -43,7 +44,7 @@
     thehref = "/export?feature=" + template + "&language=" + language + "&testresult=" + testresult + "&query=" + query + "&testpassid=" + testdate;
     document.getElementById("myhref").href = thehref;
 
-    location.reload(); //resets the export selection tool
+    // location.reload(); //resets the export selection tool
 
   } // end exportSelections()
 
@@ -256,6 +257,7 @@
 
   
 <!--  ------------------------------------------------------Date Drop Down Options ---------------------------- -->
+<!-- ---------------------------the dates are populated by the getExport function on api_export.js ------------ -->
   <div class="row exportTool">
     <div class="col-sm-12 col-lg-6 offset-lg-3">
         <% if(dates){ %>
@@ -280,13 +282,14 @@
 
 
 <!--  ------------------------------------------------------Language / Locale Drop Down Options ---------------------------- -->
+<!--  --------------------------------------languages and templates are populated with the displayInfo function above ------ -->
   <div class="row exportTool">
     <div class="col-sm-12 col-lg-6 offset-lg-3">
       <div class="button-group">
         <button type="button" id ="langButton" class="btn btn-lg dropdown-toggle width-set bottomSpace topSpace export_results_dropdown" data-toggle="dropdown" disabled >Language Locale <span class="caret"></span></button>
         <ul class="dropdown-menu btn-block width-set export_results_dropdown" id="langList">
 
-          <!-- the 'ALL' option has to be available for the displaychecked.js funciton to work properly - set to style="display:none;" -->
+          <!-- the 'ALL' option has to be available for the displaychecked.js funciton to work properly - set to style="display:none; if wanted" -->
           <li class="width-set dropdown-item" id="langAll"> 
             <span>
               <input id="LAll" class="lang double" onclick="displayChecked(this.id, 'langList', 'LAll', 'langChildren')" type="checkbox" />&nbsp; All

@@ -64,7 +64,7 @@ socket.on('test-run', function(msg) {
 let langArrayTestRunner = document.getElementsByClassName('lang double');
 let templateArray = document.getElementsByClassName("form-check-input double");
 
-let langParagraph = document.getElementById("selectedLanguages");
+let langParagraph = document.getElementById("chosenLangs");
 let tcParagraph = document.getElementById("selectedTestCases");
 let templateParagraph = document.getElementById("selectedTemplates");
 let urlParagraph = document.getElementById("selectedURLs");
@@ -124,18 +124,28 @@ function grabTCsForFeature() {
   })
 }
 
-function showLangs() { //this shows the languages selected in the selections area
-  langParagraph.innerHTML = "Languages: ";
+// function showLangs() { //this shows the languages selected in the selections area
+//   langParagraph.innerHTML = "Languages: ";
+//   for (var x = 0; x < langArrayTestRunner.length; x++) {
+//     if (langArrayTestRunner[x].checked == true) {
+//       langParagraph.innerHTML = langParagraph.innerHTML + "&nbsp" + langArrayTestRunner[x].id + ", ";
+//       templateButton.removeAttribute("disabled");
+//     }
+//   }
+// }
+function unhideTemplates(){ //this function unhides the Template button
+  console.log("number of items with class is lang double = " +langArrayTestRunner.length);
   for (var x = 0; x < langArrayTestRunner.length; x++) {
     if (langArrayTestRunner[x].checked == true) {
-      langParagraph.innerHTML = langParagraph.innerHTML + "&nbsp" + langArrayTestRunner[x].id + ", ";
       templateButton.removeAttribute("disabled");
     }
   }
+
 }
 
+
 function showTemplates() {
-  let langParagraphLength = document.getElementById("selectedLanguages").innerHTML;
+  let langParagraphLength = document.getElementById("chosenLangs").innerHTML;
   templateParagraph.innerHTML = "Template: ";
   for (var q = 0; q < templateArray.length; q++) {
     if (templateArray[q].checked == true) {
@@ -193,17 +203,23 @@ function runit() {
 
   let description = descriptionBox.value;
   // console.log("description = "+description);
-  let langs = langParagraph.innerHTML.substring(10);
-  langs = langs.replace(/&nbsp;/g, "");
-  langs = langs.replace(/ /g, "");
-  langs = langs.slice(0, -1);
+  let spans = langParagraph.childNodes;
+  let langArray = [];
+  for (var x =0; x<spans.length; x++){
+    var y = spans[x].innerText.slice(0,-2);
+    y = y.replace(/ /g, "");
+    langArray.push(y);
+  }
+  // console.log("langArray is -"+langArray);
+  var langs = langArray.toString();
+  langs = langs.replace(/\s/g, "");
   langs = langs.split(",");
-  console.log(langs[0].length +" langs = " + langs);
+  // console.log(langs[0].length +" langs = " + langs);
 
   let temp = templateParagraph.innerHTML.substring(9);
   temp = temp.replace(/&nbsp;/g, "");
   temp = temp.replace(/ /g, "");
-  console.log(temp.length+" temp = " + temp);
+  // console.log(temp.length+" temp = " + temp);
 
   let tcs = tcParagraph.innerHTML.substring(11);
   tcs = tcs.replace(/ /g, "");
@@ -212,12 +228,12 @@ function runit() {
     tcIDs[x] = tcIDs[x].split("\|")[0];
   }
   tcIDs.shift();
-  console.log(tcIDs.length +" tcIDs = " + tcIDs);
+  // console.log(tcIDs.length +" tcIDs = " + tcIDs);
 
   let urlChoices = urlParagraph.innerHTML.substring(7)
   urlChoices = urlChoices.replace(/&nbsp;/g, "");
   urlChoices = urlChoices.replace(" URLs", "");
-  console.log(urlChoices.length+" urlChoices = " + urlChoices);
+  // console.log(urlChoices.length+" urlChoices = " + urlChoices);
   if(langs.length == 0 ||tcIDs.length ==0 || urlChoices.length ==0){
     if (langs[0].length ==0){
       alert("Please select at least one language to test.");

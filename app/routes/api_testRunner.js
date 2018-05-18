@@ -425,6 +425,8 @@ function checkTestProcessWithSystemPS(testPassTableResults) {
 
     async.each(testPassTableResults, function(item, callback, self) {
 
+      // Modify to get correct process and count
+
       let pid = item.Note.replace(/PID: /, '');
 
       checkProcessByPID(pid, item).then(successItem => {
@@ -462,8 +464,7 @@ function checkTestProcessWithSystemPS(testPassTableResults) {
 
         resolve(statusResults);
       }
-
-
+      
     });
   })
 }
