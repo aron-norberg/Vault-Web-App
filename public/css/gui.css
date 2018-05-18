@@ -233,6 +233,14 @@ body {
   border: 0px solid #000;
 }
 
+#delBtnCont {
+  width: 100px;
+  float: right;
+  display: none;
+  padding-top: 10px;
+  border: 0px solid #000;
+}
+
 #pieChart-1 {
   width: 90%;
   height: 350px;

@@ -200,34 +200,7 @@ exports.getOverview = function(req, res) {
 
 
 
-exports.deleteTestCases = function(req, res) {
-  // console.log('Hey everyone I found Waldo!');
-  let Id = req.query.Id; //GET method
-  
-  console.log('Here is your Id number - ' + Id);
 
-  
-  // select count(*) from results where result = 'SKIP';
-  /*db.sequelize.destroy({
-    where: {
-      Id: req.query.Id
-    }
-
-  }).then(function (deletedRecord) {
-    if(deletedRecord === 1){
-      res.status(200).json({message:"Deleted successfully"});          
-    }
-    else {
-      res.status(404).json({message:"record not found"})
-    }
-
-  }).catch(function(err) {
-    console.log('error: ' + err);
-    return err;
-
-  });*/
-
-} // end exports.deleteTestCases = function(req, res)
 
 
 
@@ -597,3 +570,31 @@ exports.getResultMetaByLocale = function(req, res) {
     })
   }
 };
+
+
+
+// Delete TestCase by Id
+exports.deleteTestCases = function(req, res) {
+  // console.log('Hey everyone I found Waldo!');
+  let Id = req.query.Id; //GET method
+
+  db.TestPass.destroy({
+    where: {
+      TestPassId: req.query.Id
+    }
+
+  }).then(function (TestPass) {
+
+    if (TestPass === 1) {
+      //res.status(200).json({message:"Deleted successfully"});
+      console.log('Test result Id - ' + Id + ' has been deleted successfully');
+      res.redirect('/dashboard');
+    }
+    else {
+      //res.status(404).json({message:"record not found"})
+      console.log("Test result not found");
+    }
+
+  });
+
+}; // end exports.deleteTestCases = function(req, res)
