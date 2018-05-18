@@ -1,5 +1,7 @@
 module.exports = function(sequelize, DataTypes) {
+  
   return sequelize.define('TestPass', {
+
     TestPassId: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
