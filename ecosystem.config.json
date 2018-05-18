@@ -3,7 +3,7 @@
     "name"        : "production",
     "script"      : "./bin/www",
     "watch"       : true,
-    "ignore_watch": ["node_modules", "behat_projects", "temp_directory"],
+    "ignore_watch": ["node_modules", "behat_projects", "temp_directory", "src"],
     "wath_options": {
       "followSymlinks": false
     },
