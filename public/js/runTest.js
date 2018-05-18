@@ -203,11 +203,16 @@ function runit() {
 
   let description = descriptionBox.value;
   // console.log("description = "+description);
-  let langs = langParagraph.innerHTML;
+  let spans = langParagraph.childNodes;
+  let langArray = [];
+  for (var x =0; x<spans.length; x++){
+    langArray.push(spans[x].innerText);
+  }
+  let langs = langArray.toString();
   langs = langs.replace(/&nbsp;/g, "");
   langs = langs.replace(/ /g, "");
   langs = langs.slice(0, -1);
-  langs = langs.split(",");
+  langs = langs.split(",,");
   console.log(langs[0].length +" langs = " + langs);
 
   let temp = templateParagraph.innerHTML.substring(9);
