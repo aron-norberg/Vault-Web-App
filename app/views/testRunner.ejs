@@ -294,8 +294,16 @@
                 </button>
               </div>
               <div class="modal-body">
+                <ul style="text-align:left; list-style-type: none;" class="liAlign">
+                  <li class="list testcasechoice">
+                    <span id="TestCaseParent">
+                      <input id="TCAll" class="double testcasechoice" type="checkbox" onclick="">ALL
+                      <!-- onclick="displayChecked(TCAll, theTestCases, TCAll, selectedTestCases)" -->
+                    </span>
+                  </li>
+                </ul>
                 <ul style="text-align:left; list-style-type: none;" class="liAlign" id="theTestCases">
-                  <!-- <input class="double testcasechoice" type="checkbox" />    These are populated by the grabTCsForFeature function on the runTestsModalScript.js page-->
+                  <!-- <input class="double testcasechoice" type="checkbox" />    These are populated by the grabTCsForFeature function on the runTest.js file -->
                 </ul>
               </div>
               <div class="modal-footer">

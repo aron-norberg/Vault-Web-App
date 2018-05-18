@@ -140,6 +140,8 @@ exports.getExportFromResults = function(req, res, next) {
 
   let language = req.query.language;
   let feature = req.query.feature;
+  if (feature =="All"){feature = "all";}
+  if (language =="LAll"){language = "all";}
   let testresult = req.query.testresult;
   let query = req.query.query;
   let langArray = [];
