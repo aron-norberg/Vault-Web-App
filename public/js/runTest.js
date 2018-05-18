@@ -65,7 +65,7 @@ let langArrayTestRunner = document.getElementsByClassName('lang double');
 let templateArray = document.getElementsByClassName("form-check-input double");
 
 let langParagraph = document.getElementById("chosenLangs");
-let tcParagraph = document.getElementById("selectedTestCases");
+let tcParagraph = document.getElementById("chosenTestCases");
 let templateParagraph = document.getElementById("selectedTemplates");
 let urlParagraph = document.getElementById("selectedURLs");
 
@@ -111,13 +111,19 @@ function grabTCsForFeature() {
       for (var x = 0; x < data.length; x++) {
         var node = document.createElement("LI"); // Create a <li> node
         node.setAttribute("class", "list testcasechoice");
+        var span = document.createElement("SPAN");
         var inputItem = document.createElement("input");
         inputItem.setAttribute("class", "double testcasechoice");
         inputItem.setAttribute("type", "checkbox");
+        inputItem.setAttribute("onclick", "displayChecked(this.id, 'theTestCases', 'TCAll', 'chosenTestCases', 'p')");
+        var mystring = " " + data[x].TestCaseId + " | " + data[x].TestCaseDescription;
+        console.log("mystring is "+mystring);
+        inputItem.setAttribute("id",mystring);
 
-        var textnode = document.createTextNode("  " + data[x].TestCaseId + " | " + data[x].TestCaseDescription); // Create a text node
-        node.appendChild(inputItem);
-        node.appendChild(textnode); // Append the text to <li>
+        var textnode = document.createTextNode(mystring); // Create a text node
+        node.appendChild(span);
+        span.appendChild(inputItem);
+        span.appendChild(textnode); // Append the text to <li>
         document.getElementById("theTestCases").appendChild(node); // Append <li> to <ul> with id="myList"
       }
     }
@@ -153,28 +159,28 @@ function showTemplates() {
     }
   }
 
-  //remove any list items that were added to the modal from a previous selection
+  //remove any list items that were added to the Test Case modal from any previous selections
   var ulParent = document.getElementById("theTestCases");
   while (ulParent.hasChildNodes()) {
     ulParent.removeChild(ulParent.lastChild);
   }
-  tcParagraph.innerHTML = "Test Cases: ";
+  // tcParagraph.innerHTML = "Test Cases: ";
 
   testCaseButton.removeAttribute("disabled");
   urlButton.removeAttribute("disabled");
   grabTCsForFeature();
 }
 
-function showTCs() {
-  let testCaseArray = document.getElementsByClassName("list testcasechoice");
-  let caseCheckboxes = document.getElementsByClassName("double testcasechoice");
-  tcParagraph.innerHTML = "Test Cases: ";
-  for (var x = 0; x < testCaseArray.length; x++) {
-    if (caseCheckboxes[x].checked == true) {
-      tcParagraph.innerHTML = tcParagraph.innerHTML + "<br>" + testCaseArray[x].innerText;
-    }
-  }
-}
+// function showTCs() {
+//   // let testCaseArray = document.getElementsByClassName("list testcasechoice");
+//   // let caseCheckboxes = document.getElementsByClassName("double testcasechoice");
+//   // // tcParagraph.innerHTML = "Test Cases: ";
+//   // for (var x = 0; x < testCaseArray.length; x++) {
+//   //   if (caseCheckboxes[x].checked == true) {
+//   //     tcParagraph.innerHTML = tcParagraph.innerHTML + "<br>" + testCaseArray[x].innerText;
+//   //   }
+//   // }
+// }
 
 function showInput() {
   let box = document.getElementById("typedURL");
@@ -221,12 +227,17 @@ function runit() {
   temp = temp.replace(/ /g, "");
   // console.log(temp.length+" temp = " + temp);
 
-  let tcs = tcParagraph.innerHTML.substring(11);
+  let tcs = tcParagraph.innerHTML;
+  tcs = tcs.replace(/\<p\sid=\"/g,"");
   tcs = tcs.replace(/ /g, "");
-  let tcIDs = tcs.split("<br>");
+  tcs = tcs.replace(/&nbsp;/g, "");
+  tcs = tcs.replace(/,\<\/p\>/g, "");
+  let tcIDs = tcs.split("\">");
   for (var x = 0; x < tcIDs.length; x++) {
     tcIDs[x] = tcIDs[x].split("\|")[0];
+    tcIDs[x] = tcIDs[x].replace(/\n/g,"");
   }
+  // console.log(tcIDs);
   tcIDs.shift();
   // console.log(tcIDs.length +" tcIDs = " + tcIDs);
 
@@ -490,6 +501,13 @@ function exportAll() {
   }
 
 }
+
+function hideAllTC(){
+  var box = document.getElementById("allTCs");
+  box.style.display = 'none';
+  // box.classList.toggle = 'note-icon-caret';
+}
+
 
 // function exportSelections() {
 
