@@ -106,13 +106,13 @@
                     'pl-pl','pt-br','pt-pt','ru-ru','sv-se','th-th','tr-tr','vi-vn','zh-cn','cn','zh-tw'];%>
                     <li class="width-set columnized">
                       <span>
-                        <input id="all" class="lang double" onclick="displayChecked(this.id, 'myUL', 'all', 'chosenLangs')" type="checkbox" />&nbsp;all</a>
+                        <input id="all" class="lang double" onclick="displayChecked(this.id, 'myUL', 'all', 'chosenLangs', 'span')" type="checkbox" />&nbsp;all</a>
                       </span>
                     </li>
                     <% for(var i=0; i < allLangs.length; i++) { %>
                       <li class="width-set columnized">
                         <span>
-                        <input id="<%= allLangs[i] %>" class="lang double" onclick="displayChecked(this.id, 'myUL', 'all', 'chosenLangs')" type="checkbox" />&nbsp;
+                        <input id="<%= allLangs[i] %>" class="lang double" onclick="displayChecked(this.id, 'myUL', 'all', 'chosenLangs', 'span')" type="checkbox" />&nbsp;
                         <%= allLangs[i] %>
                         <span>
                       </li>
@@ -146,7 +146,7 @@
                 <!-- Use If statement to check if user has appropriate permissions. -->
                 <div class="form-check">
                   <label for="all">
-                    <input class="form-check-input double" type="radio" name="featureRadios" id="all" value="all"> All Features
+                    <input class="form-check-input double" type="radio" onclick="hideAllTC()" name="featureRadios" id="all" value="all"> All Features
                   </label>
                 </div>
                 <!-- Use If statement to check if user has appropriate permissions. -->
@@ -300,20 +300,27 @@
               </div>
               <div class="modal-body">
                 <ul style="text-align:left; list-style-type: none;" class="liAlign">
-                  <li class="list testcasechoice">
+                  <li class="list testcasechoice" id="allTCs">
                     <span id="TestCaseParent">
-                      <input id="TCAll" class="double testcasechoice" type="checkbox" onclick="">ALL
-                      <!-- onclick="displayChecked(TCAll, theTestCases, TCAll, selectedTestCases)" -->
+                      <input id="TCAll" class="double testcasechoice" type="checkbox" onclick="displayChecked(this.id, 'theTestCases', 'TCAll', 'chosenTestCases', 'p')">&nbsp;all
                     </span>
                   </li>
                 </ul>
                 <ul style="text-align:left; list-style-type: none;" class="liAlign" id="theTestCases">
+                  <!-- <li class="list testcasechoice" id="allTCs">
+                    <span id="TestCaseParent">
+                      <input id="TCAll" class="double testcasechoice" type="checkbox" onclick="displayChecked(this.id, 'theTestCases', 'TCAll', 'chosenTestCases', 'p')">&nbsp;all
+                    </span>
+                  </li> -->
+
                   <!-- <input class="double testcasechoice" type="checkbox" />    These are populated by the grabTCsForFeature function on the runTest.js file -->
+                  
                 </ul>
               </div>
               <div class="modal-footer">
                 <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> Currently we do not need a separate exit button and the exit feature is built into SAVE-->
-                <button type="button" class="btn btn-primary" onclick="showTCs()" data-dismiss="modal">Save selections</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Save selections</button>  
+                <!-- this button used to have onclick="showTCs()"  -->
               </div>
             </div>
           </div>
@@ -374,10 +381,9 @@
       </div>
       <div class="col-lg-4 option-box">
         <p id="testNames"></p>
-        <p>Languages:<div id="chosenLangs"></div></p>
-        
+        <p>Languages:<div id="chosenLangs"></div></p>        
         <p id="selectedTemplates">Template:</p>
-        <p id="selectedTestCases">Test Cases: </p>
+        <p>Test Cases: <div id="chosenTestCases"></div></p>
         <p id="selectedURLs">URLs: </p>
         <p><label for="description">Description:</label><textarea class="form-control" rows="5" id="description"></textarea></p>
       </div>

@@ -110,7 +110,7 @@
             langinputItem.setAttribute("class", "lang double");
             langinputItem.setAttribute("type", "checkbox");
             langinputItem.setAttribute("id", theLanguages[x]);
-            langinputItem.setAttribute("onclick", "displayChecked(this.id, 'langList', 'LAll', 'langChildren')");
+            langinputItem.setAttribute("onclick", "displayChecked(this.id, 'langList', 'LAll', 'langChildren', 'span')");
             
             var langtextnode = document.createTextNode("  " + theLanguages[x]);  
             node.appendChild(span);
@@ -131,7 +131,7 @@
             templateItem.setAttribute("class", "FX double");
             templateItem.setAttribute("type", "checkbox");
             templateItem.setAttribute("id", theTemplates[x]);
-            templateItem.setAttribute("onclick", "displayChecked(this.id, 'featureUL','All','pageChildren')");
+            templateItem.setAttribute("onclick", "displayChecked(this.id, 'featureUL','All','pageChildren', 'span')");
 
             var thePage="";
             switch (theTemplates[x]){
@@ -269,7 +269,7 @@
             if (String(statusEndTime[i]) != "Fri Jan 02 1970 00:00:00 GMT-0800 (Pacific Standard Time)"){ %>
               <li class="dropdown-item radial">
               <span id="dateParent-<%=[i]%>">
-                  <input id="<%= dateIds[i] %>" class="date double" value="<%=testDescription[i] %>" onclick="displayChecked(this.id, 'dateParent-<%=[i]%>', 'none', 'radialChild'); displayInfo(this.value, this.id);" type="radio" name="date" />&nbsp; <%= dates[i] %> | <%=testDescription[i] %></span>
+                  <input id="<%= dateIds[i] %>" class="date double" value="<%=testDescription[i] %>" onclick="displayChecked(this.id, 'dateParent-<%=[i]%>', 'none', 'radialChild', 'span'); displayInfo(this.value, this.id);" type="radio" name="date" />&nbsp; <%= dates[i] %> | <%=testDescription[i] %></span>
               </li>
           <% }} %>
         </ul>
@@ -292,7 +292,7 @@
           <!-- the 'ALL' option has to be available for the displaychecked.js funciton to work properly - set to style="display:none; if wanted" -->
           <li class="width-set dropdown-item" id="langAll"> 
             <span>
-              <input id="LAll" class="lang double" onclick="displayChecked(this.id, 'langList', 'LAll', 'langChildren')" type="checkbox" />&nbsp; All
+              <input id="LAll" class="lang double" onclick="displayChecked(this.id, 'langList', 'LAll', 'langChildren', 'span')" type="checkbox" />&nbsp; All
             </span>
           </li>
         </ul>
@@ -311,7 +311,7 @@
           <!-- the 'ALL' option has to be available for the displaychecked.js funciton to work properly - set to display:none;-->
           <li class="dropdown-item" id="tempAll">   
             <span>
-              <input id="All" class="FX double" onclick="displayChecked(this.id, 'featureUL', 'All', 'pageChildren')" type="checkbox" />&nbsp; All
+              <input id="All" class="FX double" onclick="displayChecked(this.id, 'featureUL', 'All', 'pageChildren', 'span')" type="checkbox" />&nbsp; All
             </span>
           </li>
         </ul>
