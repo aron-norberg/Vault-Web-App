@@ -153,38 +153,156 @@ exports.postTest = function(req, res, next) {
   let now = new Date();
   let jsonTestparams = JSON.stringify(req.body);
 
+  req.testParams = JSON.parse(jsonTestparams);
 
-  req.testParams = jsonTestparams;
+  // query db for number of tests to run based on user selection
+  getTotalNumberOfTestCases(req.testParams).then(count => {
 
-  //console.log("This is the json object you are reading:\n");
+    console.log("this is the actual count of test cases to run: " + count);
 
-  // Get time down to millisecond, preventing duplication.
+    // add thet test count to object
+    req.testParams.count = count;
 
-  let currentTime = dateFormat(now, "ddddmmmmdSyyyyhMMsslTT");
+    jsonTestparams = JSON.stringify(req.testParams)
+    
+    //console.log("This is the json object you are reading:\n");
 
-  let directory = behat_path + "/tmp/" + currentTime;
+    // Get time down to millisecond, preventing duplication...with some degree of certainty
+    let currentTime = dateFormat(now, "ddddmmmmdSyyyyhMMsslTT");
 
-  fs.mkdir(directory, function(err) {
-    if (err) {
-      console.log('failed to create directory', err);
-    } else {
-      fs.writeFile(directory + "/temp.json", jsonTestparams, function(err) {
-        if (err) {
-          console.log('error writing file', err);
-        } else {
+    let directory = behat_path + "/tmp/" + currentTime;
 
-          let jsonPath = directory + "/temp.json";
+    fs.mkdir(directory, function(err) {
+      if (err) {
+        console.log('failed to create directory', err);
+      } else {
+        fs.writeFile(directory + "/temp.json", jsonTestparams, function(err) {
+          if (err) {
+            console.log('error writing file', err);
+          } else {
 
-          console.log(jsonPath);
+            let jsonPath = directory + "/temp.json";
 
-          console.log('writing file succeeded');
+            console.log(jsonPath);
 
-          req.jsonpath = jsonPath;
+            console.log('writing file succeeded');
 
-          next();
-        }
-      });
+            req.jsonpath = jsonPath;
+
+            next();
+          }
+        });
+      }
+    });
+
+  }).catch((err) => {
+
+    console.log('error: ' + err);
+    return err;
+
+  })
+}
+
+
+exports.startProcess = function(req, res) {
+
+  let jsonPath = req.jsonpath;
+
+  // read json data and get test parameters
+
+  // Expiremental Spawn Process Behavior 
+  let options = {
+    cwd: rootPath,
+    detached: true
+  }
+
+  let spawn = require('child_process').spawn,
+    script = spawn('perl', ['start.pl', 'json', jsonPath], options);
+
+  console.log("The pid is " + script.pid);
+
+  // get output 
+  script.stdout.on('data', (data) => {
+    //script.stdin.write(data);
+    let dataString = String(data)
+    console.log(dataString);
+    broadcastData(req, res, dataString);
+
+  });
+
+  script.stderr.on('data', (data) => {
+    console.log(`ps stderr: ${data}`);
+  });
+
+  script.on('close', (code) => {
+    if (code !== 0) {
+
+      console.log(`start Script process exited with code ${code}`);
     }
+    script.stdin.end();
+  });
+
+
+  res.sendStatus(200);
+
+}
+
+
+exports.stopTest = function(req, res) {
+
+  let id = req.query.testid;
+
+  // Query Test Pass by id, get the PID
+  db.sequelize.query(`SELECT Note from TestPass where TestPassId = "${id}"`).then(pid => {
+
+    pid = pid[0][0].Note;
+    // Remove extraneous Text
+    pid = pid.replace(/PID: /i, '');
+
+
+    // key is :: 
+    // pkill -9 -p $PPID
+
+    /*
+
+    // Execute System command to stop the process by PID
+
+    let spawn = require('child_process').spawn,
+      script = spawn('pkill', ['-9', pid]);
+
+    // get output 
+    script.stdout.on('data', (data) => {
+      //script.stdin.write(data);
+      let dataString = String(data)
+      console.log(dataString);
+    });
+
+    script.stderr.on('data', (data) => {
+      console.log(`ps stderr: ${data}`);
+    });
+
+    script.on('close', (code) => {
+      if (code !== 0) {
+        console.log(`stop Script process exited with code ${code}`);
+      }
+      script.stdin.end();
+    });
+
+    console.log(" I should be killing the processes.")
+
+    */
+
+
+    res.sendStatus(200);
+
+
+
+    return null;
+
+  }).catch((err) => {
+    console.log('error: ' + err);
+    return err;
+
   });
 }
 
@@ -258,117 +376,3 @@ function getTotalNumberOfTestCases(testParameterObject) {
   });
 }
 
-
-exports.startProcess = function(req, res) {
-
-  let jsonPath = req.jsonpath;
-
-  // read json data and get test parameters
-
-  // Expiremental Spawn Process Behavior 
-  let options = {
-    cwd: rootPath,
-    detached: true
-  }
-
-  let spawn = require('child_process').spawn,
-    script = spawn('perl', ['start.pl', 'json', jsonPath], options);
-
-  console.log("The pid is " + script.pid);
-
-  // get output 
-  script.stdout.on('data', (data) => {
-    //script.stdin.write(data);
-    let dataString = String(data)
-    console.log(dataString);
-    broadcastData(req, res, dataString);
-
-  });
-
-  script.stderr.on('data', (data) => {
-    console.log(`ps stderr: ${data}`);
-  });
-
-  script.on('close', (code) => {
-    if (code !== 0) {
-
-      console.log(`start Script process exited with code ${code}`);
-    }
-    script.stdin.end();
-  });
-
-  // query db for number of tests to run based on user selection
-  getTotalNumberOfTestCases(JSON.parse(req.testParams)).then(count => {
-
-    console.log("this is the actual count of test cases to run: " + count);
-
-    res.sendStatus(200);
-
-  }).catch((err) => {
-
-    console.log('error: ' + err);
-    return err;
-
-  })
-}
-
-
-exports.stopTest = function(req, res) {
-
-  let id = req.query.testid;
-
-  // Query Test Pass by id, get the PID
-  db.sequelize.query(`SELECT Note from TestPass where TestPassId = "${id}"`).then(pid => {
-
-    pid = pid[0][0].Note;
-    // Remove extraneous Text
-    pid = pid.replace(/PID: /i, '');
-
-    /*
-
-    // Execute System command to stop the process by PID
-
-    let spawn = require('child_process').spawn,
-      script = spawn('kill', ['-9', pid]);
-
-    // get output 
-    script.stdout.on('data', (data) => {
-      //script.stdin.write(data);
-      let dataString = String(data)
-      console.log(dataString);
-    });
-
-    script.stderr.on('data', (data) => {
-      console.log(`ps stderr: ${data}`);
-    });
-
-    script.on('close', (code) => {
-      if (code !== 0) {
-        console.log(`stop Script process exited with code ${code}`);
-      }
-      script.stdin.end();
-    });
-
-    console.log(" I should be killing the process.")
-
-    */
-
-    getTotalNumberOfTestCases(req.testParams).then(testPassData => {
-
-      res.sendStatus(200);
-
-    }).catch((err) => {
-
-      console.log('error: ' + err);
-      return err;
-
-    })
-
-    return null;
-
-  }).catch((err) => {
-    console.log('error: ' + err);
-    return err;
-
-  });
-}
