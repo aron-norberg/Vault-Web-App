@@ -236,7 +236,7 @@ body {
 #delBtnCont {
   width: 100px;
   float: right;
-  display: none;
+  display: block;
   padding-top: 10px;
   border: 0px solid #000;
 }
