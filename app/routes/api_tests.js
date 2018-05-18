@@ -18,45 +18,81 @@ let rootPath = path.normalize(__dirname + '../../../');
 rootPath = rootPath + '/behat_projects/master_tests';
 let behat_path = rootPath;
 
-function broadcastData(req, res, dataString) {
+function broadcastData(req, res, dataString, count, ppid) {
 
   const io = req.app.get('socketio');
-
-  io.on('connection', function(client) {
-
-    console.log('Connection to client established');
-
-    //client.emit('message', "hello frank");
-
-    // Success!  Now listen to messages to be received
-    client.on('connection', function(event) {
-      console.log('Received message from client!', event);
-    });
-
-    client.on('disconnect', function() {
-      console.log('Server has disconnected');
-    });
-  });
-
+  
   let testId = "";
 
   if (dataString.search(/The test pass/) !== -1) {
-
     testId = dataString.match(/'([^']+)'/)[1]
-
-    //console.log("This should only be for the test pass id");
-    //console.log(dataString);
-    //io.sockets.emit('message', dataString);
   }
 
   if (testId) {
 
-    // Only emit test start id
-    // and test end id
-    io.sockets.emit('test-run', testId);
-    console.log(testId);
-  }
+    // Brodcast Test Pass Progress
+    // Only initiate if testId contains start-id
+    if (testId.includes("start")) {
+      broadcastTestProgress(req, testId, count, ppid);
+    }
 
+    io.sockets.emit('test-run', testId);
+  }
+}
+
+// Long poll the db 
+function broadcastTestProgress(req, testId, count, ppid) {
+  const io = req.app.get('socketio');
+
+  testId = testId.replace(/start-id:/g, "");
+
+  let intervalId = setInterval(() => { checkIfProcessRunningByPPID(ppid).then(result => {
+    // Check that the process is actually running.
+    db.sequelize.query(`Select count(*) from Result where TestPassId = ${testId}`).then(resultCount => {
+
+      resultCount = resultCount[0][0]['count(*)'];
+
+      // divide resultCount and count to get the percentage
+      let percentage = ((resultCount / count) * 100).toFixed(2);
+
+
+
+      let countOutput = `Test Id: ${testId} - percentage: ${percentage} %`;  
+
+      console.log(countOutput);
+
+      io.sockets.emit('test-progress', countOutput);
+
+    }).catch((err) => {
+      console.log('error: ' + err);
+      return err;
+    })
+
+  }).catch(err => {
+    clearInterval(intervalId);
+    console.log(`test-progress complete for test id: ${testId}`);
+
+  })}, 1500);
+};
+
+
+// beta tests...may need to loop process to ensure working as expected.
+
+function checkIfProcessRunningByPPID(ppid) {
+  return new Promise((resolve, reject) => {
+    const { spawn } = require('child_process');
+    const ps = spawn('ps', [`${ppid}`]);
+    ps.stdout.on('data', (data) => {
+      let output = data.toString();
+      //console.log(output);
+      if (output.includes("perl")) {
+        resolve("true");
+      } else {
+        reject("false");
+      }
+
+    });
+  });
 }
 
 
@@ -158,13 +194,11 @@ exports.postTest = function(req, res, next) {
   // query db for number of tests to run based on user selection
   getTotalNumberOfTestCases(req.testParams).then(count => {
 
-    console.log("this is the actual count of test cases to run: " + count);
-
     // add thet test count to object
     req.testParams.count = count;
 
     jsonTestparams = JSON.stringify(req.testParams)
-    
+
     //console.log("This is the json object you are reading:\n");
 
     // Get time down to millisecond, preventing duplication...with some degree of certainty
@@ -175,19 +209,22 @@ exports.postTest = function(req, res, next) {
     fs.mkdir(directory, function(err) {
       if (err) {
         console.log('failed to create directory', err);
+
       } else {
+
         fs.writeFile(directory + "/temp.json", jsonTestparams, function(err) {
+
           if (err) {
+
             console.log('error writing file', err);
+
           } else {
 
             let jsonPath = directory + "/temp.json";
 
-            console.log(jsonPath);
-
-            console.log('writing file succeeded');
-
             req.jsonpath = jsonPath;
+
+            req.count = count
 
             next();
           }
@@ -207,6 +244,7 @@ exports.postTest = function(req, res, next) {
 exports.startProcess = function(req, res) {
 
   let jsonPath = req.jsonpath;
+  let count = req.count;
 
   // read json data and get test parameters
 
@@ -221,12 +259,16 @@ exports.startProcess = function(req, res) {
 
   console.log("The pid is " + script.pid);
 
+  // obtain the parent pid to verify that the script is running.
+
+  let ppid = script.pid
+
   // get output 
   script.stdout.on('data', (data) => {
     //script.stdin.write(data);
     let dataString = String(data)
-    console.log(dataString);
-    broadcastData(req, res, dataString);
+    //console.log(dataString);
+    broadcastData(req, res, dataString, count, ppid);
 
   });
 
@@ -242,11 +284,13 @@ exports.startProcess = function(req, res) {
     script.stdin.end();
   });
 
+  let testPassCount = {
+    "testpassCount": count
+  }
 
-  res.sendStatus(200);
-
+  testPassCount = JSON.stringify(testPassCount);
+  res.send(testPassCount);
 }
-
 
 exports.stopTest = function(req, res) {
 
@@ -375,4 +419,3 @@ function getTotalNumberOfTestCases(testParameterObject) {
 
   });
 }
-

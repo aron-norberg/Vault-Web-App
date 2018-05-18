@@ -373,7 +373,10 @@
         <p id="selectedTemplates">Template:</p>
         <p id="selectedTestCases">Test Cases: </p>
         <p id="selectedURLs">URLs: </p>
-        <p><label for="description">Description:</label><textarea class="form-control" rows="5" id="description"></textarea></p>
+        <p>
+          <label for="description">Description:</label>
+          <textarea class="form-control" rows="5" id="description"></textarea>
+        </p>
       </div>
     </div>
     <!-- end of Row -->
@@ -406,11 +409,10 @@
                       <td>
                         <%= liveStatus[i].runDate %>
                       </td>
-                      <td>
-                        <span class="dot-light-on"></span>
+                      <td id=<%= liveStatus[i].id %>-progress'></td>
                       </td>
                       <td>
-                        <button type="button" class="btn btn-sm btn-primary" onclick="getInfo(<%= liveStatus[i].id %>)">Info</button> 
+                        <button type="button" class="btn btn-sm btn-primary" onclick="getInfo(<%= liveStatus[i].id %>)">Info</button>
                       </td>
                       <td>
                         <button type="button" class="btn btn-sm btn-danger" onclick="stopTest(<%= liveStatus[i].id %>)">Stop</button>
@@ -433,5 +435,83 @@
   <!-- end .container-fluid -->
   <br>
   <br>
+  <script>
+  // Socket Connections for running tests // 
+
+  let socket = io.connect('/');
+
+  socket.on('test-run', function(msg) {
+
+    // Remove temporary loading row
+    if (msg.includes("start-id")) {
+
+      console.log(msg);
+
+      $(".temp-loader-row").empty().remove(); // removes the row and the contents within row
+
+      let timestamp = getTimeStamp()
+      let id = msg.replace("start-id:", "");
+
+      let $cell1 = `<td>${id}</td>`;
+      let $cell2 = `<td>${timestamp}</td>`;
+      let $cell3 = `<td id='${id}-progress'></td>`;
+      let $cell4 = `<td><button type="button" class="btn btn-sm btn-primary" onclick="getInfo(${id})">Info</button></td>`;
+      let $cell5 = `<td><button type="button" class="btn btn-sm btn-danger" onclick="stopTest(${id})">Stop</button></td>`;
+
+      let $newRow = $('#test-status-table').prepend($(`<tr id="${id}">`));
+
+      $newRow = $(`#${id}`);
+
+      let $newRowItem = $($newRow).hide().prepend($cell1 + $cell2 + $cell3 + $cell4 + $cell5).fadeIn(1000);
+      document.getElementById("notice").innerHTML = "";
+
+    } else if (msg.includes("complete-id")) {
+
+      console.log(msg);
+
+      let id = msg.replace("complete-id:", "");
+
+      let $oldRow = $(`#${id}`);
+
+      $($oldRow).empty().remove(); // removes the row and the contents within row
+
+    }
+
+  });
+
+  socket.on('test-progress', function(msg) {
+    // message for progres bar
+
+    console.log("message from test Progress:\n");
+
+    // id of td is #id-progress 
+    
+    if(msg.includes("percentage")){
+      // get id and percentage and update correct field
+
+      let msgArray = msg.split(" ");
+
+      let testId = msgArray[2];
+      let percentage = msgArray[5];
+
+      $(`#${testId}-progress`).html(`${percentage} %`);
+
+    }else{
+      // get id and mark test as complete.
+
+      let msgArray = msg.split(" ");
+
+      let testId = msgArray[5];
+
+      console.log("the test id is " + testId);
+
+      $(`#${testId}-progress`).html(`Complete`);
+
+    }
+
+  });
+  // Socket Connections end here //
+
+  </script>
   <script src="/js/runTest.js"></script>
   <%- include('footer') %>

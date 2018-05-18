@@ -1,51 +1,5 @@
 'use strict';
 // Invoke 'strict' JavaScript mode
-// Socket Connections for running tests // 
-
-let socket = io.connect('/');
-
-socket.on('test-run', function(msg) {
-
-  // Remove temporary loading row
-
-  if (msg.includes("start-id")) {
-
-    console.log(msg);
-
-    $(".temp-loader-row").empty().remove(); // removes the row and the contents within row
-
-    let timestamp = getTimeStamp()
-    let id = msg.replace("start-id:", "");
-
-    let $cell1 = `<td>${id}</td>`;
-    let $cell2 = `<td>${timestamp}</td>`;
-    let $cell3 = '<td><span class="dot-light-on"></span></td>';
-    let $cell4 = `<td><button type="button" class="btn btn-sm btn-primary" onclick="getInfo(${id})">Info</button></td>`;
-    let $cell5 = `<td><button type="button" class="btn btn-sm btn-danger" onclick="stopTest(${id})">Stop</button></td>`;
-
-    let $newRow = $('#test-status-table').prepend($(`<tr id="${id}">`));
-
-    $newRow = $(`#${id}`);
-
-    let $newRowItem = $($newRow).hide().prepend($cell1 + $cell2 + $cell3 + $cell4 + $cell5).fadeIn(1000);
-    document.getElementById("notice").innerHTML="";
-
-  } else if (msg.includes("complete-id")) {
-
-    console.log(msg);
-
-    let id = msg.replace("complete-id:", "");
-
-    let $oldRow = $(`#${id}`);
-
-    $($oldRow).empty().remove(); // removes the row and the contents within row
-
-  }
-
-});
-
-
-// Socket Connections end here //
 
 
 // test run Selection Functions //
@@ -198,12 +152,12 @@ function runit() {
   langs = langs.replace(/ /g, "");
   langs = langs.slice(0, -1);
   langs = langs.split(",");
-  console.log(langs[0].length +" langs = " + langs);
+  //console.log(langs[0].length +" langs = " + langs);
 
   let temp = templateParagraph.innerHTML.substring(9);
   temp = temp.replace(/&nbsp;/g, "");
   temp = temp.replace(/ /g, "");
-  console.log(temp.length+" temp = " + temp);
+  //console.log(temp.length+" temp = " + temp);
 
   let tcs = tcParagraph.innerHTML.substring(11);
   tcs = tcs.replace(/ /g, "");
@@ -212,12 +166,12 @@ function runit() {
     tcIDs[x] = tcIDs[x].split("\|")[0];
   }
   tcIDs.shift();
-  console.log(tcIDs.length +" tcIDs = " + tcIDs);
+  //console.log(tcIDs.length +" tcIDs = " + tcIDs);
 
   let urlChoices = urlParagraph.innerHTML.substring(7)
   urlChoices = urlChoices.replace(/&nbsp;/g, "");
   urlChoices = urlChoices.replace(" URLs", "");
-  console.log(urlChoices.length+" urlChoices = " + urlChoices);
+  //console.log(urlChoices.length+" urlChoices = " + urlChoices);
   if(langs.length == 0 ||tcIDs.length ==0 || urlChoices.length ==0){
     if (langs[0].length ==0){
       alert("Please select at least one language to test.");
@@ -246,7 +200,6 @@ function runit() {
 
   console.log(object);
 
-  
   $.ajax({
     url: '/run-test',
     type: 'POST',
@@ -256,8 +209,13 @@ function runit() {
       console.log(data);
     },
     success: function(data) {
+
       console.log(data);
       console.log("Successful post request.");
+
+      data = JSON.parse(data); 
+
+      console.log("the test pass count is " + data.testpassCount);
       
     }
   })
