@@ -167,8 +167,8 @@
 function displayChecked(checkedID, ULID, allID, destinationID) {
 	var checkBox = document.getElementById(checkedID);  // Get the selected item
 	var parentClass=checkBox.parentNode.parentNode.className; // grabs the UL's class
-	var text = checkBox.parentNode.textContent; // Get the checkbox's text (in the <span>)
-	var paragraph = document.createElement("p");  //create a paragraph
+	var text = checkBox.parentNode.textContent + ", "; // Get the checkbox's text (in the <span>)
+	var paragraph = document.createElement("span");  //create a paragraph
 	var content = document.createTextNode(text);   //create text (for the new paragraph)    
 	var checkboxes = new Array();
 	var allBox = document.getElementById(allID);
@@ -228,8 +228,8 @@ function displayChecked(checkedID, ULID, allID, destinationID) {
 					//goes through all the possibilities, and if there was a checkbox for it, but it wasn't the ALL or Eliminator, add a paragraph for it
 					for(var i=1; i<checkboxes.length-1; i++){
 						if(checkboxes[i].checked && checkboxes[i].parentNode.parentNode.parentNode.id == ULID){
-							var text = checkboxes[i].id;
-							var paragraph = document.createElement("p");
+							var text = checkboxes[i].id + ", ";
+							var paragraph = document.createElement("span");
 							var content = document.createTextNode(text);
 							var placement = document.getElementById(destinationID);
 

@@ -64,7 +64,7 @@ socket.on('test-run', function(msg) {
 let langArrayTestRunner = document.getElementsByClassName('lang double');
 let templateArray = document.getElementsByClassName("form-check-input double");
 
-let langParagraph = document.getElementById("selectedLanguages");
+let langParagraph = document.getElementById("chosenLangs");
 let tcParagraph = document.getElementById("selectedTestCases");
 let templateParagraph = document.getElementById("selectedTemplates");
 let urlParagraph = document.getElementById("selectedURLs");
@@ -124,18 +124,28 @@ function grabTCsForFeature() {
   })
 }
 
-function showLangs() { //this shows the languages selected in the selections area
-  langParagraph.innerHTML = "Languages: ";
+// function showLangs() { //this shows the languages selected in the selections area
+//   langParagraph.innerHTML = "Languages: ";
+//   for (var x = 0; x < langArrayTestRunner.length; x++) {
+//     if (langArrayTestRunner[x].checked == true) {
+//       langParagraph.innerHTML = langParagraph.innerHTML + "&nbsp" + langArrayTestRunner[x].id + ", ";
+//       templateButton.removeAttribute("disabled");
+//     }
+//   }
+// }
+function unhideTemplates(){ //this function unhides the Template button
+  console.log("number of items with class is lang double = " +langArrayTestRunner.length);
   for (var x = 0; x < langArrayTestRunner.length; x++) {
     if (langArrayTestRunner[x].checked == true) {
-      langParagraph.innerHTML = langParagraph.innerHTML + "&nbsp" + langArrayTestRunner[x].id + ", ";
       templateButton.removeAttribute("disabled");
     }
   }
+
 }
 
+
 function showTemplates() {
-  let langParagraphLength = document.getElementById("selectedLanguages").innerHTML;
+  let langParagraphLength = document.getElementById("chosenLangs").innerHTML;
   templateParagraph.innerHTML = "Template: ";
   for (var q = 0; q < templateArray.length; q++) {
     if (templateArray[q].checked == true) {
@@ -193,7 +203,7 @@ function runit() {
 
   let description = descriptionBox.value;
   // console.log("description = "+description);
-  let langs = langParagraph.innerHTML.substring(10);
+  let langs = langParagraph.innerHTML;
   langs = langs.replace(/&nbsp;/g, "");
   langs = langs.replace(/ /g, "");
   langs = langs.slice(0, -1);
