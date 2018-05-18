@@ -7,7 +7,8 @@ const dateFormat = require('dateformat');
 
 
 // Create a new 'render' controller method
-exports.getOverview = function(req, res) {                  // this runs when the user comes to the page, or selects from the dropdown menu of test date options
+// this runs when the user comes to the page, or selects from the dropdown menu of test date options
+exports.getOverview = function(req, res) {
   
   let feature = "ALL";
   let language = "ALL";
@@ -192,7 +193,46 @@ exports.getOverview = function(req, res) {                  // this runs when th
 
   }
 
-};
+}; // end exports.getOverview = function(req, res)
+
+
+
+
+
+
+exports.deleteTestCases = function(req, res) {
+  // console.log('Hey everyone I found Waldo!');
+  let Id = req.query.Id; //GET method
+  
+  console.log('Here is your Id number - ' + Id);
+
+  
+  // select count(*) from results where result = 'SKIP';
+  /*db.sequelize.destroy({
+    where: {
+      Id: req.query.Id
+    }
+
+  }).then(function (deletedRecord) {
+    if(deletedRecord === 1){
+      res.status(200).json({message:"Deleted successfully"});          
+    }
+    else {
+      res.status(404).json({message:"record not found"})
+    }
+
+  }).catch(function(err) {
+    console.log('error: ' + err);
+    return err;
+
+  });*/
+
+} // end exports.deleteTestCases = function(req, res)
+
+
+
+
+
 
 //app.get('/dashboard/custom/:custom', api_dashbboard.getResultMetaByCustom)
 

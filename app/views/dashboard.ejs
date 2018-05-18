@@ -181,6 +181,41 @@
               Description: <%= testPassInfo.Description %></span>
         <% } %>
       </div>
+
+
+      <div style="width: 100px; float: right; padding-top: 10px; border: 0px solid #000;">
+        <input type="button" id="delBtn" value="Delete" onclick="deleteTestCase(<%= testPassInfo.TestPassId %>);" />
+      </div>
+
+      <script>
+
+      function deleteTestCase(Id) {
+        // console.log("Hello Waldo! I found you." + Id);
+
+        $.ajax({
+          url: "/deleteTestCases",
+          type: "GET",
+          dataType: "html",
+          data: {
+            Id: Id
+          },
+          success : function() {
+            console.log('success');
+            location.reload(true);  //Refresh page
+
+          }, // end success : function()
+          error : function() {
+            console.log('error');
+
+          } // end error : function()
+
+        }); // end .ajax()
+
+      } // end deleteTestCase()
+
+      </script>
+
+
     </div><!-- end .col-lg-4 col-xl-3 -->
   </div><!-- end .row / #dashboard-1 -->
   <!-- Dashboard-1 END -->

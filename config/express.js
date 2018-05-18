@@ -184,6 +184,12 @@ module.exports = function() {
   app.get('/dashboard/locale/:locale', isLoggedIn, api_dashboard.getResultMetaByLocale);
   app.get('/dashboard/query/:custom', isLoggedIn, api_dashboard.getResultMetaByCustom);
 
+
+  
+  app.get('/deleteTestCases', isLoggedIn, api_dashboard.deleteTestCases);
+
+
+
   // Results Pages 
   // locale - ok
   // locale - testresult - o
