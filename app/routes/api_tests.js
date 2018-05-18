@@ -330,7 +330,7 @@ function getTotalNumberOfTestCases(testParameterObject) {
 
         // evaulate if language is all
 
-        if (languageSelection == "all") {
+        if (languageSelection == "All") {
           languageSelection = "%";
         }
         // evaulate if feature is all
