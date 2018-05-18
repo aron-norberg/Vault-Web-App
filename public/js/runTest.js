@@ -206,19 +206,20 @@ function runit() {
   let spans = langParagraph.childNodes;
   let langArray = [];
   for (var x =0; x<spans.length; x++){
-    langArray.push(spans[x].innerText);
+    var y = spans[x].innerText.slice(0,-2);
+    y = y.replace(/ /g, "");
+    langArray.push(y);
   }
-  let langs = langArray.toString();
-  langs = langs.replace(/&nbsp;/g, "");
-  langs = langs.replace(/ /g, "");
-  langs = langs.slice(0, -1);
-  langs = langs.split(",,");
-  console.log(langs[0].length +" langs = " + langs);
+  // console.log("langArray is -"+langArray);
+  var langs = langArray.toString();
+  langs = langs.replace(/\s/g, "");
+  langs = langs.split(",");
+  // console.log(langs[0].length +" langs = " + langs);
 
   let temp = templateParagraph.innerHTML.substring(9);
   temp = temp.replace(/&nbsp;/g, "");
   temp = temp.replace(/ /g, "");
-  console.log(temp.length+" temp = " + temp);
+  // console.log(temp.length+" temp = " + temp);
 
   let tcs = tcParagraph.innerHTML.substring(11);
   tcs = tcs.replace(/ /g, "");
@@ -227,12 +228,12 @@ function runit() {
     tcIDs[x] = tcIDs[x].split("\|")[0];
   }
   tcIDs.shift();
-  console.log(tcIDs.length +" tcIDs = " + tcIDs);
+  // console.log(tcIDs.length +" tcIDs = " + tcIDs);
 
   let urlChoices = urlParagraph.innerHTML.substring(7)
   urlChoices = urlChoices.replace(/&nbsp;/g, "");
   urlChoices = urlChoices.replace(" URLs", "");
-  console.log(urlChoices.length+" urlChoices = " + urlChoices);
+  // console.log(urlChoices.length+" urlChoices = " + urlChoices);
   if(langs.length == 0 ||tcIDs.length ==0 || urlChoices.length ==0){
     if (langs[0].length ==0){
       alert("Please select at least one language to test.");
