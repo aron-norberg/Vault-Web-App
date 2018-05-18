@@ -230,9 +230,12 @@ function runit() {
   let tcs = tcParagraph.innerHTML;
   tcs = tcs.replace(/\<p\sid=\"/g,"");
   tcs = tcs.replace(/ /g, "");
+  tcs = tcs.replace(/&nbsp;/g, "");
+  tcs = tcs.replace(/,\<\/p\>/g, "");
   let tcIDs = tcs.split("\">");
   for (var x = 0; x < tcIDs.length; x++) {
     tcIDs[x] = tcIDs[x].split("\|")[0];
+    tcIDs[x] = tcIDs[x].replace(/\n/g,"");
   }
   // console.log(tcIDs);
   tcIDs.shift();
