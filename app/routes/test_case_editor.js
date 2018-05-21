@@ -159,11 +159,11 @@ function updateTestCaseAndTemplate(req, jsonObject){
                         
                 if(match<1){  
 
-                    resolve("gherkin successfully added.");
+                    resolve("Gherkin successfully added to the Test Database.");
     
                 }else{
     
-                    reject("duplicate found.");
+                    reject("The code entered is identical to code already found in the database. Duplicates will not be entered into the database. Changes will be saved.");
                 }
 
                 return null;
@@ -198,7 +198,7 @@ exports.postGherkin = function(req, res) {  // the user clicked on "Save Edits"
         res.send(response);
 
     }).catch(function(err) {
-        console.log('error fou d: ' + err);
+        console.log('error found: ' + err);
         res.send(err);
     })
 
