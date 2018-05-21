@@ -191,7 +191,6 @@ function runit() {
   }
   // console.log(tcIDs);
   tcIDs.shift();
-<<<<<<< HEAD
 
   // if(tcIDs[0] == "all"){    // can work on this to feed in TC IDs so James doesn't need to do a second query
   //   var tcArray = [];
@@ -199,14 +198,12 @@ function runit() {
 
   // }
   // console.log(tcIDs.length +" tcIDs = " + tcIDs);
-=======
->>>>>>> b28a9777db376edc0529a536810f91c5e6608d40
 
   let urlChoices = urlParagraph.innerHTML.substring(7)
   urlChoices = urlChoices.replace(/&nbsp;/g, "");
   urlChoices = urlChoices.replace(" URLs", "");
 
-  if(langs.length == 0 ||tcIDs.length ==0 || urlChoices.length ==0){
+  if(langs.length == 0 ||tcIDs.length ==0 || urlChoices.length ==0 || description.length ==0){
     if (langs[0].length ==0){
       alert("Please select at least one language to test.");
     }
@@ -216,10 +213,13 @@ function runit() {
     if (urlChoices.length ==0){
       alert("Please make a URL selection.");
     }
+    if (description.length ==0){
+      alert ("Please add a description to your test pass.");
+    }
     return;
   }
   else{
-    noticeBox.innerHTML=" one moment... ";
+    noticeBox.innerHTML=" loading... ";
   }
 
   let modalObject = {
