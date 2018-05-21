@@ -24,6 +24,11 @@ module.exports = function(sequelize, Sequelize) {
       allowNull: false
     },
 
+    role: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
+
     email: {
       type: Sequelize.CHAR,
       validate: {

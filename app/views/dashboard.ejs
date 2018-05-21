@@ -28,7 +28,7 @@
         var legendLocation = 'none';
         
       }
-      
+
       // Optional; add a title and set the width and height of the chart
       // Options can be variables such as title: $Title
       var options = {
@@ -275,6 +275,27 @@
 <script>
 
 document.addEventListener('DOMContentLoaded', function() { dashboardPage(); }, false);
+//document.addEventListener('DOMContentLoaded', function() { userRoles(); }, false);
+
+
+/*function userRoles() {
+  // Admin roles - allowing admin features to show
+  alert('working');
+  let userRole = req.user.role;
+  alert(userRole);
+
+  if (userRole === 2) {
+    console.log('user is Admin ' + userRole);
+    document.getElementById('delBtnCont').style.display = 'block';
+  }
+  else {
+    console.log('user is NOT Admin ' + userRole)
+    document.getElementById('delBtnCont').style.display = 'none';
+
+  } // end if/else
+
+} // end userRoles()*/
+
 
 
 // delete TestCase by Id
