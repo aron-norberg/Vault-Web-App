@@ -57,19 +57,15 @@
       <li class="nav-item">
         <a class="nav-link" href="/test-case-editor" onclick="loadingAnimation()">Test Case Editor</a>
       </li>
-
       
-      <% if(user.role === 2){ %>
+      <% if(typeof user == 'string' && user){ %>
       <li class="nav-item">
         <a class="nav-link" href="/signup" onclick="loadingAnimation()">Create User</a>
       </li>
-      <% } %>
-
-      <% if(typeof user == 'string' && user){ %>
       <li class="nav-item">
         <a class="nav-link" href="/logout" onclick="loadingAnimation()">Log Out</a>
       </li>
-
+      
       <% }else{ %>
       <li class="nav-item">
         <a class="nav-link" href="/login">Log In</a>
