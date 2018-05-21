@@ -35,7 +35,7 @@ exports.getOverview = function(req, res) {
 
 
   // Admin roles - allowing admin features to show
-  let userRole = req.user.role;
+  /*let userRole = req.user.role;
 
   if (userRole === 2) {
     console.log('user is Admin - role level ' + userRole);
@@ -46,7 +46,7 @@ exports.getOverview = function(req, res) {
     console.log('user is NOT Admin - role level ' + userRole)
     //document.getElementById('delBtnCont').style.display = 'none';
 
-  } // end if/else
+  } // end if/else*/
 
 
 
@@ -211,16 +211,6 @@ exports.getOverview = function(req, res) {
   }
 
 }; // end exports.getOverview = function(req, res)
-
-
-
-
-
-
-
-
-
-
 
 
 
