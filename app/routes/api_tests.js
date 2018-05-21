@@ -137,7 +137,8 @@ exports.getTestStatus = function(req, res) {
     res.render('test_status', {
 
       status: results.status,
-      testPass: results.testPass
+      testPass: results.testPass,
+      user: req.user
 
     })
 

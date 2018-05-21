@@ -33,23 +33,6 @@ exports.getOverview = function(req, res) {
   }
 
 
-
-  // Admin roles - allowing admin features to show
-  /*let userRole = req.user.role;
-
-  if (userRole === 2) {
-    console.log('user is Admin - role level ' + userRole);
-    //document.getElementById('delBtnCont').style.display = 'block';
-
-  }
-  else {
-    console.log('user is NOT Admin - role level ' + userRole)
-    //document.getElementById('delBtnCont').style.display = 'none';
-
-  } // end if/else*/
-
-
-
   // 1st Get latest test Pass id
   // If test Pass Id not passed as query string, get latest default
   //  testpassid = query string
@@ -162,7 +145,7 @@ exports.getOverview = function(req, res) {
                 resultsTotal: null,
                 languagesArray: lang,
                 currentUrl: req.url,
-                user: req.user.firstname,
+                user: req.user,
                 testPassData: testPassData,
                 testPassId: testPassId,
                 testPassInfo: testPassInfo,
@@ -356,7 +339,7 @@ exports.getResultMetaByCustom = function(req, res) {
                 resultsTotal: resultsTotal,
                 overall: overall,
                 currentUrl: req.url,
-                user: req.user.firstname,
+                user: req.user,
                 testPassData: testPassData,
                 testPassId: testPassId,
                 testPassInfo: testPassInfo,
@@ -530,7 +513,7 @@ exports.getResultMetaByLocale = function(req, res) {
                 resultsTotal: resultsTotal,
                 overall: overall,
                 currentUrl: req.url,
-                user: req.user.firstname,
+                user: req.user,
                 testPassData: testPassData,
                 testPassId: testPassId,
                 testPassInfo: testPassInfo,

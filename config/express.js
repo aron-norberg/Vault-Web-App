@@ -186,7 +186,6 @@ module.exports = function() {
 
   // Dashboard page - delete TestCase by Id
   app.get('/deleteTestCases', isLoggedIn, api_dashboard.deleteTestCases);
-
   
   // Results Pages 
   app.get('/results/locale/:locale', isLoggedIn, api_results.getResultByLanguage);

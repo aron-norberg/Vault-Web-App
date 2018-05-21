@@ -183,9 +183,11 @@
         <% } %>
       </div>
       
-      <div id="delBtnCont">
-        <input type="button" id="delBtn" value="Delete" onclick="deleteTestCase(<%= testPassInfo.TestPassId %>);" />
-      </div>
+      <% if(user.role === 2) { %>
+        <div id="delBtnCont">
+          <input type="button" id="delBtn" value="Delete" onclick="deleteTestCase(<%= testPassInfo.TestPassId %>);" />
+        </div>
+      <% } %>
 
     </div><!-- end .col-lg-4 col-xl-3 -->
   </div><!-- end .row / #dashboard-1 -->
@@ -275,27 +277,6 @@
 <script>
 
 document.addEventListener('DOMContentLoaded', function() { dashboardPage(); }, false);
-//document.addEventListener('DOMContentLoaded', function() { userRoles(); }, false);
-
-
-/*function userRoles() {
-  // Admin roles - allowing admin features to show
-  alert('working');
-  let userRole = req.user.role;
-  alert(userRole);
-
-  if (userRole === 2) {
-    console.log('user is Admin ' + userRole);
-    document.getElementById('delBtnCont').style.display = 'block';
-  }
-  else {
-    console.log('user is NOT Admin ' + userRole)
-    document.getElementById('delBtnCont').style.display = 'none';
-
-  } // end if/else
-
-} // end userRoles()*/
-
 
 
 // delete TestCase by Id

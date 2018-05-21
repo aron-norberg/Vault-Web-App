@@ -59,10 +59,13 @@
       </li>
 
       
-      <% if(typeof user == 'string' && user){ %>
+      <% if(user.role === 2){ %>
       <li class="nav-item">
         <a class="nav-link" href="/signup" onclick="loadingAnimation()">Create User</a>
       </li>
+      <% } %>
+
+      <% if(typeof user == 'string' && user){ %>
       <li class="nav-item">
         <a class="nav-link" href="/logout" onclick="loadingAnimation()">Log Out</a>
       </li>
