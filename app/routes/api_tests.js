@@ -21,7 +21,7 @@ let behat_path = rootPath;
 function broadcastData(req, res, dataString, count, ppid) {
 
   const io = req.app.get('socketio');
-  
+
   let testId = "";
 
   if (dataString.search(/The test pass/) !== -1) {
@@ -46,33 +46,35 @@ function broadcastTestProgress(req, testId, count, ppid) {
 
   testId = testId.replace(/start-id:/g, "");
 
-  let intervalId = setInterval(() => { checkIfProcessRunningByPPID(ppid).then(result => {
-    // Check that the process is actually running.
-    db.sequelize.query(`Select count(*) from Result where TestPassId = ${testId}`).then(resultCount => {
+  let intervalId = setInterval(() => {
+    checkIfProcessRunningByPPID(ppid).then(result => {
+      // Check that the process is actually running.
+      db.sequelize.query(`Select count(*) from Result where TestPassId = ${testId}`).then(resultCount => {
 
-      resultCount = resultCount[0][0]['count(*)'];
+        resultCount = resultCount[0][0]['count(*)'];
 
-      // divide resultCount and count to get the percentage
-      let percentage = ((resultCount / count) * 100).toFixed(2);
+        // divide resultCount and count to get the percentage
+        let percentage = ((resultCount / count) * 100).toFixed(2);
 
 
 
-      let countOutput = `Test Id: ${testId} - percentage: ${percentage} %`;  
+        let countOutput = `Test Id: ${testId} - percentage: ${percentage} %`;
 
-      console.log(countOutput);
+        console.log(countOutput);
 
-      io.sockets.emit('test-progress', countOutput);
+        io.sockets.emit('test-progress', countOutput);
 
-    }).catch((err) => {
-      console.log('error: ' + err);
-      return err;
+      }).catch((err) => {
+        console.log('error: ' + err);
+        return err;
+      })
+
+    }).catch(err => {
+      clearInterval(intervalId);
+      console.log(`test-progress complete for test id: ${testId}`);
+
     })
-
-  }).catch(err => {
-    clearInterval(intervalId);
-    console.log(`test-progress complete for test id: ${testId}`);
-
-  })}, 1500);
+  }, 1500);
 };
 
 
@@ -267,7 +269,7 @@ exports.startProcess = function(req, res) {
   script.stdout.on('data', (data) => {
     //script.stdin.write(data);
     let dataString = String(data);
-    console.log(dataString);
+    //console.log(dataString);
     broadcastData(req, res, dataString, count, ppid);
 
   });
@@ -373,7 +375,6 @@ function getTotalNumberOfTestCases(testParameterObject) {
         }
 
         // evaulate if language is all
-
         if (languageSelection == "all") {
           languageSelection = "%";
         }
@@ -400,19 +401,47 @@ function getTotalNumberOfTestCases(testParameterObject) {
           finalCount += count[i];
         }
 
-        // multiple final count by test Cases 
-        finalCount = finalCount * testParameterObject.TestCaseSelections.length;
-        console.log("The final count is " + finalCount);
+        // if test case selections is all, query db for correct test cases
+        if (testParameterObject.TestCaseSelections[0] == "all") {
 
+          db.sequelize.query(`select TestCaseId from Template where Id = '${testParameterObject.features}'`).then(testCaseCount => {
+
+            testCaseCount = testCaseCount[0][0].TestCaseId.split(',').length;
+
+            finalCount = finalCount * testCaseCount;
+
+            //console.log("The final count from inside the sequelize request " + finalCount);
+            if (finalCount) {
+              resolve(finalCount)
+
+            } else {
+              reject(finalCount);
+            }
+
+            return null;
+
+          }).catch((err) => {
+            //console.log("error querying test case count from template id.");
+            console.log('error: ' + err);
+            return err;
+
+          })
+
+          // process without querying the db.
+        } else {
+
+          // multiple final count by test Cases 
+          finalCount = finalCount * testParameterObject.TestCaseSelections.length;
+          //console.log("The final count is " + finalCount);
+
+          if (finalCount) {
+            resolve(finalCount)
+
+          } else {
+            reject(finalCount);
+          }
+        }
       })
-
-      if (finalCount) {
-        resolve(finalCount)
-
-      } else {
-
-        reject(finalCount);
-      }
     }
 
     getCount(testParameterObject);

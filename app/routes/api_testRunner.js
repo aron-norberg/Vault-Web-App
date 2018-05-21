@@ -69,7 +69,6 @@ exports.getTestCases = function(req, res) {
 
 
 function getTestCasesAndUrlsFromDB() { //this is not in use currently with URLs no longer being populated. Test case selections use the above function
-
   return new Promise(function(resolve, reject) {
 
     async.parallel({
