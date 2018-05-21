@@ -266,8 +266,8 @@ exports.startProcess = function(req, res) {
   // get output 
   script.stdout.on('data', (data) => {
     //script.stdin.write(data);
-    let dataString = String(data)
-    //console.log(dataString);
+    let dataString = String(data);
+    console.log(dataString);
     broadcastData(req, res, dataString, count, ppid);
 
   });
