@@ -6,5 +6,4 @@ exports.getHome = function(req, res) {
     title: 'Vault Automated Testing Suite',
     currentUrl: req.url,
   });
-
 };
