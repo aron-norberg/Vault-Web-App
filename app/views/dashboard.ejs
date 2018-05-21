@@ -19,8 +19,7 @@
         ['Failed', fails],
         ['Other', others],
       ]);
-      // Optional; add a title and set the width and height of the chart
-      // Options can be variables such as title: $Title
+
       var myTitle = '';
       if (<%= language =='ALL' %>) {
         var legendLocation = { textStyle: { fontSize: 20 }, alignment: 'center', position: 'left' };
@@ -28,8 +27,10 @@
       } else {
         var legendLocation = 'none';
         
-      };
-
+      }
+      
+      // Optional; add a title and set the width and height of the chart
+      // Options can be variables such as title: $Title
       var options = {
 
         'title': myTitle,
@@ -41,7 +42,7 @@
         <% } %>
         'backgroundColor': '',
         'is3D': true,
-        'chartArea': { width: '90%', height: '90%' },
+        'chartArea': { width: '80%', height: '80%' },
         'legend': legendLocation,
         'slices': {
           0: { offset: 0.0 },
@@ -181,40 +182,10 @@
               Description: <%= testPassInfo.Description %></span>
         <% } %>
       </div>
-
-
-      <div style="width: 100px; float: right; padding-top: 10px; display:none; border: 0px solid #000;">
+      
+      <div id="delBtnCont">
         <input type="button" id="delBtn" value="Delete" onclick="deleteTestCase(<%= testPassInfo.TestPassId %>);" />
       </div>
-
-      <script>
-
-      function deleteTestCase(Id) {
-        // console.log("Hello Waldo! I found you." + Id);
-
-        $.ajax({
-          url: "/deleteTestCases",
-          type: "GET",
-          dataType: "html",
-          data: {
-            Id: Id
-          },
-          success : function() {
-            console.log('success');
-            location.reload(true);  //Refresh page
-
-          }, // end success : function()
-          error : function() {
-            console.log('error');
-
-          } // end error : function()
-
-        }); // end .ajax()
-
-      } // end deleteTestCase()
-
-      </script>
-
 
     </div><!-- end .col-lg-4 col-xl-3 -->
   </div><!-- end .row / #dashboard-1 -->
@@ -302,7 +273,34 @@
 </div><!-- end .container-fluid -->
 
 <script>
+
 document.addEventListener('DOMContentLoaded', function() { dashboardPage(); }, false);
+
+
+// delete TestCase by Id
+function deleteTestCase(Id) {
+
+  $.ajax({
+    url: "/deleteTestCases",
+    type: "GET",
+    dataType: "html",
+    data: {
+      Id: Id
+    },
+    success : function() {
+      console.log('success');
+      window.location = '/dashboard';
+
+    }, // end success : function()
+    error : function() {
+      console.log('error');
+
+    } // end error : function()
+
+  }); // end .ajax()
+
+  } // end deleteTestCase()
+
 </script>
 
 <%- include('footer') %>

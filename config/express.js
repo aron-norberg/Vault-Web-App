@@ -184,20 +184,13 @@ module.exports = function() {
   app.get('/dashboard/locale/:locale', isLoggedIn, api_dashboard.getResultMetaByLocale);
   app.get('/dashboard/query/:custom', isLoggedIn, api_dashboard.getResultMetaByCustom);
 
-
-  
+  // Dashboard page - delete TestCase by Id
   app.get('/deleteTestCases', isLoggedIn, api_dashboard.deleteTestCases);
 
-
-
+  
   // Results Pages 
-  // locale - ok
-  // locale - testresult - o
-
   app.get('/results/locale/:locale', isLoggedIn, api_results.getResultByLanguage);
-
   app.get('/results/locale/:locale/testresult/:testresult', isLoggedIn, api_results.getResultByLangAndTestResult);
-
   app.get('/addNotesToResultsPage', isLoggedIn, api_DB_writer.addNotesToResultTable_DB);
   app.get('/addOwnerToResultsPage', isLoggedIn, api_DB_writer.addOwnerToResultTable_DB);
 

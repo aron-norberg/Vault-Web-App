@@ -35,6 +35,7 @@
     testdate = testdate.slice(0, -1);
     // testdate = testdate.substring(0, testdate.indexOf(' | '))
     console.log("the testdate is "+testdate);
+    console.log("/export?feature=" + template + "&language=" + language + "&testresult=" + testresult + "&query=" + query + "&testpassid=" + testdate);
 
     //the href will contain a list of each languages as 'en-us,de-de' and features will be 'f1,f3,f5' 
     // in the getExportFromResults() function on 'api_export.js' these commas are watched for, so that the string can be split to an array and a query created for all the selections
@@ -43,7 +44,7 @@
     thehref = "/export?feature=" + template + "&language=" + language + "&testresult=" + testresult + "&query=" + query + "&testpassid=" + testdate;
     document.getElementById("myhref").href = thehref;
 
-    location.reload(); //resets the export selection tool
+    // location.reload(); //resets the export selection tool
 
   } // end exportSelections()
 
@@ -109,7 +110,7 @@
             langinputItem.setAttribute("class", "lang double");
             langinputItem.setAttribute("type", "checkbox");
             langinputItem.setAttribute("id", theLanguages[x]);
-            langinputItem.setAttribute("onclick", "displayChecked(this.id, 'langList', 'LAll', 'langChildren')");
+            langinputItem.setAttribute("onclick", "displayChecked(this.id, 'langList', 'LAll', 'langChildren', 'span')");
             
             var langtextnode = document.createTextNode("  " + theLanguages[x]);  
             node.appendChild(span);
@@ -130,7 +131,7 @@
             templateItem.setAttribute("class", "FX double");
             templateItem.setAttribute("type", "checkbox");
             templateItem.setAttribute("id", theTemplates[x]);
-            templateItem.setAttribute("onclick", "displayChecked(this.id, 'featureUL','All','pageChildren')");
+            templateItem.setAttribute("onclick", "displayChecked(this.id, 'featureUL','All','pageChildren', 'span')");
 
             var thePage="";
             switch (theTemplates[x]){
@@ -256,6 +257,7 @@
 
   
 <!--  ------------------------------------------------------Date Drop Down Options ---------------------------- -->
+<!-- ---------------------------the dates are populated by the getExport function on api_export.js ------------ -->
   <div class="row exportTool">
     <div class="col-sm-12 col-lg-6 offset-lg-3">
         <% if(dates){ %>
@@ -267,7 +269,7 @@
             if (String(statusEndTime[i]) != "Fri Jan 02 1970 00:00:00 GMT-0800 (Pacific Standard Time)"){ %>
               <li class="dropdown-item radial">
               <span id="dateParent-<%=[i]%>">
-                  <input id="<%= dateIds[i] %>" class="date double" value="<%=testDescription[i] %>" onclick="displayChecked(this.id, 'dateParent-<%=[i]%>', 'none', 'radialChild'); displayInfo(this.value, this.id);" type="radio" name="date" />&nbsp; <%= dates[i] %> | <%=testDescription[i] %></span>
+                  <input id="<%= dateIds[i] %>" class="date double" value="<%=testDescription[i] %>" onclick="displayChecked(this.id, 'dateParent-<%=[i]%>', 'none', 'radialChild', 'span'); displayInfo(this.value, this.id);" type="radio" name="date" />&nbsp; <%= dates[i] %> | <%=testDescription[i] %></span>
               </li>
           <% }} %>
         </ul>
@@ -280,16 +282,17 @@
 
 
 <!--  ------------------------------------------------------Language / Locale Drop Down Options ---------------------------- -->
+<!--  --------------------------------------languages and templates are populated with the displayInfo function above ------ -->
   <div class="row exportTool">
     <div class="col-sm-12 col-lg-6 offset-lg-3">
       <div class="button-group">
         <button type="button" id ="langButton" class="btn btn-lg dropdown-toggle width-set bottomSpace topSpace export_results_dropdown" data-toggle="dropdown" disabled >Language Locale <span class="caret"></span></button>
         <ul class="dropdown-menu btn-block width-set export_results_dropdown" id="langList">
 
-          <!-- the 'ALL' option has to be available for the displaychecked.js funciton to work properly - set to style="display:none;" -->
+          <!-- the 'ALL' option has to be available for the displaychecked.js funciton to work properly - set to style="display:none; if wanted" -->
           <li class="width-set dropdown-item" id="langAll"> 
             <span>
-              <input id="LAll" class="lang double" onclick="displayChecked(this.id, 'langList', 'LAll', 'langChildren')" type="checkbox" />&nbsp; All
+              <input id="LAll" class="lang double" onclick="displayChecked(this.id, 'langList', 'LAll', 'langChildren', 'span')" type="checkbox" />&nbsp; All
             </span>
           </li>
         </ul>
@@ -308,7 +311,7 @@
           <!-- the 'ALL' option has to be available for the displaychecked.js funciton to work properly - set to display:none;-->
           <li class="dropdown-item" id="tempAll">   
             <span>
-              <input id="All" class="FX double" onclick="displayChecked(this.id, 'featureUL', 'All', 'pageChildren')" type="checkbox" />&nbsp; All
+              <input id="All" class="FX double" onclick="displayChecked(this.id, 'featureUL', 'All', 'pageChildren', 'span')" type="checkbox" />&nbsp; All
             </span>
           </li>
         </ul>

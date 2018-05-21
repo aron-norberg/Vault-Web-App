@@ -1,7 +1,9 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
+
   return sequelize.define('Result', {
+    
     TestCaseId: {
       type: DataTypes.INTEGER(11),
       allowNull: true
