@@ -33,6 +33,23 @@ exports.getOverview = function(req, res) {
   }
 
 
+
+  // Admin roles - allowing admin features to show
+  let userRole = req.user.role;
+
+  if (userRole === 2) {
+    console.log('user is Admin - role level ' + userRole);
+    //document.getElementById('delBtnCont').style.display = 'block';
+
+  }
+  else {
+    console.log('user is NOT Admin - role level ' + userRole)
+    //document.getElementById('delBtnCont').style.display = 'none';
+
+  } // end if/else
+
+
+
   // 1st Get latest test Pass id
   // If test Pass Id not passed as query string, get latest default
   //  testpassid = query string
@@ -573,11 +590,12 @@ exports.getResultMetaByLocale = function(req, res) {
 
 
 
-// Delete TestCase by Id
+// Delete Test results by TestPassId from TestPass, Status, and Result tables.
 exports.deleteTestCases = function(req, res) {
   // console.log('Hey everyone I found Waldo!');
   let Id = req.query.Id; //GET method
 
+  // TestPass table
   db.TestPass.destroy({
     where: {
       TestPassId: req.query.Id
@@ -585,16 +603,49 @@ exports.deleteTestCases = function(req, res) {
 
   }).then(function (TestPass) {
 
-    if (TestPass === 1) {
-      //res.status(200).json({message:"Deleted successfully"});
-      console.log('Test result Id - ' + Id + ' has been deleted successfully');
-      res.redirect('/dashboard');
+    if (TestPass >= 1) {
+      console.log('PASS:  Test result - ' + Id + ' has been deleted from TestPass table.');
     }
     else {
-      //res.status(404).json({message:"record not found"})
-      console.log("Test result not found");
+      console.log('FAIL: Test result - ' + Id + ' was not found in TestPass table.');
     }
 
   });
+
+  // Status table
+  db.Status.destroy({
+    where: {
+      TestPassId: req.query.Id
+    }
+
+  }).then(function (Status) {
+
+    if (Status >= 1) {
+      console.log('PASS: Test result - ' + Id + ' has been deleted from Status table.');
+    }
+    else {
+      console.log('FAIL: Test result - ' + Id + ' was not found in Status table.');
+    }
+
+  });
+
+  // Result table
+  db.Result.destroy({
+    where: {
+      TestPassId: req.query.Id
+    }
+
+  }).then(function (Result) {
+
+    if (Result >= 1) {
+      console.log('PASS: Test result - ' + Id + ' has been deleted from Result table.');
+    }
+    else {
+      console.log('FAIL: Test result - ' + Id + ' was not found in Result table.');
+    }
+
+  });
+
+  res.redirect('/dashboard');
 
 }; // end exports.deleteTestCases = function(req, res)
