@@ -239,6 +239,12 @@ function runit() {
   }
   // console.log(tcIDs);
   tcIDs.shift();
+
+  // if(tcIDs[0] == "all"){    // can work on this to feed in TC IDs so James doesn't need to do a second query
+  //   var tcArray = [];
+  //   var tcCount = document.getElementById("theTestCases").childElementCount;
+
+  // }
   // console.log(tcIDs.length +" tcIDs = " + tcIDs);
 
   let urlChoices = urlParagraph.innerHTML.substring(7)
