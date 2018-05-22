@@ -11,7 +11,7 @@
     text-align: center !important;
   }
   .dashboardDropdown {
-    width: 80% !important;
+    width: 90% !important;
   }
   
 }
@@ -31,6 +31,10 @@
     padding-left: 30px;
     float: right;
     text-decoration: underline;
+  }
+  #pieChart-1 {
+    width: 90% !important;
+    height: 350px !important;
   }
 }
 
@@ -63,6 +67,10 @@
 @media (min-width: 1300px) {
   .export_results_dropdown {
     width: 70% !important;
+  }
+  #pieChart-1 {
+    width: 80% !important;
+    height: 350px !important;
   }
 }
 
@@ -242,12 +250,12 @@ body {
 }
 
 #pieChart-1 {
-  width: 90%;
+  width: 100%;
   height: 350px;
   padding-top: 0px;
 }
 #pieChart-2 {
-  width: 90%;
+  width: 100%;
   height: 350px;
 }
 

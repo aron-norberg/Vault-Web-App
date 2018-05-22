@@ -42,7 +42,7 @@
         <% } %>
         'backgroundColor': '',
         'is3D': true,
-        'chartArea': { width: '80%', height: '80%' },
+        'chartArea': { width: '90%', height: '90%' },
         'legend': legendLocation,
         'slices': {
           0: { offset: 0.0 },
@@ -80,7 +80,7 @@
         'colors': ['#109618', '#DC3912', '#2569ff'],
         'backgroundColor': '',
         'is3D': true,
-        'chartArea': { width: '90%', height: '90%' },
+        'chartArea': { width: '80%', height: '80%' },
         'legend': { textStyle: { fontSize: 20 }, alignment: 'center', position: 'left' },
         'hAxis': {
           'minValue': 0,
@@ -159,13 +159,13 @@
 
   <!-- Dashboard-1 BEGIN -->
   <div class="row text-center" id="dashboard-1">
-    <div class="col-lg-5 offset-lg-1 col-xl-4 offset-xl-2">
+    <div class="col-sm-12 col-lg-6 col-xl-5 offset-xl-1">
       <!-- legend module here -->
       <div id="pieChart-1"></div>
       <!-- legend module here -->
     </div><!-- end .col-lg-5 offset-lg-3 col-xl-4 offset-xl-3 -->
 
-    <div class="col-lg-5 col-xl-4" id="toolTipContainer">
+    <div class="col-sm-12 col-lg-5 col-xl-5" id="toolTipContainer">
       <h4 id="toolTipTitle">Dropdown Tool Tip</h4>
       <div id="dropdownToolTip">
         <% if(testPassId == null){ %>
@@ -196,7 +196,7 @@
 
   <!-- Dashboard-2 BEGIN -->
   <div class="row text-center" id="dashboard-2">
-    <div class="col-lg-4 offset-lg-2 col-xl-4 offset-xl-2">
+    <div class="col-sm-12 col-lg-4 offset-lg-2">
       <br /><br />
       <!-- Module for Specific Language -->
       <% if(language != "ALL"){ console.log("this is the url: " +  currentUrl);%>
@@ -221,7 +221,7 @@
         <!-- legend module here -->
     </div><!-- end .col-lg-5 offset-lg-3 col-xl-4 offset-xl-4 -->
     
-    <div class="col-lg-6 col-xl-4" id="barGraphCont">
+    <div class="col-sm-12 col-lg-6 col-xl-5" id="barGraphCont">
       <!-- Secondary Bar Graph Goes here -->
       <% if(resultsTotal){ %>
         <div id="barGraph" class="pieChart">BarGraph</div>
