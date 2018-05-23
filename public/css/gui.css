@@ -56,6 +56,9 @@
   .dashboardDropdown {
     width: 80% !important;
   }
+  .pagination { /* Being used on results.ejs page */
+    float: right;
+  }
 }
 
 @media (min-width: 1200px) {
