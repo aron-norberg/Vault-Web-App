@@ -152,7 +152,7 @@ function createTc(){   //unhide the 'hiddenRow' section and put into it the basi
 /************************
  * Function: cleanGherkin()
  * Purpose: Deletes any test case thats selected from the TestCase table found in the test DB.  
- * Author: Jen Bronson, James Sandoval, Aron Norberg
+ * Author: Jen Bronson, James Sandoval, Aron T Norberg
  * Date: May 2018
 ************************/
 function deleteTc() {
@@ -174,7 +174,7 @@ function deleteTc() {
 /************************
  * Function: cleanGherkin()
  * Purpose: Deletes empty "Scenario:" text in testCaseDescription found in the tescase database when the test_case_editor.ejs page loads. 
- * Author: Jen Bronson, James Sandoval, Aron Norberg
+ * Author: Jen Bronson, James Sandoval, Aron T Norberg
  * Date: May 2018
 ************************/
 function cleanGherkin() {
