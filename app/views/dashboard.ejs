@@ -185,7 +185,7 @@
       
       <% if(user.role === 2) { %>
         <div id="delBtnCont">
-          <input type="button" id="delBtn" value="Delete" onclick="deleteTestCase(<%= testPassInfo.TestPassId %>);" />
+          <input type="button" id="delBtn" value="Delete" onclick="deleteTestResults(<%= testPassInfo.TestPassId %>);" />
         </div>
       <% } %>
 
@@ -279,11 +279,20 @@
 document.addEventListener('DOMContentLoaded', function() { dashboardPage(); }, false);
 
 
-// delete TestCase by Id
-function deleteTestCase(Id) {
+/************************
+ * Function: deleteTestResults(Id)
+ * Purpose: Deletes Test result by TestPassId from TestPass, Status, and Result tables.
+ * Author: Jen Bronson, James Sandoval, Aron Norberg
+ * Date: May 2018
+************************/
+function deleteTestResults(Id) {
 
-  $.ajax({
-    url: "/deleteTestCases",
+  var delConfirm = confirm("Are you sure you want to delete test result ID: " + Id + "?");
+
+  if (delConfirm == true) {
+
+    $.ajax({
+    url: "/deleteTestResults",
     type: "GET",
     dataType: "html",
     data: {
@@ -299,9 +308,16 @@ function deleteTestCase(Id) {
 
     } // end error : function()
 
-  }); // end .ajax()
+    }); // end .ajax()
 
-  } // end deleteTestCase()
+  }
+  else {
+    //alert('Delete canceled!');
+
+  } // end if/else
+  
+
+  } // end deleteTestResults(Id)
 
 </script>
 

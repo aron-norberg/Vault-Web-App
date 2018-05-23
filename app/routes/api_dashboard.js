@@ -562,9 +562,8 @@ exports.getResultMetaByLocale = function(req, res) {
 };
 
 
-
 // Delete Test results by TestPassId from TestPass, Status, and Result tables.
-exports.deleteTestCases = function(req, res) {
+exports.deleteTestResults = function(req, res) {
   // console.log('Hey everyone I found Waldo!');
   let Id = req.query.Id; //GET method
 
@@ -621,4 +620,4 @@ exports.deleteTestCases = function(req, res) {
 
   res.redirect('/dashboard');
 
-}; // end exports.deleteTestCases = function(req, res)
+}; // end exports.deleteTestResults = function(req, res)

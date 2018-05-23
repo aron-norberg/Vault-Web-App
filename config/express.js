@@ -184,8 +184,8 @@ module.exports = function() {
   app.get('/dashboard/locale/:locale', isLoggedIn, api_dashboard.getResultMetaByLocale);
   app.get('/dashboard/query/:custom', isLoggedIn, api_dashboard.getResultMetaByCustom);
 
-  // Dashboard page - delete TestCase by Id
-  app.get('/deleteTestCases', isLoggedIn, api_dashboard.deleteTestCases);
+  // Dashboard page - delete Test Results by Id
+  app.get('/deleteTestResults', isLoggedIn, api_dashboard.deleteTestResults);
   
   // Results Pages 
   app.get('/results/locale/:locale', isLoggedIn, api_results.getResultByLanguage);

@@ -149,9 +149,35 @@ function createTc(){   //unhide the 'hiddenRow' section and put into it the basi
 } //end createTc()
 
 
-// cleanGherkin() function will remove empty "Scenario:" text in testCaseDescription found in the tescase database when the test_case_editor.ejs page loads. 
-function cleanGherkin() {
+/************************
+ * Function: cleanGherkin()
+ * Purpose: Deletes any test case thats selected from the TestCase table found in the test DB.  
+ * Author: Jen Bronson, James Sandoval, Aron Norberg
+ * Date: May 2018
+************************/
+function deleteTc() {
 
+  var delConfirm = confirm("Are you sure you want to delete test case?");
+
+  if (delConfirm == true) {
+    alert('Delete selected test case is coming soon to a script near you!');
+  }
+  else {
+    //alert('Delete canceled!');
+
+  } // end if/else
+  
+
+} // end deleteTc()
+
+
+/************************
+ * Function: cleanGherkin()
+ * Purpose: Deletes empty "Scenario:" text in testCaseDescription found in the tescase database when the test_case_editor.ejs page loads. 
+ * Author: Jen Bronson, James Sandoval, Aron Norberg
+ * Date: May 2018
+************************/
+function cleanGherkin() {
   // The id var is only used to trigger the "exports.cleanGherkin_DB = function(req, res)" function in the api_DB_writer.js page.
   var id = 1138;
 
