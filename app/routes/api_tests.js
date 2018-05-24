@@ -270,7 +270,7 @@ exports.startProcess = function(req, res) {
   script.stdout.on('data', (data) => {
     //script.stdin.write(data);
     let dataString = String(data);
-    //console.log(dataString);
+    console.log(dataString);
     broadcastData(req, res, dataString, count, ppid);
 
   });
@@ -306,12 +306,8 @@ exports.stopTest = function(req, res) {
     // Remove extraneous Text
     pid = pid.replace(/PID: /i, '');
 
-
     // key is :: 
     // pkill -9 -p $PPID
-
-    /*
-
     // Execute System command to stop the process by PID
 
     let spawn = require('child_process').spawn,
@@ -337,12 +333,7 @@ exports.stopTest = function(req, res) {
 
     console.log(" I should be killing the processes.")
 
-    */
-
-
-    res.sendStatus(200);
-
-
+    res.send("process has been killed.");
 
     return null;
 
@@ -422,7 +413,7 @@ function getTotalNumberOfTestCases(testParameterObject) {
             return null;
 
           }).catch((err) => {
-            //console.log("error querying test case count from template id.");
+            console.log("error querying test case count from template id.");
             console.log('error: ' + err);
             return err;
 
