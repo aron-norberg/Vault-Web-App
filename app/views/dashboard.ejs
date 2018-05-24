@@ -4,6 +4,7 @@
     google.charts.load('current', { 'packages': ['corechart'] });
     google.charts.setOnLoadCallback(drawCharts);
 
+  
     var passes = <%= overall.pass %>;
     var fails = <%= overall.fail %>;
     var others = <%= overall.skip %>;
