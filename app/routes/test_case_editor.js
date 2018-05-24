@@ -59,6 +59,7 @@ exports.editTestCases = function(req, res) {  //getResultByTemplateCustom
 // CURRENTLY IN PRODUCTION
 exports.deleteTestCases = function(req, res) {
   console.log('Hello Waldo!');
+  console.log('Hello JenCB!!!');
   
 
   //let Id = req.query.Id; // GET method
