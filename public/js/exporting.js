@@ -150,23 +150,37 @@ function createTc(){   //unhide the 'hiddenRow' section and put into it the basi
 
 
 /************************
- * Function: cleanGherkin()
+ * Function: deleteTc()
  * Purpose: Deletes any test case thats selected from the TestCase table found in the test DB.  
  * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
  * Date: May 2018
 ************************/
 function deleteTc() {
 
-  var delConfirm = confirm("Are you sure you want to delete test case?");
+  var select = document.getElementById("tcSelection").selectedIndex;
+  var Id = document.getElementsByTagName("option")[select].getAttribute("id");
+
+  var delConfirm = confirm("Are you sure you want to delete test result ID: " + Id + "?");
 
   if (delConfirm == true) {
-    alert('Delete selected test case is coming soon to a script near you!');
+
+    $.ajax({
+      url: '/delete-test-case',
+      type: 'POST',
+      data: {
+        Id: Id
+      },
+      success: function(data) {
+        console.log(data);
+        console.log("Test case deleted!");
+      }
+
+    }) // end $.ajax
   }
   else {
     //alert('Delete canceled!');
 
   } // end if/else
-  
 
 } // end deleteTc()
 
@@ -187,9 +201,10 @@ function cleanGherkin() {
     data: id,
     success: function(data) {
       console.log(data);
-      console.log("Gherkin cleaned");
+      console.log("Gherkin cleaned!");
     }
-  })
+
+  }) // end $.ajax
   
 } // end cleanGherkin()
 

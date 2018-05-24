@@ -251,6 +251,9 @@ module.exports = function() {
   // Edit Test Cases
   app.get('/test-case-editor', isLoggedIn, test_case_editor.editTestCases);
 
+  // Delete Test Cases
+  app.post('/delete-test-case', isLoggedIn, test_case_editor.deleteTestCases);
+
   // Language Detection Route
   app.post('/detect', language.postLanguage);
 
