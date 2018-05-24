@@ -159,15 +159,15 @@ function renderPage(renderPageData, req, res) {
 
 
   // console.log(users + "users");
-  console.log(testPassData + "testPassData");
-  console.log(length + "length");  
+  //console.log(testPassData + "testPassData");
+  //console.log(length + "length");  
   //console.log(language +"language");
   // console.log(page + "page");
   // console.log(start + "start");
-  console.log(rowsToReturn + "rowsToReturn");
-  console.log(testresult + "testresult");
-  console.log(total+"total");  
-  console.log("the results are " + renderPageData.results);
+  //console.log(rowsToReturn + "rowsToReturn");
+  //console.log(testresult + "testresult");
+  //console.log(total+"total");  
+  //console.log("the results are " + renderPageData.results);
 
   let results = renderPageData.results.results;
   // RETURN THE LANGUAGE VARIABLE TO HUMAN READABLE
@@ -183,8 +183,8 @@ function renderPage(renderPageData, req, res) {
   let pages = paginationData.pages;
   let end = paginationData.end;
   page = paginationData.page;
-  console.log(page + "page");
-  console.log(length + "length");
+  //console.log(page + "page");
+  //console.log(length + "length");
 
   // Pagination Logic Part II Ends Here
 
@@ -542,7 +542,6 @@ exports.getResultByLanguage = function(req, res) {
 // results/feature/:template/locale/:language
 exports.getResultByIdAndLanguage = function(req, res) {
 
-
   let template = req.params.template;
   let language = req.params.locale;
   let testPassId = req.query.testpassid;
@@ -575,7 +574,7 @@ exports.getResultByIdAndLanguage = function(req, res) {
 
       results: function(cb) {
         db.sequelize.query(`SELECT * FROM Result WHERE Template LIKE '${template}' AND Language LIKE '${language}' AND TestPassId = '${testPassId}' ORDER BY TestCaseId, URLs limit ${paginationData.start}, ${rowsToReturn};`).then(results => {
-          console.log(`SELECT * FROM Result WHERE Template LIKE '${template}' AND Language LIKE '${language}' AND TestPassId = '${testPassId}' ORDER BY TestCaseId, URLs limit ${paginationData.start}, ${rowsToReturn};`);
+          //console.log(`SELECT * FROM Result WHERE Template LIKE '${template}' AND Language LIKE '${language}' AND TestPassId = '${testPassId}' ORDER BY TestCaseId, URLs limit ${paginationData.start}, ${rowsToReturn};`);
           results = results[0];
 
           // Convert Result back to string

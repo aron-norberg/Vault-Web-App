@@ -27,6 +27,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(1000),
       allowNull: true
     },
+    Domain: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
     Description: {
       type: "BLOB",
       allowNull: true
