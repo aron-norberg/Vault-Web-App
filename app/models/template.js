@@ -7,10 +7,10 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    ScenarioNumber: {
-      type: DataTypes.INTEGER(11),
-      allowNull: false,
-      primaryKey: true
+    TestCaseId: {
+      type: DataTypes.CHAR(1000),
+      allowNull: true,
+      primaryKey: false
     }
   }, {
     tableName: 'Template'
