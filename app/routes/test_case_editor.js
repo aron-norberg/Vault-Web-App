@@ -24,7 +24,8 @@ exports.editTestCases = function(req, res) {  //getResultByTemplateCustom
             res.render('test_case_editor', {
                 title: 'Test Case Editor',
                 testcases: results,
-                template: whereUsed
+                template: whereUsed,
+                user: req.user
             });
 
             return null;

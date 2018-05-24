@@ -33,13 +33,27 @@
 
     <br />
     <div class="row">
+<<<<<<< HEAD
         <div class="col-lg-4 offset-lg-2 text-center">
             <button id="createGherkin" class="btn btn-warning width-set createTc" onclick='createTc()'>Create New Test Case</button> 
         </div>
         <div class="col-lg-4 text-center">
             <button id="editGherkin" class="btn btn-warning width-set" onclick="editTc()">Edit Selected Test Case</button> 
+=======
+        <div class="col-lg-3 offset-lg-2 text-center">
+            <button id="createGherkin" class="btn btn-warning width-set createTc" onclick='createTc()'>Create New Test Case</button> <!-- javascript functions for this page can be found on exporting.js  -->
         </div>
-    </div>
+        <div class="col-lg-3 text-center">
+            <button id="editGherkin" class="btn btn-warning width-set" onclick="editTc()">Edit Selected Test Case</button> <!-- javascript functions for this page can be found on exporting.js  -->
+>>>>>>> 50b29ede78f50299984e867ea5768095104d8ba8
+        </div>
+
+        <% if (user.role == 2) { %>
+          <div class="col-lg-3 text-center">
+              <button id="deleteGherkin" class="btn btn-warning width-set" onclick="deleteTc()">Delete Selected Test Case</button>
+          </div>
+        <% } %>
+    </div><!-- end .row -->
 
     <br />
     <div id="hiddenRow" style="display:none">

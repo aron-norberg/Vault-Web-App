@@ -42,7 +42,7 @@
         <% } %>
         'backgroundColor': '',
         'is3D': true,
-        'chartArea': { width: '80%', height: '80%' },
+        'chartArea': { width: '90%', height: '90%' },
         'legend': legendLocation,
         'slices': {
           0: { offset: 0.0 },
@@ -80,7 +80,7 @@
         'colors': ['#109618', '#DC3912', '#2569ff'],
         'backgroundColor': '',
         'is3D': true,
-        'chartArea': { width: '90%', height: '90%' },
+        'chartArea': { width: '80%', height: '80%' },
         'legend': { textStyle: { fontSize: 20 }, alignment: 'center', position: 'left' },
         'hAxis': {
           'minValue': 0,
@@ -159,13 +159,13 @@
 
   <!-- Dashboard-1 BEGIN -->
   <div class="row text-center" id="dashboard-1">
-    <div class="col-lg-5 offset-lg-1 col-xl-4 offset-xl-2">
+    <div class="col-sm-12 col-lg-6 col-xl-5 offset-xl-1">
       <!-- legend module here -->
       <div id="pieChart-1"></div>
       <!-- legend module here -->
     </div><!-- end .col-lg-5 offset-lg-3 col-xl-4 offset-xl-3 -->
 
-    <div class="col-lg-5 col-xl-4" id="toolTipContainer">
+    <div class="col-sm-12 col-lg-5 col-xl-5" id="toolTipContainer">
       <h4 id="toolTipTitle">Dropdown Tool Tip</h4>
       <div id="dropdownToolTip">
         <% if(testPassId == null){ %>
@@ -183,9 +183,11 @@
         <% } %>
       </div>
       
-      <div id="delBtnCont">
-        <input type="button" id="delBtn" value="Delete" onclick="deleteTestCase(<%= testPassInfo.TestPassId %>);" />
-      </div>
+      <% if(user.role === 2) { %>
+        <div id="delBtnCont">
+          <input type="button" id="delBtn" value="Delete" onclick="deleteTestResults(<%= testPassInfo.TestPassId %>);" />
+        </div>
+      <% } %>
 
     </div><!-- end .col-lg-4 col-xl-3 -->
   </div><!-- end .row / #dashboard-1 -->
@@ -194,7 +196,7 @@
 
   <!-- Dashboard-2 BEGIN -->
   <div class="row text-center" id="dashboard-2">
-    <div class="col-lg-4 offset-lg-2 col-xl-4 offset-xl-2">
+    <div class="col-sm-12 col-lg-4 offset-lg-2">
       <br /><br />
       <!-- Module for Specific Language -->
       <% if(language != "ALL"){ console.log("this is the url: " +  currentUrl);%>
@@ -219,7 +221,7 @@
         <!-- legend module here -->
     </div><!-- end .col-lg-5 offset-lg-3 col-xl-4 offset-xl-4 -->
     
-    <div class="col-lg-6 col-xl-4" id="barGraphCont">
+    <div class="col-sm-12 col-lg-6 col-xl-5" id="barGraphCont">
       <!-- Secondary Bar Graph Goes here -->
       <% if(resultsTotal){ %>
         <div id="barGraph" class="pieChart">BarGraph</div>
@@ -275,34 +277,22 @@
 <script>
 
 document.addEventListener('DOMContentLoaded', function() { dashboardPage(); }, false);
-//document.addEventListener('DOMContentLoaded', function() { userRoles(); }, false);
 
 
-/*function userRoles() {
-  // Admin roles - allowing admin features to show
-  alert('working');
-  let userRole = req.user.role;
-  alert(userRole);
+/************************
+ * Function: deleteTestResults(Id)
+ * Purpose: Deletes Test result by TestPassId from TestPass, Status, and Result tables.
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+************************/
+function deleteTestResults(Id) {
 
-  if (userRole === 2) {
-    console.log('user is Admin ' + userRole);
-    document.getElementById('delBtnCont').style.display = 'block';
-  }
-  else {
-    console.log('user is NOT Admin ' + userRole)
-    document.getElementById('delBtnCont').style.display = 'none';
+  var delConfirm = confirm("Are you sure you want to delete test result ID: " + Id + "?");
 
-  } // end if/else
+  if (delConfirm == true) {
 
-} // end userRoles()*/
-
-
-
-// delete TestCase by Id
-function deleteTestCase(Id) {
-
-  $.ajax({
-    url: "/deleteTestCases",
+    $.ajax({
+    url: "/deleteTestResults",
     type: "GET",
     dataType: "html",
     data: {
@@ -318,9 +308,16 @@ function deleteTestCase(Id) {
 
     } // end error : function()
 
-  }); // end .ajax()
+    }); // end .ajax()
 
-  } // end deleteTestCase()
+  }
+  else {
+    //alert('Delete canceled!');
+
+  } // end if/else
+  
+
+  } // end deleteTestResults(Id)
 
 </script>
 

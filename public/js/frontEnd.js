@@ -154,6 +154,34 @@ function createTc(){   //unhide the 'hiddenRow' section and put into it the basi
 } //end createTc()
 
 
+/************************
+ * Function: cleanGherkin()
+ * Purpose: Deletes any test case thats selected from the TestCase table found in the test DB.  
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+************************/
+function deleteTc() {
+
+    var delConfirm = confirm("Are you sure you want to delete test case?");
+  
+    if (delConfirm == true) {
+      alert('Delete selected test case is coming soon to a script near you!');
+    }
+    else {
+      //alert('Delete canceled!');
+  
+    } // end if/else
+    
+  
+  } // end deleteTc()
+  
+
+/************************
+ * Function: cleanGherkin()
+ * Purpose: Deletes empty "Scenario:" text in testCaseDescription found in the tescase database when the test_case_editor.ejs page loads. 
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+************************/
 // cleanGherkin() function will remove empty "Scenario:" text in testCaseDescription found in the tescase database when the test_case_editor.ejs page loads. 
 function cleanGherkin() {
 

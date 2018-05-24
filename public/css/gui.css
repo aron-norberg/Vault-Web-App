@@ -11,7 +11,7 @@
     text-align: center !important;
   }
   .dashboardDropdown {
-    width: 80% !important;
+    width: 90% !important;
   }
   
 }
@@ -31,6 +31,10 @@
     padding-left: 30px;
     float: right;
     text-decoration: underline;
+  }
+  #pieChart-1 {
+    width: 90% !important;
+    height: 350px !important;
   }
 }
 
@@ -52,6 +56,9 @@
   .dashboardDropdown {
     width: 80% !important;
   }
+  .pagination { /* Being used on results.ejs page */
+    float: right;
+  }
 }
 
 @media (min-width: 1200px) {
@@ -63,6 +70,10 @@
 @media (min-width: 1300px) {
   .export_results_dropdown {
     width: 70% !important;
+  }
+  #pieChart-1 {
+    width: 80% !important;
+    height: 350px !important;
   }
 }
 
@@ -236,18 +247,18 @@ body {
 #delBtnCont {
   width: 100px;
   float: right;
-  display: none;
+  /*display: none;*/
   padding-top: 10px;
   border: 0px solid #000;
 }
 
 #pieChart-1 {
-  width: 90%;
+  width: 100%;
   height: 350px;
   padding-top: 0px;
 }
 #pieChart-2 {
-  width: 90%;
+  width: 100%;
   height: 350px;
 }
 
@@ -732,3 +743,6 @@ button[type=submit].login {
 
 }
 /* END of Run Tests Modals section */
+
+/* Vault Automated Testing Suite 2018 was created by:
+Jennifer C Bronson, James Sandoval, Aron T Norberg */
