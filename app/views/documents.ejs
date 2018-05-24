@@ -3,36 +3,44 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-xl-5 offset-xl-4 col-lg-6 offset-lg-3 col-md-7 offset-md-3 col-sm-9 offset-sm-2">
-      <br /><br />
-      <h1><%= title %></h1>
-      <br /><br />
-      <ul>
-          <li><a href="#readMe">Read Me</a></li>
-          <li><a href="#gherkin">Built In Gherkin</a></li>
-          <li><a href="#database">Database Information</a></li>
-      </ul>
-      <h2 id="readMe">Read Me File</h2>
-      <p>The Fluke website has been broken down into page templates for development as well as for testing.
-        These page templates have been given the names "F1", "F2", "F3" etc.  When viewing the Fluke website, the template used for any specific page 
-        can be found in the body tag with "template-F16" listed as a class.  continuing...</p>
-      <p>The Vault application provides several features:</p>
+        <br /><br />
+        <h1><%= title %></h1>
+        <br /><br />
         <ul>
-            <li>View Fluke site test results.</li>
-            <li>Delete old test results (a user must have a role of at least '2' in the Vault database).</li>
-            <li>Mark test results as unreliable (role of at least '2' required).</li>
-            <li>Claim ownership of test results for taking action on them.</li>
-            <li>Export results to Excel.</li>
-            <li>Run a test, give that test pass a name, and view the test pass status.</li>
-            <li>Edit the tests that are run on the Fluke website.</li>
+                <li><a href="#readMe">Read Me</a></li>
+                <li><a href="#gherkin">Built In Gherkin</a></li>
+                <li><a href="#database">Database Information</a></li>
         </ul>
-      <p><a href="http://docs.behat.org/en/v2.5/quick_intro.html">Introduction to Behat</a></p>
-      <p><a href="https://github.com/Behat/Behat">Download Behat version 3.2</a></p>
-      <p><a href="https://github.com/fluke-corporation/Vault-Web-App">Vault git-hub repository</a></p>
-      <p><a href="https://github.com/fluke-corporation/behat_projects">behat_project git-hub repository</a></p>
-    
-      <h2 id="gherkin">Built In Gherkin</h2>
-      
-      Use ctrl + f to search the below list of Gherkin code
+        <h2 id="readMe">Read Me File</h2>
+        <h4>Template Pages</h4>
+        <p>The Fluke website has been broken down into page templates for development as well as for testing.
+                These page templates have been given the names "F1", "F2", "F3" etc.  When viewing the Fluke website, the template used for any specific page 
+                can be found in the body tag with "template-F16" listed as a class.  Each page requirement has been written into a test called a "test case." Different 
+                template pages (Fx pages) have different requirements and therefore, not all test cases apply to all pages.</p>
+        <h4>Test Cases</h4>
+        <p>Tests have been written using Behat, with code in Gherkin (a human readable language) and PHP. Each test case starts with a Scenario, which is often
+                copied directly from the page requirements list. An example is "Scenario: Does page render with URL provided?" The Scenario is essentially a note 
+                within the code and changing the Scenario does not affect how the code is run or the functions used for that test case. Following the Scenario is the Gherkin
+                which begins with key words When, Then, or Given.  ... 
+        </p>
+        <p>The Vault application provides several features:</p>
+                <ul>
+                <li>View Fluke site test results.</li>
+                <li>Delete old test results (a user must have a role of at least '2' in the Vault database).</li>
+                <li>Mark test results as unreliable (role of at least '2' required).</li>
+                <li>Claim ownership of test results for taking action on them.</li>
+                <li>Export results to Excel.</li>
+                <li>Run a test, give that test pass a name, and view the test pass status.</li>
+                <li>Edit the tests that are run on the Fluke website.</li>
+                </ul>
+        <p><a href="http://docs.behat.org/en/v2.5/quick_intro.html">Introduction to Behat</a></p>
+        <p><a href="https://github.com/Behat/Behat">Download Behat version 3.2</a></p>
+        <p><a href="https://github.com/fluke-corporation/Vault-Web-App">Vault git-hub repository</a></p>
+        <p><a href="https://github.com/fluke-corporation/behat_projects">behat_project git-hub repository</a></p>
+        
+        <h2 id="gherkin">Built In Gherkin</h2>
+        
+        Use ctrl + f to search the below list of Gherkin code
         <br />    
         <br />
         <p>A current list of Gherkin can be provided by going into the bash shell, <br>
