@@ -1,9 +1,5 @@
 <%- include('header') %>
 
-<!--  --------------------------------------------------------------  -->
-<!-- javascript functions for this page can be found on exporting.js  -->
-<!--  --------------------------------------------------------------  -->
-
 <div class="container-fluid">
 
     <div class="row">
@@ -18,7 +14,7 @@
     <div class="row">
         <div class="col-sm-12 col-lg-6 offset-lg-1 col-xl-5 offset-xl-2">
             <h2>Scenarios:</h2>
-            <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">  <!-- Search Bar  - the search function is in the search.js file-->
+            <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">  
             <select size="5" onChange="showIt(this)" id="tcSelection" ><!-- add data in here that shows if it is a Functional test-->
                 <% for(var i=0; i < testcases.length; i++){ %>
                     <option value="<%= testcases[i].Gherkin %>" style="white-space:pre-wrap; border-bottom: 1px solid #ddd;" id="<%=testcases[i].TestCaseId%>" data-functional="<%=testcases[i].IsFunctionalTest%>">
@@ -37,11 +33,19 @@
 
     <br />
     <div class="row">
+<<<<<<< HEAD
+        <div class="col-lg-4 offset-lg-2 text-center">
+            <button id="createGherkin" class="btn btn-warning width-set createTc" onclick='createTc()'>Create New Test Case</button> 
+        </div>
+        <div class="col-lg-4 text-center">
+            <button id="editGherkin" class="btn btn-warning width-set" onclick="editTc()">Edit Selected Test Case</button> 
+=======
         <div class="col-lg-3 offset-lg-2 text-center">
             <button id="createGherkin" class="btn btn-warning width-set createTc" onclick='createTc()'>Create New Test Case</button> <!-- javascript functions for this page can be found on exporting.js  -->
         </div>
         <div class="col-lg-3 text-center">
             <button id="editGherkin" class="btn btn-warning width-set" onclick="editTc()">Edit Selected Test Case</button> <!-- javascript functions for this page can be found on exporting.js  -->
+>>>>>>> 50b29ede78f50299984e867ea5768095104d8ba8
         </div>
 
         <% if (user.role == 2) { %>

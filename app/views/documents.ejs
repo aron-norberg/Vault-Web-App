@@ -1,0 +1,909 @@
+<%- include('header') %>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xl-5 offset-xl-4 col-lg-6 offset-lg-3 col-md-7 offset-md-3 col-sm-9 offset-sm-2">
+      <br /><br />
+      <h1><%= title %></h1>
+      <br /><br />
+      <ul>
+          <li><a href="#readMe">Read Me</a></li>
+          <li><a href="#gherkin">Built In Gherkin</a></li>
+          <li><a href="#database">Database Information</a></li>
+      </ul>
+      <h2 id="readMe">Read Me File</h2>
+      <p>The Fluke website has been broken down into page templates for development as well as for testing.
+        These page templates have been given the names "F1", "F2", "F3" etc.  When viewing the Fluke website, the template used for any specific page 
+        can be found in the body tag with "template-F16" listed as a class.  continuing...</p>
+      <p>The Vault application provides several features:</p>
+        <ul>
+            <li>View Fluke site test results.</li>
+            <li>Delete old test results (a user must have a role of at least '2' in the Vault database).</li>
+            <li>Mark test results as unreliable (role of at least '2' required).</li>
+            <li>Claim ownership of test results for taking action on them.</li>
+            <li>Export results to Excel.</li>
+            <li>Run a test, give that test pass a name, and view the test pass status.</li>
+            <li>Edit the tests that are run on the Fluke website.</li>
+        </ul>
+      <p><a href="http://docs.behat.org/en/v2.5/quick_intro.html">Introduction to Behat</a></p>
+      <p><a href="https://github.com/Behat/Behat">Download Behat version 3.2</a></p>
+      <p><a href="https://github.com/fluke-corporation/Vault-Web-App">Vault git-hub repository</a></p>
+      <p><a href="https://github.com/fluke-corporation/behat_projects">behat_project git-hub repository</a></p>
+    
+      <h2 id="gherkin">Built In Gherkin</h2>
+      
+      Use ctrl + f to search the below list of Gherkin code
+        <br />    
+        <br />
+        <p>A current list of Gherkin can be provided by going into the bash shell, <br>
+            into the project file 'master_tests' and typing the following command: vendor/bin/behat -di<br><br>
+            /Vault-Web-App/behat_projects/master_tests$ vendor/bin/behat -di<br><br>
+        This list includes the Gherkin added through the MINK extension and was last updated: 05.24.18</p>
+        
+        <pre><code></code>
+[Then|*] skip test
+        | Skip a test during testing if content or functionality is incomplete
+        | at `FeatureContext::skipTest()`
+
+[Then|*] I should see all images :element
+        | Are all the images filled with actual images (non filler/broken images)?
+        | at `FeatureContext::iShouldSeeAllImages()`
+
+[Then|*] I should see an :element
+        | Validates that a number of content exists
+        | at `FeatureContext::valElementExists()`
+
+[Then|*] I should see multiple :element
+        | Validates that multiple elements content exists
+        | at `FeatureContext::valMulipleElementsExists()`
+
+[Then|*] I should see text :element1 and text :element2 match
+        | Validates that one or multiple text elements match
+        | at `FeatureContext::valTxtElemAndTxtElemMatch()`
+
+[Then|*] I should see no more than :elemNum :elements
+        | *UPDATE - include 'href' in description and use regex to update all gherkin
+        |       Then I should see no more than :elemNum  href :elements
+        |
+        | Validates that there are no more than a number of elements shown on page
+        | at `FeatureContext::noMoreThanANumberOfElements()`
+
+[Then|*] I should see a number :elemNum of :elements
+        |  UPDATE test getting the count without a loop
+        |
+        | Validates that there are a number of (href) elements shown on page
+        | at `FeatureContext::valNumberOfHrefElementsExists()`
+
+[Then|*] I should see a number :elemNum of text :elements
+        | Validates that there are a number of (text) elements shown on page
+        | at `FeatureContext::valNumberOfTextElementsExists()`
+
+[Then|*] I should see no more than :elemNum characters on an :element
+        | Validates a number of text characters in an element
+        | at `FeatureContext::valNumberOfCharacters()`
+
+[Then|*] I should see no more than :elemNum characters on multiple :element
+        | Validates a number of text characters in multiple elements
+        | at `FeatureContext::valNumberOfCharactersInMultiElem()`
+
+[Then|*] I should see an :element1 for each :element2
+        | Validates that each element has an element
+        | at `FeatureContext::ValElem1ExistsForEachElem2()`
+
+[Then|*] links :element1 and links :element2 match
+        | Validates two lists of links
+        | at `FeatureContext::ValTwoLinksMatch()`
+
+[Then|*] links :element1 and links :element2 and links :element3 match
+        | Validates three lists of links
+        | at `FeatureContext::ValThreeLinksMatch()`
+
+[Then|*] click link :element and returns a status code of 200
+        | Validates that a single click event is clickable and returns a status code of 200
+        | at `FeatureContext::checkSingleLinkIsClickable()`
+
+[Then|*] click mulitple link :elements and returns a status code of 200
+        | ## DO NOT USE WITH JAVASCRIPT - THIS FUNCTION USES GOUTTE DRIVER ONLY. ##
+        |
+        | Validates that multiple click events are clickable and returns a status code of 200
+        | at `FeatureContext::checkGroupOfIsClickable()`
+
+[Then|*] click multiple link :elements and returns a status code of 200
+        | ## DO NOT USE WITH JAVASCRIPT - THIS FUNCTION USES GOUTTE DRIVER ONLY. ##
+        |
+        | Validates that multiple click events are clickable and returns a status code of 200
+        | at `FeatureContext::checkGroupOfIsClickable()`
+
+[Then|*] link :elements open with correct target
+        | Do all links open with the correct target?
+        | at `FeatureContext::validateTargetAttribute()`
+
+[Then|*] check that there are no more than :nums :elements
+        | Validates that there are no more than X of a generic element
+        | at `FeatureContext::checkThatThereAreNoMoreThan()`
+
+[Then|*] check multiple :elements should have class :class
+        | at `FeatureContext::checkMultipleShouldHaveClass()`
+
+[Then|*] if there are less than :num :element1 then there are no :element2
+        | Pagination Elements do not appear if there are less than 10 Articles on the first page, but do appear if there is more than 10
+        | at `FeatureContext::ifThereAreLessThanThenThereAreNo()`
+
+[Then|*] check :element elements in correct language
+        | Validates that text elements are in the correct language by searching a database or Google language detect
+        | at `FeatureContext::checkElementsInCorrectLanguage()`
+
+[Then|*] I should see that text :elements with attribute :attribute will match the correct language
+        | Validates that an elements text based on its attribute is in the correct language a database or Google language detect
+        | at `FeatureContext::checkAttributeTextInCorrectLanguage()`
+
+[Then|*] check :text is in correct language
+        | Compares the url language locale to &lt;html lang&gt; and
+        | uses langid to validate language with a provided
+        | text snippet.
+        | ******* NOTE - IGNORE GHERKIN *******
+        | at `FeatureContext::checkTextIsInCorrectLanguage()`
+
+[Then|*] I should see that text :element translation will match the correct language found in database
+        | Queries database - "translations" for translated word found on webpage:
+        | Validates that a text element is the correct text translation in any language by searching the "translations" database
+        | ******* NOTE - IGNORE GHERKIN *******
+        | at `FeatureContext::dbDetectLangByText()`
+
+[Then|*] I should see that text :elements with attributes
+        | Queries database - "translations" for translated word found on webpage:
+        | Validates that an elements text based on its attribute is in the correct language by searching the "translations" database
+        | ******* NOTE - IGNORE GHERKIN *******
+        | at `FeatureContext::dbDetectLangByAttrib()`
+
+[Then|*] :firstElement attribute :attributeOfFirstElement matches :secondElement attribute :attributeOfSecondElement
+        | NOTE - can fail if unequal number of elements compared   - checks to see if two elements have coordinating attributes
+        | at `FeatureContext::attributeMatchesAttribute()`
+
+[Then|*] the :thumbnail should become :class1 and the large matching :image above becomes :class2
+        | NOTE: checks if each element X is clicked (and gets class Q) that corresponding element Y gains class R
+        |  WARNING: If an image contains brightcove image source, then video must be checked manually
+        |  TODO: hard code working solution for videos
+        | at `FeatureContext::thumbnailandCarouselMatching()`
+
+[Then|*] for each :image the height and width are at least :heightY by :widthX
+        | at `FeatureContext::forEachTheHeightAndWidthAreAtLeastBy()`
+
+[Then|*] I should see no more than :elemNum characters on any :element1
+        | REVIEWS ALL ELEMENT-Xs FOR CHARACTER COUNT
+        | at `FeatureContext::iShouldSeeNoMoreThanCharactersOnAny()`
+
+[Then|*] if the :page1 page has :element the current page will have :element2
+        | [Optional] Safety Recall notification only appears if there is an active Safety Recall published on the Safety Notices page
+        | at `FeatureContext::ifThePageHasTheCurrentPageWillHave()`
+
+[Then|*] vardump :arg1
+        | at `FeatureContext::vardump()`
+
+[Then|*] every :num seconds the next :element changes attribute :attribute in style array :arrayNum
+        | Before clicking any slide, the slides automatically cycle every 5 seconds - looks to see if the X attribute (which is $arrayNum in the style array) changes every Y seconds
+        | at `FeatureContext::everySecondsTheNextChangesAttributeInStyleArray()`
+
+[Then|*] the :elements with :attribute should contain :string
+        | at `FeatureContext::theWithShouldContain()`
+
+[Then|*] check :elements1 have a match in :elements2
+        | Checks to see if elements in first array match elements in second array
+        | All elements in first array must have a match in second array to pass
+        | at `FeatureContext::checkFImagesAgainstFTopNav()`
+
+[Then|*] The image link :arg1 should match the image text link :arg2 and the left nav text link :arg3
+        | Checks if the image link matches the image text link and the left navigation text link
+        | at `FeatureContext::checkLinksImgAndImgTxtAndLeftNavTxt()`
+
+[Then|*] check :element element
+        | at `FeatureContext::checkElement()`
+
+[Then|*] :element is an image
+        | Can make this global - used in F1 too
+        | at `FeatureContext::isAnImage()`
+
+[When|*] /^(?:|I )follow css "(?P&lt;link&gt;(?:[^"]|\\")*)"$/
+        | Clicks link with specified css selector
+        | Example: When I follow ".class a"
+        | Example: And I follow ""
+        | at `FeatureContext::clickCssLink()`
+
+[Then|*] print :element element attribute :attribute
+        | at `FeatureContext::printElementAttribute()`
+
+[Then|*] print :element element attributes :attribute
+        | at `FeatureContext::printElementAttributes()`
+
+[Then|*] the :element element should be title cased
+        | Checks to see if element is title cased
+        | - Checks first word and letter only to see if uppercase.
+        | at `FeatureContext::elementshouldbetitlecased()`
+
+[Then|*] check multiple :elements should be title cased
+        | Checks to see if multiple element are title cased
+        | - Checks first word and letter only to see if uppercase.
+        | *@Then check multiple :elements should be title cased
+        | at `FeatureContext::multipleelementshouldbetitlecased()`
+
+[Then|*] check :element is not empty
+        | at `FeatureContext::checkIsNotEmpty()`
+
+[Then|*] check multiple :elements are not empty
+        | at `FeatureContext::checkmultipleNotEmpty()`
+
+[Then|*] the page title and h1 should be similar
+        | Compares the h1 and title - should be equal.
+        | Will Also fail if h1 is empty
+        | at `FeatureContext::thePageTitleAndH1Similar()`
+
+[Then|*] I should see :element1 with content :element2
+        | Validates if an element exists then there is content
+        | at `FeatureContext::ValTabExistWithContent()`
+
+[Then|*] I should see total tab :element1 match the total page :element2
+        | Validates that each tab total products matches the total products listed
+        | at `FeatureContext::valTabTotNumMatchesTotNumProdShown()`
+
+[Then|*] check if :elements1 have associated :elements2
+        | at `FeatureContext::checkAssociatedElements()`
+
+[Then|*] check :arg1 single icons only
+        | at `FeatureContext::checkSingleIconsOnly()`
+
+[Then|*] check :elements for element with :attribute having :string
+        | at `FeatureContext::checkForElementWithHaving()`
+
+[Then|*] check :element is visible
+        | at `FeatureContext::checkisvisiblestandard()`
+
+[Then|*] I check all the links :element1 go to the correct item
+        | IN PROGRESS _ COULD NOT YET TEST (elements not found)
+        | at `FeatureContext::iCheckAllTheLinksGoToTheCorrectItem()`
+
+[Then|*] in the string :string the first number is :num and the second number is the total number of :element1
+        | Are the numbers in the line  'Showing x of xx products' correct?
+        | at `FeatureContext::inTheStringTheFirstNumberIsAndTheSecondNumberIsTheTotalNumberOf()`
+
+[Then|*] if there are no :element1 then there is no :title
+        | If there are no related products there is no related title
+        | at `FeatureContext::ifThereAreNoThenThereIsNo()`
+
+[Then|*] check related projects forward carousel?
+        | at `FeatureContext::checkRelatedProjectsForwardCarousel()`
+
+[Then|*] check related projects back carousel?
+        | at `FeatureContext::checkRelatedProjectsbackCarousel()`
+
+[Then|*] Check parent element :element1 number matches :element2 amount of children
+        | at `FeatureContext::checkParentElementNumHasCorrectNumOfChild()`
+
+[Then|*] multiple :elements with :attribute should contain :string
+        | Also used on F1 (Make Global)
+        | at `FeatureContext::checkElementsHaveClassWithString()`
+
+[Then|*] check if not :locale
+        | at `FeatureContext::checkIfNot()`
+
+[Then|*] check if only in :locale :elements :attribute string contains :string
+        | at `FeatureContext::checkIfIdHasStringBasedOnLocale()`
+
+[Then|*] check if parent :arg1 has children :arg2
+        | Check to see if there are
+        | at `FeatureContext::checkIfParentHasChildren()`
+
+[Then|*] if :num :elements I should not see :element2
+        | Jen has Q - :elements isn't pulled into the function - is this incomplete? Are elements and elements2 the same thing?
+        | On product page, checks that no thumbnails are present if only one image.
+        | at `FeatureContext::ifOneImageNoThumbnails2()`
+
+[Then|*] cycle through :elements and only :num should have :class
+        | at `FeatureContext::cycleThroughAndOnlyShouldHave()`
+
+[Then|*] Check if :element element displays not found
+        | at `FeatureContext::checkIfElementDisplaysNotFound()`
+
+[Then|*] the thumbnail should load the large matching image above
+        | Jen has Q - is this incomplete?
+        | Current strategy is to click on each li and confirm that the img has an img.flex-active class
+        | at `FeatureContext::thumbnailLaodMatching()`
+
+[When|*] /^wait (\d+) seconds?$/
+        | at `FeatureContext::waitSeconds()`
+
+[Then|*] compare the url with the :arg1 breadcrumb element
+        | at `FeatureContext::compareUrlAgainstBreadcrumb()`
+
+[Then|*] I check the link from css :element is correct
+        | at `FeatureContext::iShouldSeeTheCorrectPage()`
+
+[Given|*] the :element element is on the page
+        | at `FeatureContext::theElementIsOnThePage()`
+
+[Then|*] If there are :charNUms characters in :element1 :element2 exists
+        | at `FeatureContext::ifCharactersElementExists()`
+
+[Then|*] check the :imgElements forward :button on the carousel
+        | at `FeatureContext::checkTheforwardCarousel()`
+
+[Then|*] check the :imgElements back :button on the carousel
+        | at `FeatureContext::checkThebackCarousel()`
+
+[Then|*] click on :arg1 and check :arg2 expanded
+        | at `FeatureContext::clickOnAndCheckExpanded()`
+
+[Then|*] click on :arg1 and check :arg2 not expanded
+        | at `FeatureContext::clickOnAndCheckNotExpanded()`
+
+[Then|*] click text element :element has changed and is not empty
+        | at `FeatureContext::checkTextElementHasChanged()`
+
+[Then|*] click on :element
+        | at `FeatureContext::clickOn()`
+
+[Then|*] check if :locale only shows :element
+        | at `FeatureContext::checkIfOnlyShows()`
+
+[Then|*] check :element is not a link
+        | at `FeatureContext::checkIsNotLink()`
+
+[Then|*] check link :element language locale
+        | *@Then check link :element language locale
+        | at `FeatureContext::checkLinkLocale()`
+
+[Then|*] check if less than :num of :elements is visible fail
+        | Jen has Q - if $elements is null - should this fail? - I've skipped reviewing a lot of this section since I wasn't sure how these should play out
+        | at `FeatureContext::checkIsLessThanNumVisiblefail()`
+
+[Then|*] check if less than :num of :elements is visible skip
+        | at `FeatureContext::checkIsLessThanNumVisibleSkip()`
+
+[Then|*] check if more than :num of :elements is visible skip
+        | at `FeatureContext::checkIsmoreThanNumVisibleSkip()`
+
+[Then|*] check :element is visible skip
+        | at `FeatureContext::checkIsVisible()`
+
+[Then|*] check :element is not visible skip
+        | at `FeatureContext::checkIsNotVisible()`
+
+[Then|*] check :element is visible fail
+        | at `FeatureContext::checkIsVisiblefail()`
+
+[Then|*] check :element is not visible fail
+        | at `FeatureContext::checkIsNotVisiblefail()`
+
+[Then|*] check :element has content
+        | at `FeatureContext::checkHasContent()`
+
+[Then|*] check :element anchor link
+        | Checks the anchor link to ensure that an anchor section tag exists
+        | at `FeatureContext::checkAnchorLink()`
+
+[When|*] I click on :element
+        | at `FeatureContext::iClickOn()`
+
+[Then|*] check that the :element :attribute is :quality else skip
+        |    ****** THIS FUNCTION SKIPS NEXT STEP IF FAILS
+        | at `FeatureContext::checkThatTheIsElseSkip()`
+
+[Then|*] check that the :element :attribute is :quality
+        | Move to Global when f4_base.feature is updated (can use in F1 as well)
+        | at `FeatureContext::checkThatTheIs()`
+
+[Then|*] click multiple :elements1 and check multiple :elements2 expanded
+        | Jen has Q - is this incomplete?
+        | Click on the element to determine if element to expand has style of display:block
+        | at `FeatureContext::clickMultipleExpanded()`
+
+[Then|*] click multiple :elementsToClick and check multiple :elementsToCollapse collapsed
+        | Click on the element to determine if element to expand has style of display:block
+        | at `FeatureContext::clickMultipleCollapsed()`
+
+[Then|*] The parent elements should all be :element
+        | Are all of the display title links h2 elements? - (F7)
+        | at `FeatureContext::valParentElem()`
+
+[Then|*] I should see all elements :element1 parents are :element2 elements
+        | Are all of the display title links h2 elements? - (F7)
+        | at `FeatureContext::f7FunctionWorkInProgress_rev2()`
+
+[Then|*] check if elements :elements1 match the elements :elements2
+        | Validates that the elements in one array match the elements in the second array
+        | at `FeatureContext::valImageLinksMatchTopNavLinks()`
+
+[Then|*] the page :element1 and :element2 should be the same
+        | Does the page title and H1 match? F9
+        | Will Also fail if h1 is empty
+        | Then the page title and h1 should be similar
+        | at `FeatureContext::pageTitleAndH1Match_F9()`
+
+[Then|*] I should see that a Call for Assistance :element1 exists
+        | Validates that the Call for Assistance exists on page (en-us only) F11
+        | at `FeatureContext::callForAssistanceExists_F11()`
+
+[Then|*] click pagination link :element and returns a status code of 200
+        | DO NOT USE - WORK IN PROGRESS
+        | Validates that Pagination links are clickable and returns a status code of 200
+        | at `FeatureContext::checkPaginationLinkIsClickable()`
+
+[Then|*] check multiple :elements are clickable
+        | at `FeatureContext::checkMultipleAreClickable()`
+
+[Then|*] check that the direct parent of :element1 element is an :element2 element
+        | Jen has Q - Is this one incomplete?
+        | at `FeatureContext::checkThatDirectIsAnElement()`
+
+[Then|*] the :element1 with :class should contain :element2 string
+        | at `FeatureContext::theWithShouldContainString()`
+
+[Then|*] I should not see dates :element older than current date v2
+        | Validates that Live webinars will not show if the dates are older than current date
+        | at `FeatureContext::valDatesNotOlderThanCurrentDate2()`
+
+[Then|*] I should see multiple dates :element sorted in order on Tradeshows and seminars
+        | Sort by Date - "Thursday, February 1, 2018 - 08:00'
+        | Validates that the sort order for Tradeshows and seminars is done by date ascending
+        | at `FeatureContext::valMuliDatesSortedInOrder2()`
+
+[Then|*] check :element1" is not on page I should see :element2
+        | Checks to see that an element is on page with text if another element is not on page
+        |
+        | *@Then check :element1" is not on page I should see :element2
+        | at `FeatureContext::checkElementNotOnPageThenShouldSee()`
+
+[Then|*] there are :num :elements on the page with the names of :names in order
+        | Jen has Q - don't forget to edit this one for multiple languages...
+        | 4 tabs are on page, named in the following order: Videos, App Notes, Demos, Documents
+        | at `FeatureContext::thereAreOnThePageWithTheNamesOfInOrder()`
+
+[Then|*] click link :element
+        | just click something
+        | at `FeatureContext::clickLink2()`
+
+[Then|*] when I click on each :pagination, there are no more than :num :articles items without style :style
+        | This is no longer working due to how the page was restructured - MAY END UP DELETING THIS IF I CAN'T USE IT (3.8.18)
+        | No individual page has more than 10 Articles (when I click on each pagination, there is no more than x that do NOT have -display:none;)
+        | at `FeatureContext::whenIClickOnEachThereAreNoMoreThanItemsWithoutStyle()`
+
+[Then|*] when I click on the :next Next Button for each :pagination, there are no more than :num :articles that are not :attribute1 or :attribute2
+        | Scenario: No individual page has more than 10 Articles (Videos)
+        | Then when clicking the :next next button, each page is tested to make sure total items styled with display:none; or display: none; leave 10 or less elements without a style
+        | at `FeatureContext::whenIClickOnTheNextButtonForEachThereAreNoMoreThanThatAreNotOr()`
+
+[Then|*] :element contains the word :string in its :attribute
+        | at `FeatureContext::containsTheWordInIts()`
+
+[Then|*] click all :element
+        | at `FeatureContext::clickAll()`
+
+[Then|*] check all :element
+        | This will check the element IF IT IS VISIBLE! - test for visiblity where needed.
+        | at `FeatureContext::checkAll()`
+
+[Then|*] uncheck all :element
+        | at `FeatureContext::uncheckAll()`
+
+[Then|*] if there are more than :num :articles then I should see an :next
+        | at `FeatureContext::ifThereAreMoreThanThenIShouldSeeAn()`
+
+[Then|*] if there are more than :num :articles I can click on :page2 and see a :previousButton
+        | at `FeatureContext::ifThereAreMoreThanICanClickOnAndSeeA()`
+
+[Then|*] I cannot click on :element
+        | at `FeatureContext::iCannotClickOn()`
+
+[Then|*] if there are more than :num :articles I can click on :page2 and then click on a :page1 and then see a :activePage
+        |  'First Page' button takes the user to the first page when clicked
+        | at `FeatureContext::ifThereAreMoreThanICanClickOnAndThenClickOnAAndThenSeeA()`
+
+[Then|*] if there are more than :num :articles then when I click on the last :page there is a :next
+        | at `FeatureContext::ifThereAreMoreThanThenWhenIClickOnTheLastThereIsA()`
+
+[Then|*] if there are more than :arg1 :arg2 I can click on :arg3 and then click on a :arg4 and then see a :arg5 for the last page
+        |     ONLY WRITE THIS IF THEY ADD 'LAST PAGE' ELEMENTS THAT NEED FURTHER TESTING (UNLIKELY)
+        | at `FeatureContext::ifThereAreMoreThanICanClickOnAndThenClickOnAAndThenSeeAForTheLastPage()`
+
+[Then|*] I should not see an :element
+        | at `FeatureContext::iShouldNotSeeAn()`
+
+[Then|*] I should see live webinar text :element match language list
+        | Validates that Tab 1 is title "Live Webinars" after translation
+        | at `FeatureContext::valliveWebinarTxtMatchLangList()`
+
+[Then|*] I should see On-Demand Webinar text :element match language list
+        | Validates that Tab 2 is title "On-Demand Webinars" after translation
+        | at `FeatureContext::valOnDemandWebinarTxtMatchLangList()`
+
+[Then|*] I should see a column element :element labled :elemText
+        | Validates that there is a webinar column labled
+        | at `FeatureContext::valElemTextInColumnExists()`
+
+[Then|*] I should see multiple lists :element in alphabetical order
+        | Make Global - used in F19 as well
+        | Sort text Alphabetically -
+        | Validates that On-Demand Webinars are listed in alphabetical order under the webinar name
+        | at `FeatureContext::valElemAreListedAlphabetically()`
+
+[Then|*] I should only see text :element1 if text exits :element2
+        | THIS SCRIPT NEEDS MORE TESTING EXAMPLES - MAY NOT WORK PROPERLY
+        | Validates that the category filter contains all the categories that appear in the Webinar Type column
+        | at `FeatureContext::valTxtInElem1ExistsIfTxtInElem2Exists()`
+
+[Then|*] If an :element is not visible I should see a message
+        | Validates that the table in Live Webinars is replaced with "No events scheduled, check back soon." if there are no events
+        | at `FeatureContext::valIfElementIsHiddenShowMsg()`
+
+[Then|*] I should see multiple dates :element sorted in order
+        | Sort by Date - "MON D , YEAR 00:00 AM PST'
+        | Validates that the sort order for Live webinars is done by date ascending
+        | at `FeatureContext::valMuliDatesSortedInOrder()`
+
+[Then|*] I should not see dates :element older than current date
+        | Validates that Live webinars will not show if the dates are older than current date
+        | at `FeatureContext::valDatesNotOlderThanCurrentDate()`
+
+[Then|*] I should see each CTA :element with :elemText text
+        | Validates that each CTA button for the On-demand webinar has a label of "Watch Now"
+        | at `FeatureContext::valCTAHasWatchNowText()`
+
+[Then|*] all :elem1 have a :structure date in its text
+        | Checks to see if a date is in the text.  See formula for Gherkin needed for $structure variable
+        | at `FeatureContext::allHaveADateInItsText()`
+
+[Then|*] each :element has taxonomy
+        | Each search result shows it's taxonomy - This will fail if there is not text after the second "|"" in the date-type div
+        | at `FeatureContext::eachHasTaxonomy()`
+
+[Then|*] check and uncheck all :element
+        | *This tests that each dynamically created checkbox can be clicked, then unclicked
+        | at `FeatureContext::checkAndUncheckAll()`
+
+[When|*] the user clicks a dynamically created :element1 then the page will show dynamically created :element2
+        |  Checks that when a dynamically created element is clicked, dynamically created content then exists
+        | at `FeatureContext::theUserClicksADynamicallyCreatedThenThePageWillShowDynamicallyCreated()`
+
+[Then|*] maximize the window
+        | at `FeatureContext::maximizeTheWindow()`
+
+[Then|*] check :element has text that contains :text
+        | at `FeatureContext::checkHasTextThatContains()`
+
+[Then|*] the number of results for link :link matches the number shown at :label
+        | at `FeatureContext::theNumberOfResultsForLinkMatchesTheNumberShownAt()`
+
+[Then|*] check :element :attribute is not empty
+        | at `FeatureContext::checkAttributeIsNotEmpty()`
+
+[Then|*] I should see an :element1 and at least one :element2
+        | Validates that each h2 element has at least one press release link
+        | at `FeatureContext::ValElem1ExistsAndAnElem2Exists()`
+
+[Then|*] I should see current text :element match language list
+        | Validates that Tab 1 is title "Current" after translation
+        | at `FeatureContext::valCurrentTxtMatchLangList()`
+
+[Then|*] I should see archive text :element match language list
+        | Validates that Tab 2 is title "Archive" after translation
+        | at `FeatureContext::valArchiveTxtMatchLangList()`
+
+[Then|*] I should see CTA text :element match language list
+        | Validates that the CTA text is labeled "Search" is a match in all lanuages
+        | at `FeatureContext::valCTATxtMatchLangList()`
+
+[Then|*] check :arg1 for attribute with :arg2 having regex match :arg3
+        | at `FeatureContext::checkForElementWithHavingRegexMatch()`
+
+[Given|*] /^(?:|I )am on (?:|the )homepage$/
+        | Opens homepage
+        | Example: Given I am on "/"
+        | Example: When I go to "/"
+        | Example: And I go to "/"
+        | at `FeatureContext::iAmOnHomepage()`
+
+[When|*] /^(?:|I )go to (?:|the )homepage$/
+        | Opens homepage
+        | Example: Given I am on "/"
+        | Example: When I go to "/"
+        | Example: And I go to "/"
+        | at `FeatureContext::iAmOnHomepage()`
+
+[Given|*] /^(?:|I )am on "(?P&lt;page&gt;[^"]+)"$/
+        | Opens specified page
+        | Example: Given I am on "http://batman.com"
+        | Example: And I am on "/articles/isBatmanBruceWayne"
+        | Example: When I go to "/articles/isBatmanBruceWayne"
+        | at `FeatureContext::visit()`
+
+[When|*] /^(?:|I )go to "(?P&lt;page&gt;[^"]+)"$/
+        | Opens specified page
+        | Example: Given I am on "http://batman.com"
+        | Example: And I am on "/articles/isBatmanBruceWayne"
+        | Example: When I go to "/articles/isBatmanBruceWayne"
+        | at `FeatureContext::visit()`
+
+[When|*] /^(?:|I )reload the page$/
+        | Reloads current page
+        | Example: When I reload the page
+        | Example: And I reload the page
+        | at `FeatureContext::reload()`
+
+[When|*] /^(?:|I )move backward one page$/
+        | Moves backward one page in history
+        | Example: When I move backward one page
+        | at `FeatureContext::back()`
+
+[When|*] /^(?:|I )move forward one page$/
+        | Moves forward one page in history
+        | Example: And I move forward one page
+        | at `FeatureContext::forward()`
+
+[When|*] /^(?:|I )press "(?P&lt;button&gt;(?:[^"]|\\")*)"$/
+        | Presses button with specified id|name|title|alt|value
+        | Example: When I press "Log In"
+        | Example: And I press "Log In"
+        | at `FeatureContext::pressButton()`
+
+[When|*] /^(?:|I )follow "(?P&lt;link&gt;(?:[^"]|\\")*)"$/
+        | Clicks link with specified id|title|alt|text
+        | Example: When I follow "Log In"
+        | Example: And I follow "Log In"
+        | at `FeatureContext::clickLink()`
+
+[When|*] /^(?:|I )fill in "(?P&lt;field&gt;(?:[^"]|\\")*)" with "(?P&lt;value&gt;(?:[^"]|\\")*)"$/
+        | Fills in form field with specified id|name|label|value
+        | Example: When I fill in "username" with: "bwayne"
+        | Example: And I fill in "bwayne" for "username"
+        | at `FeatureContext::fillField()`
+
+[When|*] /^(?:|I )fill in "(?P&lt;field&gt;(?:[^"]|\\")*)" with:$/
+        | Fills in form field with specified id|name|label|value
+        | Example: When I fill in "username" with: "bwayne"
+        | Example: And I fill in "bwayne" for "username"
+        | at `FeatureContext::fillField()`
+
+[When|*] /^(?:|I )fill in "(?P&lt;value&gt;(?:[^"]|\\")*)" for "(?P&lt;field&gt;(?:[^"]|\\")*)"$/
+        | Fills in form field with specified id|name|label|value
+        | Example: When I fill in "username" with: "bwayne"
+        | Example: And I fill in "bwayne" for "username"
+        | at `FeatureContext::fillField()`
+
+[When|*] /^(?:|I )fill in the following:$/
+        | Fills in form fields with provided table
+        | Example: When I fill in the following"
+        |              | username | bruceWayne |
+        |              | password | iLoveBats123 |
+        | Example: And I fill in the following"
+        |              | username | bruceWayne |
+        |              | password | iLoveBats123 |
+        | at `FeatureContext::fillFields()`
+
+[When|*] /^(?:|I )select "(?P&lt;option&gt;(?:[^"]|\\")*)" from "(?P&lt;select&gt;(?:[^"]|\\")*)"$/
+        | Selects option in select field with specified id|name|label|value
+        | Example: When I select "Bats" from "user_fears"
+        | Example: And I select "Bats" from "user_fears"
+        | at `FeatureContext::selectOption()`
+
+[When|*] /^(?:|I )additionally select "(?P&lt;option&gt;(?:[^"]|\\")*)" from "(?P&lt;select&gt;(?:[^"]|\\")*)"$/
+        | Selects additional option in select field with specified id|name|label|value
+        | Example: When I additionally select "Deceased" from "parents_alive_status"
+        | Example: And I additionally select "Deceased" from "parents_alive_status"
+        | at `FeatureContext::additionallySelectOption()`
+
+[When|*] /^(?:|I )check "(?P&lt;option&gt;(?:[^"]|\\")*)"$/
+        | Checks checkbox with specified id|name|label|value
+        | Example: When I check "Pearl Necklace"
+        | Example: And I check "Pearl Necklace"
+        | at `FeatureContext::checkOption()`
+
+[When|*] /^(?:|I )uncheck "(?P&lt;option&gt;(?:[^"]|\\")*)"$/
+        | Unchecks checkbox with specified id|name|label|value
+        | Example: When I uncheck "Broadway Plays"
+        | Example: And I uncheck "Broadway Plays"
+        | at `FeatureContext::uncheckOption()`
+
+[When|*] /^(?:|I )attach the file "(?P&lt;path&gt;[^"]*)" to "(?P&lt;field&gt;(?:[^"]|\\")*)"$/
+        | Attaches file to field with specified id|name|label|value
+        | Example: When I attach "bwayne_profile.png" to "profileImageUpload"
+        | Example: And I attach "bwayne_profile.png" to "profileImageUpload"
+        | at `FeatureContext::attachFileToField()`
+
+[Then|*] /^(?:|I )should be on "(?P&lt;page&gt;[^"]+)"$/
+        | Checks, that current page PATH is equal to specified
+        | Example: Then I should be on "/"
+        | Example: And I should be on "/bats"
+        | Example: And I should be on "http://google.com"
+        | at `FeatureContext::assertPageAddress()`
+
+[Then|*] /^(?:|I )should be on (?:|the )homepage$/
+        | Checks, that current page is the homepage
+        | Example: Then I should be on the homepage
+        | Example: And I should be on the homepage
+        | at `FeatureContext::assertHomepage()`
+
+[Then|*] /^the (?i)url(?-i) should match (?P&lt;pattern&gt;"(?:[^"]|\\")*")$/
+        | Checks, that current page PATH matches regular expression
+        | Example: Then the url should match "superman is dead"
+        | Example: Then the uri should match "log in"
+        | Example: And the url should match "log in"
+        | at `FeatureContext::assertUrlRegExp()`
+
+[Then|*] /^the response status code should be (?P&lt;code&gt;\d+)$/
+        | Checks, that current page response status is equal to specified
+        | Example: Then the response status code should be 200
+        | Example: And the response status code should be 400
+        | at `FeatureContext::assertResponseStatus()`
+
+[Then|*] /^the response status code should not be (?P&lt;code&gt;\d+)$/
+        | Checks, that current page response status is not equal to specified
+        | Example: Then the response status code should not be 501
+        | Example: And the response status code should not be 404
+        | at `FeatureContext::assertResponseStatusIsNot()`
+
+[Then|*] /^(?:|I )should see "(?P&lt;text&gt;(?:[^"]|\\")*)"$/
+        | Checks, that page contains specified text
+        | Example: Then I should see "Who is the Batman?"
+        | Example: And I should see "Who is the Batman?"
+        | at `FeatureContext::assertPageContainsText()`
+
+[Then|*] /^(?:|I )should not see "(?P&lt;text&gt;(?:[^"]|\\")*)"$/
+        | Checks, that page doesn't contain specified text
+        | Example: Then I should not see "Batman is Bruce Wayne"
+        | Example: And I should not see "Batman is Bruce Wayne"
+        | at `FeatureContext::assertPageNotContainsText()`
+
+[Then|*] /^(?:|I )should see text matching (?P&lt;pattern&gt;"(?:[^"]|\\")*")$/
+        | Checks, that page contains text matching specified pattern
+        | Example: Then I should see text matching "Batman, the vigilante"
+        | Example: And I should not see "Batman, the vigilante"
+        | at `FeatureContext::assertPageMatchesText()`
+
+[Then|*] /^(?:|I )should not see text matching (?P&lt;pattern&gt;"(?:[^"]|\\")*")$/
+        | Checks, that page doesn't contain text matching specified pattern
+        | Example: Then I should see text matching "Bruce Wayne, the vigilante"
+        | Example: And I should not see "Bruce Wayne, the vigilante"
+        | at `FeatureContext::assertPageNotMatchesText()`
+
+[Then|*] /^the response should contain "(?P&lt;text&gt;(?:[^"]|\\")*)"$/
+        | Checks, that HTML response contains specified string
+        | Example: Then the response should contain "Batman is the hero Gotham deserves."
+        | Example: And the response should contain "Batman is the hero Gotham deserves."
+        | at `FeatureContext::assertResponseContains()`
+
+[Then|*] /^the response should not contain "(?P&lt;text&gt;(?:[^"]|\\")*)"$/
+        | Checks, that HTML response doesn't contain specified string
+        | Example: Then the response should not contain "Bruce Wayne is a billionaire, play-boy, vigilante."
+        | Example: And the response should not contain "Bruce Wayne is a billionaire, play-boy, vigilante."
+        | at `FeatureContext::assertResponseNotContains()`
+
+[Then|*] /^(?:|I )should see "(?P&lt;text&gt;(?:[^"]|\\")*)" in the "(?P&lt;element&gt;[^"]*)" element$/
+        | Checks, that element with specified CSS contains specified text
+        | Example: Then I should see "Batman" in the "heroes_list" element
+        | Example: And I should see "Batman" in the "heroes_list" element
+        | at `FeatureContext::assertElementContainsText()`
+
+[Then|*] /^(?:|I )should not see "(?P&lt;text&gt;(?:[^"]|\\")*)" in the "(?P&lt;element&gt;[^"]*)" element$/
+        | Checks, that element with specified CSS doesn't contain specified text
+        | Example: Then I should not see "Bruce Wayne" in the "heroes_alter_egos" element
+        | Example: And I should not see "Bruce Wayne" in the "heroes_alter_egos" element
+        | at `FeatureContext::assertElementNotContainsText()`
+
+[Then|*] /^the "(?P&lt;element&gt;[^"]*)" element should contain "(?P&lt;value&gt;(?:[^"]|\\")*)"$/
+        | Checks, that element with specified CSS contains specified HTML
+        | Example: Then the "body" element should contain "style=\"color:black;\""
+        | Example: And the "body" element should contain "style=\"color:black;\""
+        | at `FeatureContext::assertElementContains()`
+
+[Then|*] /^the "(?P&lt;element&gt;[^"]*)" element should not contain "(?P&lt;value&gt;(?:[^"]|\\")*)"$/
+        | Checks, that element with specified CSS doesn't contain specified HTML
+        | Example: Then the "body" element should not contain "style=\"color:black;\""
+        | Example: And the "body" element should not contain "style=\"color:black;\""
+        | at `FeatureContext::assertElementNotContains()`
+
+[Then|*] /^(?:|I )should see an? "(?P&lt;element&gt;[^"]*)" element$/
+        | Checks, that element with specified CSS exists on page
+        | Example: Then I should see a "body" element
+        | Example: And I should see a "body" element
+        | at `FeatureContext::assertElementOnPage()`
+
+[Then|*] /^(?:|I )should not see an? "(?P&lt;element&gt;[^"]*)" element$/
+        | Checks, that element with specified CSS doesn't exist on page
+        | Example: Then I should not see a "canvas" element
+        | Example: And I should not see a "canvas" element
+        | at `FeatureContext::assertElementNotOnPage()`
+
+[Then|*] /^the "(?P&lt;field&gt;(?:[^"]|\\")*)" field should contain "(?P&lt;value&gt;(?:[^"]|\\")*)"$/
+        | Checks, that form field with specified id|name|label|value has specified value
+        | Example: Then the "username" field should contain "bwayne"
+        | Example: And the "username" field should contain "bwayne"
+        | at `FeatureContext::assertFieldContains()`
+
+[Then|*] /^the "(?P&lt;field&gt;(?:[^"]|\\")*)" field should not contain "(?P&lt;value&gt;(?:[^"]|\\")*)"$/
+        | Checks, that form field with specified id|name|label|value doesn't have specified value
+        | Example: Then the "username" field should not contain "batman"
+        | Example: And the "username" field should not contain "batman"
+        | at `FeatureContext::assertFieldNotContains()`
+
+[Then|*] /^(?:|I )should see (?P&lt;num&gt;\d+) "(?P&lt;element&gt;[^"]*)" elements?$/
+        | Checks, that (?P&lt;num&gt;\d+) CSS elements exist on the page
+        | Example: Then I should see 5 "div" elements
+        | Example: And I should see 5 "div" elements
+        | at `FeatureContext::assertNumElements()`
+
+[Then|*] /^the "(?P&lt;checkbox&gt;(?:[^"]|\\")*)" checkbox should be checked$/
+        | Checks, that checkbox with specified id|name|label|value is checked
+        | Example: Then the "remember_me" checkbox should be checked
+        | Example: And the "remember_me" checkbox is checked
+        | at `FeatureContext::assertCheckboxChecked()`
+
+[Then|*] /^the "(?P&lt;checkbox&gt;(?:[^"]|\\")*)" checkbox is checked$/
+        | Checks, that checkbox with specified id|name|label|value is checked
+        | Example: Then the "remember_me" checkbox should be checked
+        | Example: And the "remember_me" checkbox is checked
+        | at `FeatureContext::assertCheckboxChecked()`
+
+[Then|*] /^the checkbox "(?P&lt;checkbox&gt;(?:[^"]|\\")*)" (?:is|should be) checked$/
+        | Checks, that checkbox with specified id|name|label|value is checked
+        | Example: Then the "remember_me" checkbox should be checked
+        | Example: And the "remember_me" checkbox is checked
+        | at `FeatureContext::assertCheckboxChecked()`
+
+[Then|*] /^the "(?P&lt;checkbox&gt;(?:[^"]|\\")*)" checkbox should (?:be unchecked|not be checked)$/
+        | Checks, that checkbox with specified id|name|label|value is unchecked
+        | Example: Then the "newsletter" checkbox should be unchecked
+        | Example: Then the "newsletter" checkbox should not be checked
+        | Example: And the "newsletter" checkbox is unchecked
+        | at `FeatureContext::assertCheckboxNotChecked()`
+
+[Then|*] /^the "(?P&lt;checkbox&gt;(?:[^"]|\\")*)" checkbox is (?:unchecked|not checked)$/
+        | Checks, that checkbox with specified id|name|label|value is unchecked
+        | Example: Then the "newsletter" checkbox should be unchecked
+        | Example: Then the "newsletter" checkbox should not be checked
+        | Example: And the "newsletter" checkbox is unchecked
+        | at `FeatureContext::assertCheckboxNotChecked()`
+
+[Then|*] /^the checkbox "(?P&lt;checkbox&gt;(?:[^"]|\\")*)" should (?:be unchecked|not be checked)$/
+        | Checks, that checkbox with specified id|name|label|value is unchecked
+        | Example: Then the "newsletter" checkbox should be unchecked
+        | Example: Then the "newsletter" checkbox should not be checked
+        | Example: And the "newsletter" checkbox is unchecked
+        | at `FeatureContext::assertCheckboxNotChecked()`
+
+[Then|*] /^the checkbox "(?P&lt;checkbox&gt;(?:[^"]|\\")*)" is (?:unchecked|not checked)$/
+        | Checks, that checkbox with specified id|name|label|value is unchecked
+        | Example: Then the "newsletter" checkbox should be unchecked
+        | Example: Then the "newsletter" checkbox should not be checked
+        | Example: And the "newsletter" checkbox is unchecked
+        | at `FeatureContext::assertCheckboxNotChecked()`
+
+[Then|*] /^print current URL$/
+        | Prints current URL to console.
+        | Example: Then print current URL
+        | Example: And print current URL
+        | at `FeatureContext::printCurrentUrl()`
+
+[Then|*] /^print last response$/
+        | Prints last response to console
+        | Example: Then print last response
+        | Example: And print last response
+        | at `FeatureContext::printLastResponse()`
+
+[Then|*] /^show last response$/
+        | Opens last response content in browser
+        | Example: Then show last response
+        | Example: And show last response
+        | at `FeatureContext::showLastResponse()`
+
+    </code></pre>
+      
+      <h2 id="database">Database Information</h2>
+      <p>For development purposes, we have two databases that need to mirror each other, the database on the <br />
+        EC2 instance (http://ec2-35-168-52-214.compute-1.amazonaws.com/) and the database(s) used on local machines.<br />
+        </p>
+      <img src="/img/schema.PNG">
+    </div><!-- end .col-lg-12 -->
+  </div><!-- end .row -->
+</div><!-- end .container-fluid -->
+
+
+<%- include('footer') %>
