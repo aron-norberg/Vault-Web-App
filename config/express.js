@@ -34,6 +34,8 @@ const api_dashboardTWO = require('../app/routes/api_dashboardTWO');
 const authenticate = require('../app/routes/authentication');
 const api_testRunner = require('../app/routes/api_testRunner');
 const api_emailer = require('../app/routes/api_emailer');
+const api_documents = require('../app/routes/api_documents');
+
 
 // const api_login = require('../app/routes/api_login');
 const test_case_editor = require('../app/routes/test_case_editor');
@@ -184,9 +186,8 @@ module.exports = function() {
   app.get('/dashboard/locale/:locale', isLoggedIn, api_dashboard.getResultMetaByLocale);
   app.get('/dashboard/query/:custom', isLoggedIn, api_dashboard.getResultMetaByCustom);
 
-  // Dashboard page - delete TestCase by Id
-  app.get('/deleteTestCases', isLoggedIn, api_dashboard.deleteTestCases);
-
+  // Dashboard page - delete Test Results by Id
+  app.get('/deleteTestResults', isLoggedIn, api_dashboard.deleteTestResults);
   
   // Results Pages 
   app.get('/results/locale/:locale', isLoggedIn, api_results.getResultByLanguage);
@@ -243,14 +244,19 @@ module.exports = function() {
   app.post('/run-test', isLoggedIn, api_tests.postTest, api_tests.startProcess);
   app.get('/stop-test', isLoggedIn, api_tests.stopTest);
 
-  app.post('/post-gherkin', isLoggedIn, test_case_editor.postGherkin)
-  app.post('/new-gherkin', isLoggedIn, test_case_editor.newGherkin)
+  app.post('/post-gherkin', isLoggedIn, test_case_editor.postGherkin);
+  app.post('/new-gherkin', isLoggedIn, test_case_editor.newGherkin);
   app.post('/clean-gherkin', isLoggedIn, api_DB_writer.cleanGherkin_DB);
   //app.post('/clean-gherkin', isLoggedIn, test_case_editor.cleanGherkin_DB)
 
+  // Document page for ReadMe file and references
+  app.get('/docs', isLoggedIn, api_documents.showDocs);
 
   // Edit Test Cases
   app.get('/test-case-editor', isLoggedIn, test_case_editor.editTestCases);
+
+  // Delete Test Cases
+  app.post('/delete-test-case', isLoggedIn, test_case_editor.deleteTestCases);
 
   // Language Detection Route
   app.post('/detect', language.postLanguage);

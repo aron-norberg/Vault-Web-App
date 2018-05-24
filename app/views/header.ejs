@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <meta name="robots" content="noindex, nofollow">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="author" content="Jennifer C Bronson, James Sandoval, Aron T Norberg">
   <title>Quality Testing</title>
   <!-- External css - flukestrap include -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -58,26 +59,26 @@
         <a class="nav-link" href="/test-case-editor" onclick="loadingAnimation()">Test Case Editor</a>
       </li>
 
-      
-      <% if(typeof user == 'string' && user){ %>
-      <li class="nav-item">
-        <a class="nav-link" href="/signup" onclick="loadingAnimation()">Create User</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/logout" onclick="loadingAnimation()">Log Out</a>
-      </li>
+      <% if(typeof user != 'undefined'){ %>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout" onclick="loadingAnimation()">Log Out</a>
+        </li>
 
-      <% }else{ %>
-      <li class="nav-item">
-        <a class="nav-link" href="/login">Log In</a>
-      </li>
-      <% } %>
+          <% if(user.role == 2){ %>
+          <li class="nav-item">
+            <a class="nav-link" href="/signup" onclick="loadingAnimation()">Create User</a>
+          </li>
+          <% } %>
+
+        <% }else{ %>
+        <li class="nav-item">
+          <a class="nav-link" href="/login">Log In</a>
+        </li>
+        <% } %>
 
     </ul>
-    
-  </div>
-
-</nav>
-<!-- end .nav -->
+  </div><!-- end .collapse .navbar-collapse -->
+  
+</nav><!-- end .nav -->
 
 <div class="topbar"></div>

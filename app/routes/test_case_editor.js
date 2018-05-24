@@ -24,7 +24,8 @@ exports.editTestCases = function(req, res) {  //getResultByTemplateCustom
             res.render('test_case_editor', {
                 title: 'Test Case Editor',
                 testcases: results,
-                template: whereUsed
+                template: whereUsed,
+                user: req.user
             });
 
             return null;
@@ -45,6 +46,92 @@ exports.editTestCases = function(req, res) {  //getResultByTemplateCustom
     })
   
 };
+
+
+
+
+
+
+
+
+
+
+// CURRENTLY IN PRODUCTION
+exports.deleteTestCases = function(req, res) {
+  console.log('Hello Waldo!');
+  console.log('Hello JenCB!!!');
+  
+
+  //let Id = req.query.Id; // GET method
+  let Id = req.body.Id; // POST method
+  console.log('Test case Id is - ' + Id);
+
+  // testcase table
+  db.TestCase.destroy({
+    where: {
+      TestCaseId: req.body.Id
+    }
+
+  }).then(function (TestCase) {
+
+    if (TestCase >= 1) {
+      console.log('PASS:  Test case - ' + Id + ' has been deleted from TestCase table.');
+    }
+    else {
+      console.log('FAIL: Test case - ' + Id + ' was not found in TestCase table.');
+    }
+
+  }); // end db.TestCase.destroy().then()
+
+
+  // template table
+  db.template.destroy({
+    where: {
+      TestCaseId: req.body.Id
+    }
+
+  }).then(function (testcase) {
+
+    if (testcase >= 1) {
+      console.log('PASS:  Test case - ' + Id + ' has been deleted from template table.');
+    }
+    else {
+      console.log('FAIL: Test case - ' + Id + ' was not found in template table.');
+    }
+
+  }); // end db.template.destroy().then()
+
+
+  /*
+  db.sequelize.query('select TestCaseId, Gherkin, TestCaseDescription from testcase').then(results => {
+
+    results = results[0];
+    let testCaseInfo = results;
+
+    //console.log(testCaseInfo);
+    
+    if (testCaseInfo) {
+      //console.log('Success!');
+      res.send('Success! ' + Id);
+    }
+    else {
+      console.log('Fail!');
+    }
+
+  }); // end db.sequelize.query('select TestCaseId, Gherkin, TestCaseDescription from testcase').then()
+  */
+
+}; // end exports.deleteTestCases = function(req, res)
+
+
+
+
+
+
+
+
+
+
 
 exports.newGherkin = function (req, res) {
 
