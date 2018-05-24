@@ -23,6 +23,7 @@ let tcParagraph = document.getElementById("chosenTestCases");
 let templateParagraph = document.getElementById("selectedTemplates");
 let urlParagraph = document.getElementById("selectedURLs");
 
+
 let templateButton = document.getElementById("tb");
 let testCaseButton = document.getElementById("tcb");
 let urlButton = document.getElementById("url");
@@ -36,10 +37,13 @@ function grabTCsForFeature() {
 
   let reader = new FileReader();
   let templateParagraph = document.getElementById("selectedTemplates");
-  let template = templateParagraph.innerHTML.toLowerCase();
+  let template = templateParagraph.innerHTML;
 
   //console.log(template);
-  template = template.slice(16); //this cuts out the "template: " part, including the &nbsp - space
+  console.log("fetching test cases");
+
+  // remove excess data from string so that only template is sent to query.
+  template = template.substring(template.indexOf(";") + 1);
 
   var templateChoice = { //  creating an object to feed into the database so that we can get an ID for the new TestCase
     "theTemplate": template
@@ -61,18 +65,19 @@ function grabTCsForFeature() {
     },
     success: function(data) {
       // console.log(data);
-      console.log("successful response from test case request")
+      //console.log("successful response from test case request")d
       for (var x = 0; x < data.length; x++) {
         var node = document.createElement("LI"); // Create a <li> node
         node.setAttribute("class", "list testcasechoice");
         var span = document.createElement("SPAN");
         var inputItem = document.createElement("input");
         inputItem.setAttribute("class", "double testcasechoice");
+        inputItem.setAttribute("name", "testcase");
         inputItem.setAttribute("type", "checkbox");
         inputItem.setAttribute("onclick", "displayChecked(this.id, 'theTestCases', 'TCAll', 'chosenTestCases', 'p')");
         var mystring = " " + data[x].TestCaseId + " | " + data[x].TestCaseDescription;
-        console.log("mystring is "+mystring);
-        inputItem.setAttribute("id",mystring);
+        //console.log("mystring is " + mystring);
+        inputItem.setAttribute("id", mystring);
 
         var textnode = document.createTextNode(mystring); // Create a text node
         node.appendChild(span);
@@ -93,8 +98,8 @@ function grabTCsForFeature() {
 //     }
 //   }
 // }
-function unhideTemplates(){ //this function unhides the Template button
-  console.log("number of items with class is lang double = " +langArrayTestRunner.length);
+function unhideTemplates() { //this function unhides the Template button
+  //console.log("number of items with class is lang double = " + langArrayTestRunner.length);
   for (var x = 0; x < langArrayTestRunner.length; x++) {
     if (langArrayTestRunner[x].checked == true) {
       templateButton.removeAttribute("disabled");
@@ -106,7 +111,7 @@ function unhideTemplates(){ //this function unhides the Template button
 
 function showTemplates() {
   let langParagraphLength = document.getElementById("chosenLangs").innerHTML;
-  templateParagraph.innerHTML = "Template: ";
+  templateParagraph.innerHTML = "<b>Template: </b>";
   for (var q = 0; q < templateArray.length; q++) {
     if (templateArray[q].checked == true) {
       templateParagraph.innerHTML = templateParagraph.innerHTML + "&nbsp" + templateArray[q].id;
@@ -136,6 +141,15 @@ function showTemplates() {
 //   // }
 // }
 
+function stripHtml(html) {
+  // Create a new div element
+  var temporalDivElement = document.createElement("div");
+  // Set the HTML content with the providen
+  temporalDivElement.innerHTML = html;
+  // Retrieve the text property of the element (cross-browser support)
+  return temporalDivElement.textContent || temporalDivElement.innerText || "";
+}
+
 function showInput() {
   let box = document.getElementById("typedURL");
   box.setAttribute("style", "display:block;");
@@ -144,100 +158,106 @@ function showInput() {
 
 function showURLChoice() {
 
+  // Obtain the value from the domain selection
+  let domainSelection = document.getElementById("domain-selection");
+
+  // Append the domain value to the inner html @ selectedDomain for selection display
+  document.getElementById("selectedDomain").innerHTML = "<b>Domain:</b> " + domainSelection.value;
+
   let urlChoiceArray = document.getElementsByClassName("aURL");
-  urlParagraph.innerHTML = "URLs: ";
+  urlParagraph.innerHTML = "<b>URLs: </b>";
   for (var y = 0; y < urlChoiceArray.length; y++) {
     if (urlChoiceArray[y].checked == true) {
       urlParagraph.innerHTML = urlParagraph.innerHTML + urlChoiceArray[y].parentElement.innerText;
     }
   }
+
+
+
   let typedInURL = document.getElementById("enteredURL").value;
   console.log(typedInURL);
   if (typedInURL.length > 0) {
-    console.log("something was typed");
-    urlParagraph.innerHTML = "URLs: " + typedInURL;
+    //console.log("something was typed");
+    urlParagraph.innerHTML = "<b>URLs: </b>" + typedInURL;
   }
 }
 
+// Send a json object to server to run a test 
+// with given parameters
+
 function runit() {
+  let tcs = [];
+  let tcs_filter = [];
+  let langs = [];
 
+  // Parse language selection 
+  for (let i = 0; i < langParagraph.childNodes.length; i++) {
+    // Remove white space
+    langs[i] = langParagraph.childNodes[i].innerHTML.replace(/\s/g, '');
+    langs[i] = langs[i].substring(langs[i].indexOf(";") + 1);
+  }
+
+  // Parse Template data
+  let template = templateParagraph.innerHTML.substring(templateParagraph.innerHTML.indexOf(";") + 1);
+
+  // Parse Test Case Data
+  tcs = document.getElementById('chosenTestCases').innerHTML.split("\n");
+  for (let i = 0; i < tcs.length-1; i += 2) {
+    tcs_filter.push(tcs[i]);
+  }
+  for (let i = 0; i < tcs_filter.length; i++) {
+    tcs_filter[i] = tcs_filter[i].split("id=\"\ ").pop();
+    tcs_filter[i] = tcs_filter[i].substring(0, tcs_filter[i].indexOf('\ '));
+  }
+  tcs = tcs_filter;
+
+  // Parse Url Selection 
+  let urlChoices = urlParagraph.innerHTML.substring(urlParagraph.innerHTML.indexOf(";") + 1);
+  urlChoices = urlChoices.substring(0, urlChoices.indexOf('\ '));
+
+  // Parse Domain Selection 
+  let domain = document.getElementById("selectedDomain").innerHTML;
+  domain = domain.substring(domain.indexOf("\ ")+ 1);
+  console.log(domain);
+
+  // Parse description selection
   let description = descriptionBox.value;
-  // console.log("description = "+description);
-  let spans = langParagraph.childNodes;
-  let langArray = [];
-  for (var x =0; x<spans.length; x++){
-    var y = spans[x].innerText.slice(0,-2);
-    y = y.replace(/ /g, "");
-    langArray.push(y);
-  }
-  // console.log("langArray is -"+langArray);
-  var langs = langArray.toString();
-  langs = langs.replace(/\s/g, "");
-  langs = langs.split(",");
 
-  let temp = templateParagraph.innerHTML.substring(9);
-  temp = temp.replace(/&nbsp;/g, "");
-  temp = temp.replace(/ /g, "");
-
-  let tcs = tcParagraph.innerHTML;
-  tcs = tcs.replace(/\<p\sid=\"/g,"");
-  tcs = tcs.replace(/ /g, "");
-  tcs = tcs.replace(/&nbsp;/g, "");
-  tcs = tcs.replace(/,\<\/p\>/g, "");
-  let tcIDs = tcs.split("\">");
-  for (var x = 0; x < tcIDs.length; x++) {
-    tcIDs[x] = tcIDs[x].split("\|")[0];
-    tcIDs[x] = tcIDs[x].replace(/\n/g,"");
-  }
-  // console.log(tcIDs);
-  tcIDs.shift();
-
-  // if(tcIDs[0] == "all"){    // can work on this to feed in TC IDs so James doesn't need to do a second query
-  //   var tcArray = [];
-  //   var tcCount = document.getElementById("theTestCases").childElementCount;
-
-  // }
-  // console.log(tcIDs.length +" tcIDs = " + tcIDs);
-
-  let urlChoices = urlParagraph.innerHTML.substring(7)
-  urlChoices = urlChoices.replace(/&nbsp;/g, "");
-  urlChoices = urlChoices.replace(" URLs", "");
-
-  if(langs.length == 0 ||tcIDs.length ==0 || urlChoices.length ==0 || description.length ==0){
-    if (langs[0].length ==0){
+  if (langs.length == 0 || tcs.length == 0 || urlChoices.length == 0 || description.length == 0) {
+    if (langs[0].length == 0) {
       alert("Please select at least one language to test.");
     }
-    if (tcIDs.length ==0){
+    if (tcs.length == 0) {
       alert("Please select at least one test case to run.");
     }
-    if (urlChoices.length ==0){
+    if (urlChoices.length == 0) {
       alert("Please make a URL selection.");
     }
-    if (description.length ==0){
-      alert ("Please add a description to your test pass.");
+    if (description.length == 0) {
+      alert("Please add a description to your test pass.");
     }
     return;
-  }
-  else{
-    noticeBox.innerHTML=" loading... ";
+  } else {
+    noticeBox.innerHTML = " loading... ";
   }
 
-  let modalObject = {
+  let testParameters = {
     "languages": langs,
-    "features": temp,
-    "TestCaseSelections": tcIDs,
+    "features": template,
+    "TestCaseSelections": tcs,
     "Urls": urlChoices,
+    "domain": domain,
     "description": description
   };
 
-  let object = JSON.stringify(modalObject);
+  let testParamsJSON = JSON.stringify(testParameters);
 
-  console.log(object);
+  console.log(testParamsJSON);
 
   $.ajax({
     url: '/run-test',
     type: 'POST',
-    data: object,
+    data: testParamsJSON,
     contentType: "application/json",
     error: function(data) {
       console.log(data);
@@ -247,13 +267,12 @@ function runit() {
       console.log(data);
       console.log("Successful post request.");
 
-      data = JSON.parse(data); 
+      data = JSON.parse(data);
 
       console.log("the test pass count is " + data.testpassCount);
-      
+
     }
   })
-
 }
 
 /* Test Run Function Ends Here */
@@ -467,7 +486,7 @@ function exportAll() {
 
 }
 
-function hideAllTC(){
+function hideAllTC() {
   var box = document.getElementById("allTCs");
   box.style.display = 'none';
   // box.classList.toggle = 'note-icon-caret';
@@ -518,5 +537,3 @@ function hideAllTC(){
 //   thehref="/export?feature="+ template + "&language=" + language + "&testresult=" + testresult + "&query=" + query + "&testpassid=" + testdate;
 //   document.getElementById("myhref").href=thehref;
 // }
-
-

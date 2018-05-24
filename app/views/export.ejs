@@ -34,8 +34,8 @@
     var testdate = document.getElementById("radialChild").children[0].id;
     testdate = testdate.slice(0, -1);
     // testdate = testdate.substring(0, testdate.indexOf(' | '))
-    console.log("the testdate is "+testdate);
-    console.log("/export?feature=" + template + "&language=" + language + "&testresult=" + testresult + "&query=" + query + "&testpassid=" + testdate);
+    //console.log("the testdate is "+testdate);
+    //console.log("/export?feature=" + template + "&language=" + language + "&testresult=" + testresult + "&query=" + query + "&testpassid=" + testdate);
 
     //the href will contain a list of each languages as 'en-us,de-de' and features will be 'f1,f3,f5' 
     // in the getExportFromResults() function on 'api_export.js' these commas are watched for, so that the string can be split to an array and a query created for all the selections
@@ -91,13 +91,13 @@
         console.log(data);
         },
         success: function(data) {
-          console.log(data);
+          //console.log(data);
 
           // if the query was successful, populate the lang and template dropdowns with the results
           var theTemplates = data[0].Template.split(",");
           var theLanguages = data[0].Language.split(",");
-          console.log(theTemplates+"<---");
-          console.log(theLanguages +"<---");
+          //console.log(theTemplates+"<---");
+          //console.log(theLanguages +"<---");
           
           for (var x = 0; x<theLanguages.length; x++){
             var node = document.createElement("LI"); 
@@ -265,7 +265,7 @@
         <button type="button" style="border: 1px solid green;" class="btn btn-lg dropdown-toggle width-set export_results_dropdown" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown" >Test Date</button>
         <ul class="dropdown-menu btn-block width-set export_results_dropdown" id="dateUL">
           <% for(var i=0; i < dates.length; i++) {
-            console.log(String(statusEndTime[i]));
+            //console.log(String(statusEndTime[i]));
             if (String(statusEndTime[i]) != "Fri Jan 02 1970 00:00:00 GMT-0800 (Pacific Standard Time)"){ %>
               <li class="dropdown-item radial">
               <span id="dateParent-<%=[i]%>">
@@ -325,7 +325,7 @@
       <div class="col-lg-12">
         <div class="button-group">
           <a id="myhref" download>
-            <% console.log("I'm just about to see the exportSelections function."); %>
+            <% //console.log("I'm just about to see the exportSelections function."); %>
             <button type="button" class="btn btn-lg width-set bottomSpace" id="runTest" onclick="exportSelections()" disabled><b>Export Data</b></button> 
             <!-- the exportSelections() function WAS in the "runTests.js" file but is now above, the api_export.js file has the database query -->
           </a><br>

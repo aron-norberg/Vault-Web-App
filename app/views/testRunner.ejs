@@ -342,6 +342,15 @@
               </div>
               <div class="modal-body">
                 <ul style="text-align:left; list-style-type: none;">
+                  <li style="padding-bottom: 5%">
+                        <label for="domain-selection">Select Domain (Default is Staging)</label>
+                        <select class="form-control" id="domain-selection">
+                          <option>https://staging.fluke.com</option>
+                          <option>https://dev-igcommerce.pantheonsite.io</option>
+                          <option>https://test-igcommerce.pantheonsite.io</option>
+                        </select>
+                  </li>
+
                   <li>
                     <input id="all" class="double aURL" type="radio" name="urlRadios" /> &nbsp;all URLs
                   </li>
@@ -380,13 +389,15 @@
         <br />
       </div>
       <div class="col-lg-4 option-box">
-        <p id="testNames"></p>
-        <p>Languages:<div id="chosenLangs"></div></p>        
-        <p id="selectedTemplates">Template:</p>
-        <p>Test Cases: <div id="chosenTestCases"></div></p>
-        <p id="selectedURLs">URLs: </p>
+        <div id="testNames"></div>
+        <br>
+        <p><b>Languages:</b><div id="chosenLangs"></div></p>        
+        <p id="selectedTemplates"><b>Template:</b></p>
+        <p><b>Test Cases: </b><div id="chosenTestCases"></div></p>
+        <p><div id="selectedDomain"></div></p>
+        <p id="selectedURLs"><b>URLs: </b></p>
         <p>
-          <label for="description">Description:</label>
+          <p><b>Description:</b></p>
           <textarea class="form-control" rows="5" id="description"></textarea>
         </p>
       </div>
