@@ -57,7 +57,7 @@ exports.addNotesToResultTable_DB = function(req, res) {
   // Add Notes to result table in database
   db.connect(function(err) {
     if (err) throw err;
-    console.log("Connected!");
+    //console.log("Connected!");
 
     db.query("SELECT Notes FROM Result WHERE Id = '"+id+"'", function (err, row) {
       if (err) throw err;
@@ -73,7 +73,7 @@ exports.addNotesToResultTable_DB = function(req, res) {
 
       db.query(sql, function (err, result) {
         if (err) throw err;
-        console.log("1 record Notes inserted");
+        //console.log("1 record Notes inserted");
 
       }); //end db.query(sql, function (err, result)
 
@@ -104,12 +104,12 @@ exports.addOwnerToResultTable_DB = function(req, res) {
 
   db.connect(function(err) {
     if (err) throw err;
-    console.log("Connected!");
+    //console.log("Connected!");
     var sql = "UPDATE Result SET Owner = '"+owner+"' WHERE Id = '"+id+"'";
 
     db.query(sql, function (err, result) {
       if (err) throw err;
-      console.log("1 record Owner inserted");
+      //console.log("1 record Owner inserted");
       res.redirect(req.get('referer')); // resfresh the get url and throws ajax error - However its currently needed for multiple changes
 
     }); // end db.query(sql, function (err, result)
@@ -136,13 +136,13 @@ exports.cleanGherkin_DB = function(req, res) {
 
   db.connect(function(err) {
     if (err) throw err;
-    console.log("Connected!");
+    //console.log("Connected!");
     var sql = "DELETE FROM TestCase WHERE testCaseDescription = 'Scenario:'";
 
     db.query(sql, function (err, result) {
       if (err) throw err;
       
-      console.log('Deleted Row(s):', result.affectedRows);
+      //console.log('Deleted Row(s):', result.affectedRows);
 
       //console.log(result);
       //console.log("All empty Gherkin records have been removed");
