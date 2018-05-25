@@ -5,6 +5,7 @@
 /***********************************************************************
  ***  TEST CASE EDITOR SCRIPTS - BEGIN
 ***********************************************************************/
+function grabTCsForFeature() {
 
   let reader = new FileReader();
   let templateParagraph = document.getElementById("selectedTemplates");
@@ -58,6 +59,16 @@
       }
     }
   })
+}
+
+
+
+
+
+
+
+
+
 
 
 //this function unhides the Template button
@@ -141,6 +152,7 @@ function runit() {
   let descriptionBox = document.getElementById("description");
   let urlParagraph = document.getElementById("selectedURLs");
   let langParagraph = document.getElementById("chosenLangs");
+  let templateParagraph = document.getElementById("selectedTemplates");
   let tcs = [];
   let tcs_filter = [];
   let langs = [];
@@ -411,6 +423,7 @@ function editTc() { //this populates the boxes below the "Edit Selected Test Cas
   var hidden = document.getElementById("hiddenRow");
   hidden.setAttribute("style", "display:visible");
   document.getElementById("createGherkin").disabled = true;
+  document.getElementById("deleteGherkin").disabled = true;
 
   var checkbox = document.getElementById("funcitonalCheckbox");
   var checked = document.getElementById("functionality").innerHTML;
@@ -458,9 +471,10 @@ function editTc() { //this populates the boxes below the "Edit Selected Test Cas
       buttons[x].setAttribute("class", "btn btn-warning locale-button x");
     }
   }
-
+  detectClassSwitch();
 
 }
+
 
 function classSwitch(thisOne) {
   var currentID = thisOne.getAttribute("id");
@@ -475,7 +489,46 @@ function classSwitch(thisOne) {
     thisOne.setAttribute("class", "btn locale-button x btn-light");
   }
 
+  //detectClassSwitch(currentClass);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function createTc() { //unhide the 'hiddenRow' section and put into it the basics of "scenario" and "when" - we then feed this to the database so that I can get an ID to display
   var hidden = document.getElementById("hiddenRow");
@@ -586,7 +639,9 @@ function cleanGherkin() {
   $.ajax({
     url: '/clean-gherkin',
     type: 'POST',
-    data: id,
+    data: {
+      id: id
+    },
     success: function(data) {
       console.log(data);
       console.log("Gherkin cleaned");
@@ -917,20 +972,7 @@ function deleteTestResults(Id) {
   
   
   } // end deleteTestResults(Id)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  
 /***********************************************************************
  ***  DASHBOARD SCRIPTS - END
 ***********************************************************************/

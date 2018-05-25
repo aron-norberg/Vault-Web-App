@@ -56,6 +56,7 @@ exports.editTestCases = function(req, res) {  //getResultByTemplateCustom
 
 
 
+
 // CURRENTLY IN PRODUCTION
 exports.deleteTestCases = function(req, res) {
   //console.log('Hello Waldo!');
@@ -81,46 +82,8 @@ exports.deleteTestCases = function(req, res) {
 
   }); // end db.TestCase.destroy().then()
 
-
-  // template table
-  db.Template.destroy({
-    where: {
-      TestCaseId: req.body.Id
-    }
-
-  }).then(function (Template) {
-
-    if (Template >= 1) {
-      console.log('PASS:  Test case - ' + Id + ' has been deleted from Template table.');
-    }
-    else {
-      console.log('FAIL: Test case - ' + Id + ' was not found in Template table.');
-    }
-
-  }); // end db.template.destroy().then()
-
-
-  /*
-  db.sequelize.query('select TestCaseId, Gherkin, TestCaseDescription from testcase').then(results => {
-
-    results = results[0];
-    let testCaseInfo = results;
-
-    //console.log(testCaseInfo);
-    
-    if (testCaseInfo) {
-      //console.log('Success!');
-      res.send('Success! ' + Id);
-    }
-    else {
-      console.log('Fail!');
-    }
-
-  }); // end db.sequelize.query('select TestCaseId, Gherkin, TestCaseDescription from testcase').then()
-  */
-
 }; // end exports.deleteTestCases = function(req, res)
-
+// CURRENTLY IN PRODUCTION
 
 
 
