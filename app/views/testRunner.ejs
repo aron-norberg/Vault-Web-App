@@ -51,6 +51,20 @@
     </div>
     <!--  ------------------------------------------------------Button Options ---------------------------- -->
     <div class="row">
+      <!-- Box For Dynamic Tabbed Test Options ------------- -->
+      <div class="col-lg-8 offset-lg-2" style="border:1px solid black">
+          <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="content-tab" data-toggle="tab" role="tab" href="#content" aria-controls="content" aria-selected="true">Content</a>
+                 <a class="nav-item nav-link" id="functional-tab" data-toggle=tab role="tab" href="#functional" aria-controls="functional"" aria-selected="false">Functional</a>
+              <a class="nav-item nav-link" id="custom-tab" data-toggle=tab role="tab" href="#custom" aria-controls="custom" aria-selected="false">Custom</a>
+          </div>
+
+        <div class="tab-content">
+          <div class="tab-pane active" role="tabpanel" id="content" aria-labelledby="content-tab">Content Test stuff goes here</div>
+          <div class="tab-pane" role="tabpanel" id="functional" aria-labelledby="content-tab">Functional Test stuff goes here</div>
+          <div class="tab-pane" role="tabpanel" id="custom" aria-labelledby="content-tab">Custom test stuff Goes here</div>
+        </div>
+      </div>
       <div class="col-lg-4 text-center offset-lg-2">
         <!--  ------------------------------------------------------Test Names ---------------------------- -->
         <button style="display:none;" type="button" class="btn btn-lg btn-warning width-set" data-toggle="modal" data-target="#nameModal">
@@ -533,7 +547,10 @@
     }
 
   });
+
   // Socket Connections end here //
+
+
 
   </script>
   <%- include('footer') %>

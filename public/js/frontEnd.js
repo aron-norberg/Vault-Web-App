@@ -1,9 +1,6 @@
 // Invoke 'strict' JavaScript mode
 'use strict';
-
-/***********************************************************************
- ***  TEST CASE EDITOR SCRIPTS - BEGIN
-***********************************************************************/
+//pie
 
 // Test Runner & Export Tool Functions ---->
 
@@ -50,7 +47,7 @@ function grabTCsForFeature() {
         inputItem.setAttribute("name", "testcase");
         inputItem.setAttribute("type", "checkbox");
         inputItem.setAttribute("onclick", "displayChecked(this.id, 'theTestCases', 'TCAll', 'chosenTestCases', 'p')");
-        var mystring = " " + data[x].TestCaseId + " | " + data[x].TestCaseDescription;d
+        var mystring = " " + data[x].TestCaseId + " | " + data[x].TestCaseDescription;
         //console.log("mystring is " + mystring);
         inputItem.setAttribute("id", mystring);
 
@@ -463,8 +460,6 @@ function editTc() { //this populates the boxes below the "Edit Selected Test Cas
       buttons[x].setAttribute("class", "btn btn-warning locale-button x");
     }
   }
-
-
 }
 
 function classSwitch(thisOne) {
@@ -479,7 +474,6 @@ function classSwitch(thisOne) {
   } else if (currentClass.indexOf("btn-success") > -1) {
     thisOne.setAttribute("class", "btn locale-button x btn-light");
   }
-
 }
 
 function createTc() { //unhide the 'hiddenRow' section and put into it the basics of "scenario" and "when" - we then feed this to the database so that I can get an ID to display
@@ -575,8 +569,6 @@ function deleteTc() {
   } // end if/else
 
 } // end deleteTc()
-
-
 
 
 /************************
@@ -790,30 +782,29 @@ function displayChecked(checkedID, ULID, allID, destinationID, element) {
   } //end else
 }
 
-/***********************************************************************
- ***  PAGE LOADING SCRIPTS - BEGIN
-***********************************************************************/
+
+
+
 // The below functions are used when transitioning to a new page
 // - all pages
-
-function uncheckAll(){ 
-  var w = document.getElementsByTagName('input'); 
-  for(var i = 0; i < w.length; i++){ 
-    if(w[i].type=='checkbox'){ 
-      w[i].checked = false; 
+//
+function uncheckAll() {
+  var w = document.getElementsByTagName('input');
+  for (var i = 0; i < w.length; i++) {
+    if (w[i].type == 'checkbox') {
+      w[i].checked = false;
     }
   }
-} 
-
-function loadingAnimation() {
-document.getElementById("loading").style.display = "block";
-document.getElementById("page").style.display = "none";
-// alert("This might take a moment.  Hit OK");
 }
 
-/***********************************************************************
- ***  PAGE LOADING SCRIPTS - END
-***********************************************************************/
+function loadingAnimation() {
+  document.getElementById("loading").style.display = "block";
+  document.getElementById("page").style.display = "none";
+  // alert("This might take a moment.  Hit OK");
+}
+
+
+
 
 // Used for the Dashboard pages for displaying correct graphs
 // - Dashboard pages 
@@ -829,58 +820,11 @@ function dashboardPage() {
   }
 } // end dashboardPage()
 
-
-/************************
- * Function: deleteTestResults(Id)
- * Purpose: Deletes Test result by TestPassId from TestPass, Status, and Result tables from the dashboard page.
- * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
- * Date: May 2018
-************************/
-function deleteTestResults(Id) {
-  
-  var delConfirm = confirm("Are you sure you want to delete test result ID: " + Id + "?");
-  
-  if (delConfirm == true) {
-  
-    $.ajax({
-    url: "/deleteTestResults",
-    type: "GET",
-    dataType: "html",
-    data: {
-      Id: Id
-    },
-    success : function() {
-      console.log('success');
-      window.location = '/dashboard';
-  
-    }, // end success : function()
-    error : function() {
-      console.log('error');
-  
-    } // end error : function()
-  
-    }); // end .ajax()
-  
-  }
-  else {
-    //alert('Delete canceled!');
-  
-  } // end if/else
-  
-  
-  } // end deleteTestResults(Id)
-
-/***********************************************************************
- ***  DASHBOARD SCRIPTS - END
-***********************************************************************/
-
-
-
-
 // Used for searching through a list
 // - Test Case Editor page
 //
 function filterFunction() {
+
   var input, div, filter, ul, li, a, i;
   input = document.getElementById("myInput");
   filter = input.value.toUpperCase();
@@ -897,14 +841,7 @@ function filterFunction() {
 }
 
 
-/***********************************************************************
- ***  DASHBOARD SCRIPTS - END
-***********************************************************************/
 
-
-/***********************************************************************
- ***  EXPORT RESULTS SCRIPTS - BEGIN
-***********************************************************************/
 //Export functions used on the 
 // - Export Results page
 //
