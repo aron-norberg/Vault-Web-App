@@ -4,7 +4,6 @@
     google.charts.load('current', { 'packages': ['corechart'] });
     google.charts.setOnLoadCallback(drawCharts);
 
-  
     var passes = <%= overall.pass %>;
     var fails = <%= overall.fail %>;
     var others = <%= overall.skip %>;
@@ -172,7 +171,7 @@
         <% if(testPassId == null){ %>
             <span><%= language %></span> 
           <% } 
-          else { // console.log(testPassInfo);%>
+          else { console.log(testPassInfo);%>
             <span>ID: <%= testPassInfo.TestPassId %><br />
               Template: <%= testPassInfo.Template %><br />
               Language: <%= testPassInfo.Language %><br />
@@ -276,50 +275,8 @@
 </div><!-- end .container-fluid -->
 
 <script>
-
+// Please leave this scrip here because it activates with page load. 
 document.addEventListener('DOMContentLoaded', function() { dashboardPage(); }, false);
-
-
-/************************
- * Function: deleteTestResults(Id)
- * Purpose: Deletes Test result by TestPassId from TestPass, Status, and Result tables.
- * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
- * Date: May 2018
-************************/
-function deleteTestResults(Id) {
-
-  var delConfirm = confirm("Are you sure you want to delete test result ID: " + Id + "?");
-
-  if (delConfirm == true) {
-
-    $.ajax({
-    url: "/deleteTestResults",
-    type: "GET",
-    dataType: "html",
-    data: {
-      Id: Id
-    },
-    success : function() {
-      console.log('success');
-      window.location = '/dashboard';
-
-    }, // end success : function()
-    error : function() {
-      console.log('error');
-
-    } // end error : function()
-
-    }); // end .ajax()
-
-  }
-  else {
-    //alert('Delete canceled!');
-
-  } // end if/else
-  
-
-  } // end deleteTestResults(Id)
-
 </script>
 
 <%- include('footer') %>
