@@ -131,11 +131,11 @@
                         <li>https://staging.fluke.com/en-us</li>
                 </ul>
         </p>
-        <p>Determining what URLs should be tested is an ongoing project.  As the Fluke development team continues to improve the website,
+        <p>Determining what URLs should be tested is an ongoing project.  As the Fluke web-dev team continues to improve the website,
                 changes are made to the structure of the URLs.  Pages may also be added, removed from the website, or redirected.  
                 <a href="https://www.deepcrawl.com/pain-point/regular-site-audit/g">DEEPCRAWL</a> information can be used to determine what
                 URLs are currently on the website, however, DEEPCRAWLs do not include information on the template used for each page.  A separate
-                 crawl is utilized to look at the body tags for any new website pages and determine what template that URL links to. Knowing the template, then 
+                 crawl is utilized to look at the body tags for any new website pages and determine what template that URL links to. Knowing the template then 
                  allows us to determine what test cases should be run on that page. </p>
                  <br />
                  <br />
@@ -1027,11 +1027,24 @@
         <p>Developers will have two databases that need to mirror each other, the database on the
                 EC2 instance (http://ec2-35-168-52-214.compute-1.amazonaws.com/) and the database(s) used on local machines. 
         </p>
-        <p>The database has 7 tables as seen below. These tables provide information to the Vault application.</p>
+        <p>The database has 7 tables as seen below. These tables are used by the Vault application for running tests.</p>
+        <p>When a user selects what Language and Template to test, they are narrowing down what URLs are to be tested. Selecting the domain also determines URL options. The
+                user then can select the specific Test Cases that were written for the selected Template page type, narrowing down even 
+                further what is to be tested. 
+        </p>
+        <br />
+        <br />
+        
+        <div class="text-center" ><img src="/img/schema.PNG"></div>
+        <br />
+        <br />
         <div class="anchor" id="testcase"></div>
         <br />
         <h4>TestCase</h4>
         <p>[a single test that is run on a website page]<br />
+                Some test cases are functional tests which means only one or a few pages need to be tested in order to know if that 
+                functionality is working for all web pages. If choosing to only run functional tests, only a few specific URLs
+                that are set up for running all functional tests (for that template), are tested.<br />
         <span class="font-weight-bold">TestCaseId</span> - numerical key <br />
         <span class="font-weight-bold">HashValue</span> - encrypted value used to prevent the entry of duplicative Gherkin <br />
         <span class="font-weight-bold">TestCaseDescription</span> - the scenario (note) for the test case <br />
@@ -1073,7 +1086,10 @@
         <br />
         <div class="anchor" id="status"></div>
         <h4>Status</h4>
-        <p>[data that determines if a test pass is complete or still running]<br />
+        <p>[data that determines if a test pass is complete or still running] <br />
+                When a test is run, the Status table updates to show a start time, and an end time of 1970 until the test
+                actually completes and the correct end time is entered into the database.  While the test pass is running, the status can be seen on the Test
+                Status page. <br />
         <span class="font-weight-bold">TestpassId</span> - the numerical ID of the test pass that was run<br />
         <span class="font-weight-bold">RunDate</span> - the date and time on which the test was started<br />
         <span class="font-weight-bold">StartTime</span> - the date and time on which the test was started<br />
@@ -1085,6 +1101,7 @@
         <div class="anchor" id="result"></div>
         <h4>Result</h4>
         <p>[the pass/skip/fail result of a single test]<br />
+                Once a test pass is complete, results are then added to the database Result table, recording each pass, skip, and fail result.<br />
         <span class="font-weight-bold">TestCaseId</span> - the test case for which we have a test result<br />
         <span class="font-weight-bold">TestPassId</span> - the test pass that the results come from<br />
         <span class="font-weight-bold">Template</span> - the page type that the test result applies to<br />
@@ -1093,7 +1110,7 @@
         <span class="font-weight-bold">URLs</span> - the address of the page that was tested<br />
         <span class="font-weight-bold">Output</span> - the scenario tested as well as any messages that came out of testing.<br />
         &emsp; Example: Does page render with URL provided?<br />
-        &emsp; &thinsp;Result: The Respoonse Status Code Returned a 404<br />
+        &emsp; &thinsp;Result: The Response Status Code Returned a 404<br />
         <span class="font-weight-bold">RunDate</span> - the start time for when the test was run<br />
         <span class="font-weight-bold">Owner</span> - when a user selects to "own" a test result and take action on it's outcome<br />
         <span class="font-weight-bold">Notes</span> - whena  user claims ownership, they can add a note on what action they are taking for that test result<br />
@@ -1113,9 +1130,8 @@
         &emsp; NOTE: an administrator has access to additional features such as:<br />
         &emsp; &emsp; - Delete an entire test pass from the Dashboard page<br />
         &emsp; &emsp; - Delete a test case from the Test Case Editor page<br />
+        &emsp; &emsp; - Mark a test pass as unreliable and add a note about it<br />
         </p>
-
-        <div class="text-center" ><img src="/img/schema.PNG"></div>
     </div><!-- end .col-lg-12 -->
   </div><!-- end .row -->
 </div><!-- end .container-fluid -->
