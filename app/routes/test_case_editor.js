@@ -19,7 +19,7 @@ exports.editTestCases = function(req, res) {  //getResultByTemplateCustom
             results = results[0];
             whereUsed= whereUsed[0];
 
-            console.log(results[1].Gherkin);
+            //console.log(results[1].Gherkin);
 
             res.render('test_case_editor', {
                 title: 'Test Case Editor',
