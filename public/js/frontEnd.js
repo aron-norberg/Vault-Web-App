@@ -58,7 +58,7 @@
       }
     }
   })
-}
+
 
 //this function unhides the Template button
 function unhideTemplates() {
@@ -825,18 +825,6 @@ function filterFunction() {
 google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawChart);
 
-
-function dashboardPage() {
-  var dashboardTitle = document.getElementById('h2Title').innerHTML;
-  if (dashboardTitle === 'Dashboard') {
-    //document.getElementById('dashboard-1').style.display = "block";
-    document.getElementById('dashboard-2').style.display = "none";
-  } else {
-    document.getElementById('dashboard-1').style.display = "none";
-    //document.getElementById('dashboard-2').style.display = "block";
-  }
-} // end dashboardPage()
-
 // Draw the chart and set the chart values
 function drawChart() {
   var data = google.visualization.arrayToDataTable([
@@ -870,17 +858,38 @@ function drawChart() {
 
 
 /************************
+ * Function: dashboardPage()
+ * Purpose: Hides container id='dashboard-2' if title = 'Dashboard' if not then it shows its on the dashboard page.
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+************************/
+function dashboardPage() {
+  var dashboardTitle = document.getElementById('h2Title').innerHTML;
+
+  if (dashboardTitle === 'Dashboard') {
+    //document.getElementById('dashboard-1').style.display = "block";
+    document.getElementById('dashboard-2').style.display = "none";
+  } 
+  else {
+    document.getElementById('dashboard-1').style.display = "none";
+    //document.getElementById('dashboard-2').style.display = "block";
+  }
+
+} // end dashboardPage()
+
+
+/************************
  * Function: deleteTestResults(Id)
  * Purpose: Deletes Test result by TestPassId from TestPass, Status, and Result tables from the dashboard page.
  * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
  * Date: May 2018
 ************************/
 function deleteTestResults(Id) {
-
+  
   var delConfirm = confirm("Are you sure you want to delete test result ID: " + Id + "?");
-
+  
   if (delConfirm == true) {
-
+  
     $.ajax({
     url: "/deleteTestResults",
     type: "GET",
@@ -891,23 +900,35 @@ function deleteTestResults(Id) {
     success : function() {
       console.log('success');
       window.location = '/dashboard';
-
+  
     }, // end success : function()
     error : function() {
       console.log('error');
-
+  
     } // end error : function()
-
+  
     }); // end .ajax()
-
+  
   }
   else {
     //alert('Delete canceled!');
-
+  
   } // end if/else
   
-
+  
   } // end deleteTestResults(Id)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /***********************************************************************
@@ -1134,6 +1155,7 @@ function displayInfo(data, id) {
         }
         console.log("I am a success.");
         }
+      }
     })
 }
 

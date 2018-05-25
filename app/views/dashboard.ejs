@@ -4,7 +4,6 @@
     google.charts.load('current', { 'packages': ['corechart'] });
     google.charts.setOnLoadCallback(drawCharts);
 
-  
     var passes = <%= overall.pass %>;
     var fails = <%= overall.fail %>;
     var others = <%= overall.skip %>;
@@ -172,7 +171,7 @@
         <% if(testPassId == null){ %>
             <span><%= language %></span> 
           <% } 
-          else { // console.log(testPassInfo);%>
+          else { console.log(testPassInfo);%>
             <span>ID: <%= testPassInfo.TestPassId %><br />
               Template: <%= testPassInfo.Template %><br />
               Language: <%= testPassInfo.Language %><br />
