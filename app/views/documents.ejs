@@ -1,6 +1,6 @@
 <%- include('header') %>
 
-<div class="container-fluid">
+<div class="container-fluid" style="margin-top:50px;">
   <div class="row">
     <div class="bg-white text-dark col-xl-8 offset-xl-2 col-lg-6 offset-lg-3 col-md-7 offset-md-3 col-sm-9 offset-sm-2">
         <br /><br />
@@ -13,23 +13,37 @@
                         <li><a href="#templates">Template Pages</a></li>
                         <li><a href="#tcs">Test Cases</a></li>
                         <li><a href="#links">Useful Links</a></li>
+                        <li><a href="#aboutUrls">About URLs</a></li>
+                        <li><a href="#developers">Set-ups for Developers</a></li>
                 </ul>
                 <li><a href="#gherkin">Current Gherkin Definition List</a></li>
                 <li><a href="#database">Database Information</a></li>
-        </ul><br /><br />
-        <h2 id="readMe">Read Me File</h2>
-        <h4 id="application">The Vault Application</h4>
-        <p>The Vault application provides several features:</p>
+                <ul>
+                        <li><a href="#testcase">The Test Case table</a></li>
+                        <li><a href="#template">The Template table</a></li>
+                        <li><a href="#urls">The URLs table</a></li>       
+                        <li><a href="#testpass">The Test Pass table</a></li> 
+                        <li><a href="#status">The Status table</a></li>   
+                        <li><a href="#result">The Result table</a></li> 
+                        <li><a href="#user">The User table</a></li>           
+                </ul>
+        </ul> <br /> <br />
+        <div class="anchor" id="readMe"></div>
+        <h2>Read Me File</h2>
+        <div class="anchor"  id="application"></div>
+        <h4>The Vault Application</h4>
+        <p>The Vault application may be used to:</p>
                 <ul>
                 <li>Run a Fluke site test, give that test pass a name, and view the test's status (whether in progress or recently completed).</li>
-                <li>View test pass results.</li>
-                <li>Delete old test results (administrator rights required).</li>
+                <li>View test pass results (for completed tests only).</li>
+                <li>Delete old test passes (administrator rights required).</li>
                 <li>Mark test results as unreliable (administrator rights required).</li>
-                <li>Claim ownership of test results for taking action on them.</li>
-                <li>Export results to Excel.</li>
+                <li>Claim ownership of test results (for taking action on them).</li>
+                <li>Export test pass results to Excel.</li>
                 <li>Edit the test cases (Scenarios and Gherkin) that are run on the Fluke website pages.</li>
                 </ul>
-        <h4 id="templates">Template Pages</h4>
+        <div class="anchor" id="templates"></div>
+        <h4>Template Pages</h4>
         <p>The Fluke website has been broken down into page templates for development as well as for testing.
                 These page templates have been given the names "F1", "F2", "F3" etc.  When viewing the Fluke website, the template used for any specific page 
                 can be found in the body tag with "template-F16" listed as a class.  Each page requirement has been written into a test called a "test case." Different 
@@ -62,30 +76,96 @@
                         <li>(F25) Promotions and Contests Page</li>
                 </ul>
         
-        
-        <h4 id="tcs">Test Cases</h4>
-        <p>Tests have been written using Behat, with code in Gherkin (a human readable language) and PHP. Each test case starts with a Scenario, which is often
-                copied directly from a website page requirements list. An example is "Scenario: Does page render with URL provided?" The Scenario is essentially a note 
-                within the code and changing the Scenario does not affect how the code is run or the functions used for that test case. Following the Scenario is the Gherkin
-                which begins with key words When, Then, or Given.  These key words do not matter to the code and are meant to add to the Gherkin's readability.
-                Once Gherkin is written, it is linked to PHP in the background (by a developer), with each line of Gherkin calling a specific function.  When Gherkin is changed, the related
-                PHP function's name must be updated by a developer for the Gherkin to continue to call the correct function. In a Test Case where several line of Gherkin are used,
+        <div class="anchor" id="tcs"></div>
+        <h4>Test Cases</h4>
+        <p>Tests have been written using <a target="_blank" href="http://docs.behat.org/en/v2.5/quick_intro.html">Behat</a>, with code in <a target="_blank" href="https://github.com/cucumber/cucumber/wiki/Gherkin">Gherkin</a> 
+                (a human readable language) and <a target="_blank" href="http://php.net/manual/en/intro-whatis.php">PHP</a>. Each test case starts with a <a target="_blank" href="http://docs.behat.org/en/v2.5/guides/1.gherkin.html#scenarios">Scenario</a>, which is often
+                copied directly from a website page requirements list. An example is "Scenario: Does page render with URL provided?" The Scenario is a note on a single line
+                within the code and changing the Scenario does not affect how the code is run or the functions used for that test case. Following the Scenario is one or more lines of Gherkin
+                which begin with key words <a target="_blank" href="http://docs.behat.org/en/v2.5/guides/1.gherkin.html#whens">When, Then, or Given</a>.  These key words do not matter to the code and are meant to add to the Gherkin's readability.
+                Once Gherkin is written, it is linked to PHP in the background (by a developer), with each line of Gherkin calling a specific function.  When Gherkin is changed, (other than variables which are in quotes) the related PHP function must be updated by a developer for the Gherkin to continue to call the correct function. In a Test Case where several line of Gherkin are used,
                 if any single line of Gherkin fails during testing, subsequent lines of Gherkin within that Test Case will be skipped.
         </p>
-        <p>If the user wishes to change the Gherkin used within a Test Case, it is recommended that the user review the Gherkin that has already been created.  A list
-                is provided below. Reusing Gherkin that has already been created means that no additional code will be needed in order to run the test case. The Vault
-                application does not provide a means for adding the PHP necessary for making new Gherkin run. Changing Gherkin in any way, including just adding a space or comma
-                will cause the system to treat it as new Gherkin.  Newly created Gherkin will "fail" during test runs until PHP has been written or updated to support it.
+        <p>If the user wishes to change the Gherkin used within a Test Case, it is recommended that the user review the Gherkin that has already been created to see if the needed
+                functionality already exists.  A list
+                is provided below. Reusing Gherkin that has already been created means that no additional code will be needed in order to run the test case. Changing Gherkin in any way, including just adding a space or comma,
+                will cause the system to treat it as new (unknown) Gherkin.  Newly created Gherkin will "fail" during test runs until PHP has been written or updated to support it.
         </p>
-        <h4 id="links">Useful Links</h4>
-        <p><a href="http://docs.behat.org/en/v2.5/quick_intro.html">Introduction to Behat</a></p>
-        <p><a href="https://github.com/Behat/Behat">Download Behat version 3.2</a></p>
-        <p><a href="https://github.com/fluke-corporation/Vault-Web-App">Vault git-hub repository (application code)</a></p>
-        <p><a href="https://github.com/fluke-corporation/behat_projects">behat_project git-hub repository (test case code)</a></p>
-        
+        <p>An example Test Case found in the Vault database (with only one line of Gherkin):</p>
+        <pre>
+        Scenario: Carousel has no more than 6 Images
+                Then check that there are no more than "6" "#homepage-flexslider ul li"
+        </pre>
+        <p>The related PHP found on the backend (notice the "* @Then..." line which links this PHP to the Gherkin above):</p>
+        <pre><code>
+        /**
+        * Validates that there are no more than X of a generic element
+        * @Then check that there are no more than :nums :elements
+        */
+        public function checkThatThereAreNoMoreThan($nums, $elements)
+        {
+                $elements = $this->getSession()->getPage()->findAll('css', $elements);
+                if ($nums !=0){
+                if (!$elements) {
+                        throw new exception("No element found to check");
+                }
+                }
+                echo "There are a total of " . count($elements) . " elements on this page.";
+                assertLessThanOrEqual($nums, count($elements));
+        }
+        </code></pre>
+        <br />
+        <div class="anchor" id="aboutUrls"></div>
+        <h4>About URLs</h4>
+        <p>Several domains can be tested.  The Domain can be chosen on the Run Tests page. This will help determine what URLs are to be tested in a test pass.      
+                <ul>
+                        <li>https://live-igcommerce.pantheonsite.io/en</li>
+                        <li>https://test-igcommerce.pantheonsite.io/en</li>
+                        <li>https://dev-igcommerce.pantheonsite.io/en</li>
+                </ul>
+        </p>
+        <p>
+        Another domain exists which mirrors the live domain (this URL exists due to 
+                <a target="_blank" href="https://support.cloudflare.com/hc/en-us/articles/205177068-Step-1-How-does-Cloudflare-work-">CloudFlare</a>).
+                <ul>
+                        <li>https://staging.fluke.com/en-us</li>
+                </ul>
+        </p>
+        <p>Determining what URLs should be tested is an ongoing project.  As the Fluke development team continues to improve the website,
+                changes are made to the structure of the URLs.  Pages may also be added, removed from the website, or redirected.  
+                <a href="https://www.deepcrawl.com/pain-point/regular-site-audit/g">DEEPCRAWL</a> information can be used to determine what
+                URLs are currently on the website, however, DEEPCRAWLs do not include information on the template used for each page.  A separate
+                 crawl is utilized to look at the body tags for any new website pages and determine what template that URL links to. Knowing the template, then 
+                 allows us to determine what test cases should be run on that page. </p>
+                 <br />
+                 <br />
+
+        </p>
+
+        <div class="anchor" id="developers"></div>
+        <h4>Set-ups for Developers</h4>
+        <p>Developers will need to update PHP code as web-devs change the structure of website pages, and as Vault users add additional Gherkin to the database.<br />
+        If a user determines that a test is incorrectly failing, passing, or skipping, the PHP will need to be corrected so that proper results are obtained from test passes. <br />
+        Below are the steps for setting up to edit PHP code.</p>
+        <ul>
+                <li>Download <a href="https://code.visualstudio.com/?wt.mc_id=adw-brand&gclid=Cj0KCQjw6J7YBRC4ARIsAJMXXscxjk2LNn-ZbPrfIlAgUq6ZRr7E55gFGZHet94xl0e-bXx2rt7H_FIaAiGLEALw_wcB">
+                        Visual Studio Code</a> </li>
+        </ul>
+
+
+
+        <br /><br />
+        <div class="anchor" id="links"></div>
+        <h4 >Useful Links</h4>
+        <p><a target="_blank" href="http://docs.behat.org/en/v2.5/quick_intro.html">Introduction to Behat Testing</a></p>
+        <p><a target="_blank" href="https://github.com/Behat/Behat">Download Behat version 3.2</a></p>
+        <p><a target="_blank" href="https://github.com/cucumber/cucumber/wiki/Gherkin">About Gherkin</a></p>
+        <p><a target="_blank" href="https://github.com/fluke-corporation/Vault-Web-App">Vault git-hub repository (application code)</a></p>
+        <p><a target="_blank" href="https://github.com/fluke-corporation/behat_projects">behat_project git-hub repository (test case code)</a></p>
+        <br /><br />
         <h2 id="gherkin">Current Gherkin Definition List</h2>
         
-        Use ctrl + f to search the below list of Gherkin code
+        Use ctrl + f to search the below list of Gherkin code.  Click <a href="#database">here</a> to skip to the next section.
         <br />    
         <br />
         <p>A current list of Gherkin can be viewed by going into the bash shell, <br>
@@ -941,35 +1021,42 @@
         | Example: And show last response
         | at `FeatureContext::showLastResponse()`
 
-    </code></pre>
-      
-        <h2 id="database">Database Information</h2>
-        <p>For developers, we have two databases that need to mirror each other, the database on the
+    </code></pre> <br /><br />
+        <div class="anchor" id="database"></div>
+        <h2>Database Information</h2>
+        <p>Developers will have two databases that need to mirror each other, the database on the
                 EC2 instance (http://ec2-35-168-52-214.compute-1.amazonaws.com/) and the database(s) used on local machines. 
         </p>
-        <p>The database has 7 tables as seen below.</p>
+        <p>The database has 7 tables as seen below. These tables provide information to the Vault application.</p>
+        <div class="anchor" id="testcase"></div>
+        <br />
         <h4>TestCase</h4>
         <p>[a single test that is run on a website page]<br />
         <span class="font-weight-bold">TestCaseId</span> - numerical key <br />
         <span class="font-weight-bold">HashValue</span> - encrypted value used to prevent the entry of duplicative Gherkin <br />
-        <span class="font-weight-bold">TestCaseDescription</span> - the scenario/note about the test case <br />
+        <span class="font-weight-bold">TestCaseDescription</span> - the scenario (note) for the test case <br />
         <span class="font-weight-bold">Live</span> - indicates if the Gherkin is being used currently <br />
         <span class="font-weight-bold">Gherkin</span> - includes the scenario with all lines of Gherkin code for each test case <br />
         <span class="font-weight-bold">IsFunctionalTest</span> - 1 for true, 0 for false, this indicates if the test tests functionality vs. content <br />
-        <h4>Template</h4>
+        <br />
+        <h4 id="template">Template</h4>
         <p>[a page template that specific test cases are designed for]<br />
-        <span class="font-weight-bold">Id</span> - "f1", "f2", "f3" page template key <br />
+        <span class="font-weight-bold">Id</span> - "f1", "f2", "f3" type page template key <br />
         <span class="font-weight-bold">TestCaseId</span> - a list of all the test case Ids that are run against the page template<br />
         </p>
+        <br />
+        <div class="anchor" id="urls"></div>
         <h4>Urls</h4>
         <p>[a page address we test]<br />
         <span class="font-weight-bold">UrlId</span> - numerical key<br />
         <span class="font-weight-bold">TemplateId</span> - the ID of the type of page template that the URL links to<br />
-        <span class="font-weight-bold">Language</span> - "en-us", "en-au", language of the page the URL links to <br />
+        <span class="font-weight-bold">Language</span> - "en-us", "en-au",(etc) language of the page the URL links to <br />
         <span class="font-weight-bold">Url</span> - the URL address<br />
         <span class="font-weight-bold">Rank</span> - intended for prioritizing URLs so that highly trafficked pages could be tested more often. Currently not used.<br />
         &emsp; F4, the template for which we have the most URLs, is set up to test 100 random F4 URLs when "all" F4 URLs are selected for testing <br />
         </p>
+        <br />
+        <div class="anchor" id="testpass"></div>
         <h4>TestPass</h4>
         <p>[a set of tests that are run at a specific time]<br />
         <span class="font-weight-bold">TestPassId</span> - numerical key<br />
@@ -983,6 +1070,8 @@
         <span class="font-weight-bold">Description</span> - a note on what was tested such as "All Templates, All Languages, Limited number of URLs"<br />
         <span class="font-weight-bold">Reliable</span> - "1" for true, "0" for false, often left null.  If "0," the results have been marked as unreliable by an administrator<br />
         <span class="font-weight-bold">Note</span> - if marked unreliable, a note can be added explaining why, such as "The internet went down during testing - results unreliable"</p>
+        <br />
+        <div class="anchor" id="status"></div>
         <h4>Status</h4>
         <p>[data that determines if a test pass is complete or still running]<br />
         <span class="font-weight-bold">TestpassId</span> - the numerical ID of the test pass that was run<br />
@@ -992,6 +1081,8 @@
         &emsp; Note: if the test pass was interrupted, an end time of January 1970 is entered into the database<br />
         &emsp; The Vault application is set to not display results on the dashboard for test passes that were stopped before completion<br />
         </p>
+        <br />
+        <div class="anchor" id="result"></div>
         <h4>Result</h4>
         <p>[the pass/skip/fail result of a single test]<br />
         <span class="font-weight-bold">TestCaseId</span> - the test case for which we have a test result<br />
@@ -1001,12 +1092,14 @@
         <span class="font-weight-bold">Result</span> - "pass" or "skip" or "fail"<br />
         <span class="font-weight-bold">URLs</span> - the address of the page that was tested<br />
         <span class="font-weight-bold">Output</span> - the scenario tested as well as any messages that came out of testing.<br />
-        &emsp;; Example: Does page render with URL provided?<br />
+        &emsp; Example: Does page render with URL provided?<br />
         &emsp; &thinsp;Result: The Respoonse Status Code Returned a 404<br />
         <span class="font-weight-bold">RunDate</span> - the start time for when the test was run<br />
         <span class="font-weight-bold">Owner</span> - when a user selects to "own" a test result and take action on it's outcome<br />
         <span class="font-weight-bold">Notes</span> - whena  user claims ownership, they can add a note on what action they are taking for that test result<br />
         </p>
+        <br />
+        <div class="anchor" id="user"></div>
         <h4>User</h4>
         <p>[person who has access to the Vault application]<br />
         <span class="font-weight-bold">id</span> - numerical key<br />
