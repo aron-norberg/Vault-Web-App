@@ -58,10 +58,8 @@ exports.editTestCases = function(req, res) {  //getResultByTemplateCustom
 
 // CURRENTLY IN PRODUCTION
 exports.deleteTestCases = function(req, res) {
-  console.log('Hello Waldo!');
-  console.log('Hello JenCB!!!');
+  //console.log('Hello Waldo!');
   
-
   //let Id = req.query.Id; // GET method
   let Id = req.body.Id; // POST method
   console.log('Test case Id is - ' + Id);
@@ -85,18 +83,18 @@ exports.deleteTestCases = function(req, res) {
 
 
   // template table
-  db.template.destroy({
+  db.Template.destroy({
     where: {
       TestCaseId: req.body.Id
     }
 
-  }).then(function (testcase) {
+  }).then(function (Template) {
 
-    if (testcase >= 1) {
-      console.log('PASS:  Test case - ' + Id + ' has been deleted from template table.');
+    if (Template >= 1) {
+      console.log('PASS:  Test case - ' + Id + ' has been deleted from Template table.');
     }
     else {
-      console.log('FAIL: Test case - ' + Id + ' was not found in template table.');
+      console.log('FAIL: Test case - ' + Id + ' was not found in Template table.');
     }
 
   }); // end db.template.destroy().then()
