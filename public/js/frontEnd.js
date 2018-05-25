@@ -138,6 +138,7 @@ function showURLChoice() {
 // with given parameters
 
 function runit() {
+  let templateParagraph = document.getElementById("selectedTemplates");
   let noticeBox = document.getElementById("notice");
   let descriptionBox = document.getElementById("description");
   let urlParagraph = document.getElementById("selectedURLs");
