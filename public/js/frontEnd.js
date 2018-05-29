@@ -160,14 +160,31 @@ function runit() {
 
   // Parse Test Case Data
   tcs = document.getElementById('chosenTestCases').innerHTML.split("\n");
-  for (let i = 0; i < tcs.length - 1; i += 2) {
-    tcs_filter.push(tcs[i]);
+
+  // Validate if all 
+  let tcsCheckIfAll = tcs;
+  tcsCheckIfAll = tcs[1];
+  tcsCheckIfAll = tcsCheckIfAll.split(";").pop();
+
+  if(tcsCheckIfAll.includes("all")){
+
+    tcs[0] = "all";
+    tcs.length = 1;
+
+  }else{
+
+    for (let i = 0; i < tcs.length - 1; i += 2) {
+      tcs_filter.push(tcs[i]);
+    }
+
+    for (let i = 0; i < tcs_filter.length; i++) {
+      tcs_filter[i] = tcs_filter[i].split("id=\"\ ").pop();
+      tcs_filter[i] = tcs_filter[i].substring(0, tcs_filter[i].indexOf('\ '));
+    }
+
+    tcs = tcs_filter;
+
   }
-  for (let i = 0; i < tcs_filter.length; i++) {
-    tcs_filter[i] = tcs_filter[i].split("id=\"\ ").pop();
-    tcs_filter[i] = tcs_filter[i].substring(0, tcs_filter[i].indexOf('\ '));
-  }
-  tcs = tcs_filter;
 
   // Parse Url Selection 
   let urlChoices = urlParagraph.innerHTML.substring(urlParagraph.innerHTML.indexOf(";") + 1);
