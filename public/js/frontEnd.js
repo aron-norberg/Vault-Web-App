@@ -1,10 +1,10 @@
 // Invoke 'strict' JavaScript mode
 'use strict';
-//pie
 
-// Test Runner & Export Tool Functions ---->
 
-// test run Selection Functions //
+/***********************************************************************
+ ***  TEST CASE EDITOR SCRIPTS - BEGIN
+***********************************************************************/
 function grabTCsForFeature() {
 
   let reader = new FileReader();
@@ -60,6 +60,7 @@ function grabTCsForFeature() {
     }
   })
 }
+
 
 //this function unhides the Template button
 function unhideTemplates() {
@@ -138,11 +139,11 @@ function showURLChoice() {
 // with given parameters
 
 function runit() {
-  let templateParagraph = document.getElementById("selectedTemplates");
   let noticeBox = document.getElementById("notice");
   let descriptionBox = document.getElementById("description");
   let urlParagraph = document.getElementById("selectedURLs");
   let langParagraph = document.getElementById("chosenLangs");
+  let templateParagraph = document.getElementById("selectedTemplates");
   let tcs = [];
   let tcs_filter = [];
   let langs = [];
@@ -413,6 +414,7 @@ function editTc() { //this populates the boxes below the "Edit Selected Test Cas
   var hidden = document.getElementById("hiddenRow");
   hidden.setAttribute("style", "display:visible");
   document.getElementById("createGherkin").disabled = true;
+  document.getElementById("deleteGherkin").disabled = true;
 
   var checkbox = document.getElementById("funcitonalCheckbox");
   var checked = document.getElementById("functionality").innerHTML;
@@ -460,7 +462,10 @@ function editTc() { //this populates the boxes below the "Edit Selected Test Cas
       buttons[x].setAttribute("class", "btn btn-warning locale-button x");
     }
   }
+  detectClassSwitch();
+
 }
+
 
 function classSwitch(thisOne) {
   var currentID = thisOne.getAttribute("id");
@@ -474,7 +479,10 @@ function classSwitch(thisOne) {
   } else if (currentClass.indexOf("btn-success") > -1) {
     thisOne.setAttribute("class", "btn locale-button x btn-light");
   }
+
+  //detectClassSwitch(currentClass);
 }
+
 
 function createTc() { //unhide the 'hiddenRow' section and put into it the basics of "scenario" and "when" - we then feed this to the database so that I can get an ID to display
   var hidden = document.getElementById("hiddenRow");
@@ -537,6 +545,41 @@ function createTc() { //unhide the 'hiddenRow' section and put into it the basic
 
 
 /************************
+ * Function: detectClassSwitch()
+ * Purpose: Look for class ".btn-warning" and counts how many exist. If none exists for feature page then it enables the delete test case button.
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
+function detectClassSwitch() {
+
+  var count = 0;
+  var total = 0;
+  var elemList = "";
+
+  var elem = document.querySelectorAll("#templatesID .btn-warning");
+
+  for (var i = 0; i < elem.length; i++) {
+    //elemList += elem[i].id + ", ";
+    //console.log(elemList);
+    count += 1;
+    total = count;
+    
+  } // end for()
+
+  if (total == 0) {
+    document.getElementById("deleteGherkin").disabled = false;
+  }
+  else {
+    // Do nothing!
+
+  } // end if/else
+
+  //console.log(total);
+
+} // end detectClassSwitch()
+
+
+/************************
  * Function: deleteTc()
  * Purpose: Deletes any test case thats selected from the TestCase table found in the test DB.  
  * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
@@ -557,9 +600,13 @@ function deleteTc() {
       data: {
         Id: Id
       },
+      error: function(data) {
+        console.log(data + 'Test case did not delete.');
+      },
       success: function(data) {
         console.log(data);
         console.log("Test case deleted!");
+        window.location = '/test-case-editor';
       }
 
     }) // end $.ajax
@@ -576,8 +623,7 @@ function deleteTc() {
  * Purpose: Deletes empty "Scenario:" text in testCaseDescription found in the tescase database when the test_case_editor.ejs page loads. 
  * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
  * Date: May 2018
- ************************/
-// cleanGherkin() function will remove empty "Scenario:" text in testCaseDescription found in the tescase database when the test_case_editor.ejs page loads. 
+************************/
 function cleanGherkin() {
 
   // The id var is only used to trigger the "exports.cleanGherkin_DB = function(req, res)" function in the api_DB_writer.js page.
@@ -586,10 +632,15 @@ function cleanGherkin() {
   $.ajax({
     url: '/clean-gherkin',
     type: 'POST',
-    data: id,
+    data: {
+      id: id
+    },
+    error: function(data) {
+      console.log(data + 'Gherkin did not clean.');
+    },
     success: function(data) {
       console.log(data);
-      console.log("Gherkin cleaned");
+      console.log("Gherkin cleaned!");
     }
   })
 
@@ -674,6 +725,14 @@ function exportGherkin() {
 
 };
 
+/***********************************************************************
+ ***  TEST CASE EDITOR SCRIPTS - END
+***********************************************************************/
+
+
+/***********************************************************************
+ ***  GLOBAL - EXPORT RESULTS AND RUB TESTS - BEGIN
+***********************************************************************/
 
 // This function is used in the dropdowns where checkboxes (including "all" options) can be selected 
 // - Export Results page, Run Tests page
@@ -783,65 +842,141 @@ function displayChecked(checkedID, ULID, allID, destinationID, element) {
 }
 
 
-
-
-// The below functions are used when transitioning to a new page
-// - all pages
-//
-function uncheckAll() {
-  var w = document.getElementsByTagName('input');
-  for (var i = 0; i < w.length; i++) {
-    if (w[i].type == 'checkbox') {
-      w[i].checked = false;
-    }
-  }
-}
-
-function loadingAnimation() {
-  document.getElementById("loading").style.display = "block";
-  document.getElementById("page").style.display = "none";
-  // alert("This might take a moment.  Hit OK");
-}
-
-
-
-
-// Used for the Dashboard pages for displaying correct graphs
-// - Dashboard pages 
-//
-function dashboardPage() {
-  var dashboardTitle = document.getElementById('h2Title').innerHTML;
-  if (dashboardTitle === 'Dashboard') {
-    //document.getElementById('dashboard-1').style.display = "block";
-    document.getElementById('dashboard-2').style.display = "none";
-  } else {
-    document.getElementById('dashboard-1').style.display = "none";
-    //document.getElementById('dashboard-2').style.display = "block";
-  }
-} // end dashboardPage()
-
 // Used for searching through a list
 // - Test Case Editor page
 //
 function filterFunction() {
 
-  var input, div, filter, ul, li, a, i;
-  input = document.getElementById("myInput");
-  filter = input.value.toUpperCase();
-  div = document.getElementById("tcSelection");
-  a = div.getElementsByTagName("option");
-
-  for (i = 0; i < a.length; i++) {
-    if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
-      a[i].style.display = "";
-    } else {
-      a[i].style.display = "none";
+    var input, div, filter, ul, li, a, i;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    div = document.getElementById("tcSelection");
+    a = div.getElementsByTagName("option");
+    
+    for (i = 0; i < a.length; i++) {
+        if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
+            a[i].style.display = "";
+        } else {
+            a[i].style.display = "none";
+        }
     }
-  }
+}
+
+/***********************************************************************
+ ***  GLOBAL - EXPORT RESULTS AND RUB TESTS - BEGIN
+***********************************************************************/
+
+
+/***********************************************************************
+ ***  DASHBOARD SCRIPTS - BEGIN
+***********************************************************************/
+
+//pie
+// Load google charts
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+// Draw the chart and set the chart values
+function drawChart() {
+  var data = google.visualization.arrayToDataTable([
+    ['Test', 'Passed or Failed'],
+    ['Passed', 8],
+    ['Failed', 9],
+    ['Other', 4],
+
+  ]);
+  // Optional; add a title and set the width and height of the chart
+  // Options can be variables such as title: $Title
+  var options = {
+    'title': 'Cumulative Results',
+    'colors': ['green', '#E2453C', 'grey'],
+    'backgroundColor': '',
+    'is3D': true,
+    'chartArea': { width: '350', height: '80%' },
+    'legend': { textStyle: { fontSize: 20 }, alignment: 'center', position: 'left' },
+    'slices': {
+      0: { offset: 0.0 },
+      1: { offset: 0.2 },
+      2: { offset: 0.0 }
+    }
+
+  };
+
+  // Display the chart inside the <div> element with id="pieChart"
+  var chart = new google.visualization.PieChart(document.getElementById('pieChart'));
+  chart.draw(data, options);
 }
 
 
+/************************
+ * Function: dashboardPage()
+ * Purpose: Hides container id='dashboard-2' if title = 'Dashboard' if not then it shows its on the dashboard page.
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+************************/
+function dashboardPage() {
+  var dashboardTitle = document.getElementById('h2Title').innerHTML;
 
+  if (dashboardTitle === 'Dashboard') {
+    //document.getElementById('dashboard-1').style.display = "block";
+    document.getElementById('dashboard-2').style.display = "none";
+  } 
+  else {
+    document.getElementById('dashboard-1').style.display = "none";
+    //document.getElementById('dashboard-2').style.display = "block";
+  }
+
+} // end dashboardPage()
+
+
+/************************
+ * Function: deleteTestResults(Id)
+ * Purpose: Deletes Test result by TestPassId from TestPass, Status, and Result tables from the dashboard page.
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+************************/
+function deleteTestResults(Id) {
+  
+  var delConfirm = confirm("Are you sure you want to delete test result ID: " + Id + "?");
+  
+  if (delConfirm == true) {
+  
+    $.ajax({
+    url: "/deleteTestResults",
+    type: "GET",
+    dataType: "html",
+    data: {
+      Id: Id
+    },
+    success : function() {
+      console.log('success');
+      window.location = '/dashboard';
+  
+    }, // end success : function()
+    error : function() {
+      console.log('error');
+  
+    } // end error : function()
+  
+    }); // end .ajax()
+  
+  }
+  else {
+    //alert('Delete canceled!');
+  
+  } // end if/else
+  
+  
+  } // end deleteTestResults(Id)
+  
+/***********************************************************************
+ ***  DASHBOARD SCRIPTS - END
+***********************************************************************/
+
+
+/***********************************************************************
+ ***  EXPORT RESULTS SCRIPTS - BEGIN
+***********************************************************************/
 //Export functions used on the 
 // - Export Results page
 //
@@ -1056,13 +1191,38 @@ function displayInfo(data, id) {
           default:
             thePage = "unknown";
         }
-        var templateTextNode = document.createTextNode("  " + thePage);
-        node2.appendChild(span2);
-        span2.appendChild(templateItem);
-        span2.appendChild(templateTextNode);
-        document.getElementById("featureUL").appendChild(node2);
+        console.log("I am a success.");
+        }
       }
-      console.log("I am a success.");
-    }
-  })
+    })
 }
+
+/***********************************************************************
+ ***  EXPORT RESULTS SCRIPTS - BEGIN
+***********************************************************************/
+
+
+/***********************************************************************
+ ***  PAGE LOADING SCRIPTS - BEGIN
+***********************************************************************/
+// The below functions are used when transitioning to a new page
+// - all pages
+
+function uncheckAll(){ 
+  var w = document.getElementsByTagName('input'); 
+  for(var i = 0; i < w.length; i++){ 
+    if(w[i].type=='checkbox'){ 
+      w[i].checked = false; 
+    }
+  }
+} 
+
+function loadingAnimation() {
+document.getElementById("loading").style.display = "block";
+document.getElementById("page").style.display = "none";
+// alert("This might take a moment.  Hit OK");
+}
+
+/***********************************************************************
+ ***  PAGE LOADING SCRIPTS - END
+***********************************************************************/

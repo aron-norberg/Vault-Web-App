@@ -33,18 +33,12 @@
 
     <br />
     <div class="row">
-        <div class="col-lg-4 col-xl-3 offset-xl-1 text-center">
+        <div class="col-lg-4 col-xl-4 offset-xl-1 text-center">
             <button id="createGherkin" class="btn btn-warning width-set createTc" onclick='createTc()'>Create New Test Case</button> 
         </div>
-        <div class="col-lg-4 col-xl-3 text-center">
+        <div class="col-lg-4 col-xl-4 text-center">
             <button id="editGherkin" class="btn btn-warning width-set" onclick="editTc()">Edit Selected Test Case</button> 
         </div>
-
-        <% if (user.role == 2) { %>
-          <div class="col-lg-3 text-center">
-              <button id="deleteGherkin" class="btn btn-warning width-set" onclick="deleteTc();">Delete Selected Test Case</button>
-          </div>
-        <% } %>
     </div><!-- end .row -->
 
 
@@ -68,19 +62,31 @@
       <br /><br />
       
       <div class="row">
-          <div class="col-lg-4 offset-lg-2">
+          <div class="col-lg-4 offset-lg-2" id="templatesID">
               <h2> Apply to Feature Page: </h2>
+
               <% for(var x=0; x < template.length; x++) {%>
-                  <button type="button" class="btn btn-light locale-button x" id="<%=  template[x].Id  %>" value="<%=template[x].TestCaseId %>" onclick="classSwitch(this)">
+                  <button class="btn btn-light locale-button x" id="<%=  template[x].Id  %>" value="<%=template[x].TestCaseId %>" onclick="classSwitch(this)">
                   <%=  template[x].Id  %>
-                  </button>                   
+                  </button>
               <%}%>
-          </div>
+          </div><!-- end .col-lg-4 offset-lg-2 -->
+
           <div class="col-lg-4" >
               <h2> When you are absolutely sure:</h2>
               <br /><br />
-              <div class="text-center"><button type="button" class="btn btn-danger locale-button width-set" onclick="exportGherkin()">Save Edits</button></div>
-          </div>
+              <div class="text-center">
+                <button class="btn btn-success locale-button width-set" onclick="exportGherkin()">Save Edits</button>
+              </div>
+              <br />
+
+              <div class="text-center">
+                <% if (user.role == 2) { %>
+                  <input type="button" id="deleteGherkin" class="btn btn-danger width-set" value="Delete Selected Test Case" onclick="deleteTc();" />
+                <% } %>
+              </div>
+              
+          </div><!-- end .col-lg-4 -->
       </div>
     </div><!-- end of hiddenRow -hidden area that unhides on "edit selected test case" button click -->
 
