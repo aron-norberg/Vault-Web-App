@@ -182,9 +182,15 @@
       </div>
       
       <% if(user.role === 2) { %>
-        <div id="delBtnCont">
+        
+        <div class="delBtnCont">
           <input type="button" id="delBtn" value="Delete" onclick="deleteTestResults(<%= testPassInfo.TestPassId %>);" />
         </div>
+
+        <div class="delBtnCont">
+          <label for="unreliableCkbox"><input type="checkbox" id="unreliableCkbox" value="0" onclick="#" /> Unreliable</label>
+        </div>
+
       <% } %>
 
     </div><!-- end .col-lg-4 col-xl-3 -->
