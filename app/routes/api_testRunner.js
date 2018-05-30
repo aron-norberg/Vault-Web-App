@@ -9,6 +9,7 @@ const os = require('os');
 const async = require('async');
 const dateFormat = require('dateformat');
 const util = require('util');
+const moment = require('moment');
 
 // Read Excel File Data
 const fs = require('fs');
@@ -361,10 +362,17 @@ function getTestProcessesFromDB() {
 
   return new Promise(function(resolve, reject) {
 
+    // Get the Current Date/Time
+    let CurrentDateStamp = moment().format();
+    let cutOffTime = moment(CurrentDateStamp).add(10, 'minutes');
+
+    console.log("The current time is " + CurrentDateStamp);
+    console.log("The cut off time is " + cutOffTime);
+
     async.parallel({
 
       statusResults: function(cb) {
-        db.sequelize.query(`select * from Status where EndTime like '1970-01-02 00:00:00'`).then(statusResults => {
+        db.sequelize.query(`select * from Status where EndTime like '1970-01-02 00:00:00' and EndTime like '${cutOffTime}'`).then(statusResults => {
 
           statusResults = statusResults[0];
 
@@ -428,6 +436,27 @@ function checkTestProcessWithSystemPS(testPassTableResults) {
 
       let pid = item.Note.replace(/PID: /, '');
 
+      if (!pid) {
+
+        // If pid is null, check the date value 
+        let CurrentDateStamp = moment().format();
+        let cutOffTime = moment(CurrentDateStamp).add(10, 'minutes');
+
+        if (item.EndTime <= cutOffTime) {
+          // Add to the list
+          let statusObject = new Object();
+
+          statusObject.id = successItem.TestPassId;
+          statusObject.status = "complete";
+          statusObject.runDate = successItem.RunDate;
+          statusResults.push(statusObject);
+
+          callback();
+        }
+
+        callback();
+      }
+
       checkProcessByPID(pid, item).then(successItem => {
 
         let statusObject = new Object();
@@ -463,7 +492,7 @@ function checkTestProcessWithSystemPS(testPassTableResults) {
 
         resolve(statusResults);
       }
-      
+
     });
   })
 }

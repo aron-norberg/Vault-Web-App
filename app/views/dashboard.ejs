@@ -50,15 +50,7 @@
           2: { offset: 0.0 }
         }
       };
-
-      // Display the chart inside the <div> element with id="pieChart"
-      var chart1 = new google.visualization.PieChart(document.getElementById('pieChart-1'));
-      chart1.draw(data, options);
-
-      var chart3 = new google.visualization.PieChart(document.getElementById('pieChart-2'));
-      chart3.draw(data, options);
       
-
       /////////////////////////////////// Bar Chart /////////////////////
       var data2 = google.visualization.arrayToDataTable([
         ['Test', 'Pass', 'Fail', 'Other', { role: 'annotation' }],
@@ -88,11 +80,20 @@
         }
       };
 
+      // Display the chart inside the <div> element with id="pieChart"
+      var chart1 = new google.visualization.PieChart($('#pieChart-1')[0]);
+      chart1.draw(data, options);
+
       // Display the chart inside the <div> element with id="barGraph"
-      var chart2 = new google.visualization.BarChart(document.getElementById('barGraph'));
+      var chart2 = new google.visualization.BarChart($('#barGraph')[0]);
       chart2.draw(data2, options2);
 
+      var chart3 = new google.visualization.PieChart($('#pieChart-2')[0]);
+      chart3.draw(data, options);
+
     } //end of Draw Charts function 
+
+
 
   </script>
 

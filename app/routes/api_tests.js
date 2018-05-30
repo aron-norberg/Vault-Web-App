@@ -202,8 +202,6 @@ exports.postTest = function(req, res, next) {
 
     jsonTestparams = JSON.stringify(req.testParams)
 
-    //console.log("This is the json object you are reading:\n");
-
     // Get time down to millisecond, preventing duplication...with some degree of certainty
     let currentTime = dateFormat(now, "ddddmmmmdSyyyyhMMsslTT");
 
@@ -402,8 +400,8 @@ function getTotalNumberOfTestCases(testParameterObject) {
 
             finalCount = finalCount * testCaseCount;
 
-            //console.log("The final count from inside the sequelize request " + finalCount);
-            if (finalCount) {
+            console.log("The final count from inside the sequelize request " + finalCount);
+            if (finalCount !== 'undefined') {
               resolve(finalCount)
 
             } else {
@@ -424,9 +422,9 @@ function getTotalNumberOfTestCases(testParameterObject) {
 
           // multiple final count by test Cases 
           finalCount = finalCount * testParameterObject.TestCaseSelections.length;
-          //console.log("The final count is " + finalCount);
 
-          if (finalCount) {
+          if (finalCount !== 'undefined') {
+            
             resolve(finalCount)
 
           } else {

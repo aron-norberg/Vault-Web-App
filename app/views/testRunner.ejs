@@ -413,7 +413,7 @@
       <div class="col-lg-6 option-box">
         <div id="testNames"></div>
         <br>
-        <p><b>Languages:</b><div id="chosenLangs"></div></p>        
+        <p><b>Languages:</b><div id="chosenLangs"></div></p>
         <p id="selectedTemplates"><b>Template:</b></p>
         <p><b>Test Cases: </b><div id="chosenTestCases"></div></p>
         <p><div id="selectedDomain"></div></p>
@@ -472,7 +472,7 @@
             <tbody id="test-status-table">
               <% if (liveStatus){ %>
                 <% for(let i = 0; i < liveStatus.length;i++){ %>
-                  <% if(liveStatus[i].status === "success"){%>
+                  <% if(liveStatus[i].status === "success" || liveStatus[i].status === "complete"){%>
                     <tr id="<%= liveStatus[i].id %>">
                       <td>
                         <%= liveStatus[i].id %>
@@ -480,7 +480,7 @@
                       <td>
                         <%= liveStatus[i].runDate %>
                       </td>
-                      <td id=<%= liveStatus[i].id %>-progress'></td>
+                      <td id=<%= liveStatus[i].id %><%= liveStatus[i].status %></td>
                       </td>
                       <td>
                         <button type="button" class="btn btn-sm btn-primary" onclick="getInfo(<%= liveStatus[i].id %>)">Info</button>
@@ -538,13 +538,21 @@
 
     } else if (msg.includes("complete-id")) {
 
+      // 
       console.log(msg);
 
       let id = msg.replace("complete-id:", "");
 
       let $oldRow = $(`#${id}`);
 
-      $($oldRow).empty().remove(); // removes the row and the contents within row
+      $(`#${id} td:nth-child(3)`).text("Complete");
+
+      // Remove the Row after 10 minutes
+      setTimeout(function(){
+
+        $($oldRow).empty().remove(); // removes the row and the contents within row
+        // Ten Minutes
+      }, 600000)
 
     }
 
@@ -555,7 +563,7 @@
 
     console.log("message from test Progress:\n");
 
-    // id of td is #id-progress 
+    console.log(msg);
     
     if(msg.includes("percentage")){
       // get id and percentage and update correct field
