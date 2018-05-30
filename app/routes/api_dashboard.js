@@ -621,3 +621,24 @@ exports.deleteTestResults = function(req, res) {
   res.redirect('/dashboard');
 
 }; // end exports.deleteTestResults = function(req, res)
+
+
+exports.addUnreliableToTestResult = function(req, res) {
+  //console.log("Hello Waldo!");
+
+  let TestPassId = req.query.id
+  let Reliable = req.query.ckBox
+  let Note = req.query.notes
+  //console.log(TestPassId + ' - ' + Reliable + ' - ' + Note);
+
+  db.TestPass.update({Reliable: Reliable}, { where: {TestPassId: TestPassId} }).then(function (TestPass) {
+    console.log("Reliable status has been updated!")
+  });
+
+  db.TestPass.update({Note: Note}, { where: {TestPassId: TestPassId} }).then(function (TestPass) {
+    console.log("Note record has been updated!")
+  });
+
+   res.send('success')
+
+}; // end exports.unreliable = function(req, res)

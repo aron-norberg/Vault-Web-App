@@ -185,6 +185,7 @@ module.exports = function() {
   app.get('/dashboardTWO', api_dashboardTWO.render);
   app.get('/dashboard/locale/:locale', isLoggedIn, api_dashboard.getResultMetaByLocale);
   app.get('/dashboard/query/:custom', isLoggedIn, api_dashboard.getResultMetaByCustom);
+  app.get('/addUnreliableToTestResult', isLoggedIn, api_dashboard.addUnreliableToTestResult);
 
   // Dashboard page - delete Test Results by Id
   app.get('/deleteTestResults', isLoggedIn, api_dashboard.deleteTestResults);

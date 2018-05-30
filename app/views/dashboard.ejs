@@ -182,17 +182,55 @@
       </div>
       
       <% if(user.role === 2) { %>
-        
         <div class="delBtnCont">
           <input type="button" id="delBtn" value="Delete" onclick="deleteTestResults(<%= testPassInfo.TestPassId %>);" />
         </div>
 
+      <form name="<%= testPassInfo.TestPassId  %>" action="/addUnreliableToTestResult" method="get">
         <div class="delBtnCont">
-          <label for="unreliableCkbox"><input type="checkbox" id="unreliableCkbox" value="0" onclick="#" /> Unreliable</label>
+          <label for="unreliableCkbox"><input type="checkbox" id="unreliableCkbox" data-toggle="modal" data-target="#unreliableModal" value="0" /> Unreliable</label>
         </div>
 
-      <% } %>
+        <!-- Modal BEGIN -->
+        <div class="modal fade" id="unreliableModal" tabindex="-1" role="dialog" aria-labelledby="unreliableModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Unreliable Test</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
 
+                <div class="row">
+                    <div class="col-lg-12" style="text-align: left;">
+                      <p>ID: <span id="idTestPass"><%= testPassInfo.TestPassId %></span><br />
+                      Template: <%= testPassInfo.Template %><br />
+                      Language: <%= testPassInfo.Language %></p>
+                    </div><!-- end .col-lg-12 -->
+                  </div><!-- end .row -->
+
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="form-group">
+                      <label for="usr">Add a Note:</label>
+                        <textarea class="form-control notes" name="message" id="textareaNotes" rows="5"></textarea>
+                    </div>
+                  </div><!-- end .col-lg-12 -->
+                </div><!-- end .row -->
+
+              </div><!-- end .modal-body -->
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="addUnreliableToTestResult();">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Modal END -->
+      </form><!-- end form -->
+      <% } %>
     </div><!-- end .col-lg-4 col-xl-3 -->
   </div><!-- end .row / #dashboard-1 -->
   <!-- Dashboard-1 END -->

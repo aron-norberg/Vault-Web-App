@@ -968,7 +968,43 @@ function deleteTestResults(Id) {
   
   
   } // end deleteTestResults(Id)
-  
+
+
+  /************************
+   * Function: addUnreliableToTestResult()
+   * Purpose: Add a 0 value to reliable and Notes to the testPass table in the database.
+   * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+   * Date: May 2018
+  ************************/
+function addUnreliableToTestResult() {
+
+  var id = document.getElementById('idTestPass').innerHTML;
+  var ckBox = document.getElementById('unreliableCkbox').value;
+  var notes = document.getElementById('textareaNotes').value;
+  //console.log(id + ' - ' + ckBox + ' - ' + notes);
+
+  $.ajax({
+    url: "/addUnreliableToTestResult",
+    type: "Get",
+    data: {
+      id: id,
+      ckBox : ckBox,
+      notes : notes
+    },
+    success : function() {
+      console.log('success');
+      location.reload(true); //Refresh page
+
+    },
+    error : function() {
+      console.log('error');
+    }
+
+  }); // end .ajax()
+
+} // end unreliableCheckBox()
+
+
 /***********************************************************************
  ***  DASHBOARD SCRIPTS - END
 ***********************************************************************/
