@@ -1202,8 +1202,34 @@ function displayInfo(data, id) {
 }
 
 /***********************************************************************
- ***  EXPORT RESULTS SCRIPTS - BEGIN
+ ***  EXPORT RESULTS SCRIPTS - END
 ***********************************************************************/
+
+
+
+/***********************************************************************
+ ***  DOCUMENTATION SCRIPTS - BEGIN
+***********************************************************************/
+
+function showMore(something, theButton){
+  var theThing = document.getElementById(something);
+  theThing.style.display="block";
+  var myButton = document.getElementById(theButton);
+  myButton.style.display="none";
+}
+
+function showLess(something, theButton){
+  var theThing = document.getElementById(something);
+  theThing.style.display="none";
+  var myButton = document.getElementById(theButton);
+  myButton.style.display="block";
+}
+
+
+/***********************************************************************
+ ***  DOCUMENTATION SCRIPTS - END
+***********************************************************************/
+
 
 
 /***********************************************************************
