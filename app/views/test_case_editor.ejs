@@ -70,46 +70,7 @@
                   <%=  template[x].Id  %>
                   </button>
               <%}%>
-
-
-              <% if(template.Id){ %>
-                console.log('Hello Waldo!');
-
-              <% } %>
-
-          </div>
-
-
-          <script>
-          function detectClassSwitch() {
-
-            var count = 0;
-            var total = 0;
-
-            $(".btn-warning").each(function() {
-              //alert(this.id);
-              count += 1;
-              total = count;
-
-            });
-
-            if (total <= 2) {
-              document.getElementById("deleteGherkin").disabled = false;
-            }
-            else {
-              // Do nothing!
-            }
-            console.log(total);
-
-          } // end detectClassSwitch(sel)
-          </script>
-
-
-
-
-
-
-
+          </div><!-- end .col-lg-4 offset-lg-2 -->
 
           <div class="col-lg-4" >
               <h2> When you are absolutely sure:</h2>

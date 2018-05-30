@@ -62,15 +62,6 @@ function grabTCsForFeature() {
 }
 
 
-
-
-
-
-
-
-
-
-
 //this function unhides the Template button
 function unhideTemplates() {
   let templateButton = document.getElementById("tb");
@@ -169,14 +160,31 @@ function runit() {
 
   // Parse Test Case Data
   tcs = document.getElementById('chosenTestCases').innerHTML.split("\n");
-  for (let i = 0; i < tcs.length - 1; i += 2) {
-    tcs_filter.push(tcs[i]);
+
+  // Validate if all 
+  let tcsCheckIfAll = tcs;
+  tcsCheckIfAll = tcs[1];
+  tcsCheckIfAll = tcsCheckIfAll.split(";").pop();
+
+  if(tcsCheckIfAll.includes("all")){
+
+    tcs[0] = "all";
+    tcs.length = 1;
+
+  }else{
+
+    for (let i = 0; i < tcs.length - 1; i += 2) {
+      tcs_filter.push(tcs[i]);
+    }
+
+    for (let i = 0; i < tcs_filter.length; i++) {
+      tcs_filter[i] = tcs_filter[i].split("id=\"\ ").pop();
+      tcs_filter[i] = tcs_filter[i].substring(0, tcs_filter[i].indexOf('\ '));
+    }
+
+    tcs = tcs_filter;
+
   }
-  for (let i = 0; i < tcs_filter.length; i++) {
-    tcs_filter[i] = tcs_filter[i].split("id=\"\ ").pop();
-    tcs_filter[i] = tcs_filter[i].substring(0, tcs_filter[i].indexOf('\ '));
-  }
-  tcs = tcs_filter;
 
   // Parse Url Selection 
   let urlChoices = urlParagraph.innerHTML.substring(urlParagraph.innerHTML.indexOf(";") + 1);
@@ -493,43 +501,6 @@ function classSwitch(thisOne) {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function createTc() { //unhide the 'hiddenRow' section and put into it the basics of "scenario" and "when" - we then feed this to the database so that I can get an ID to display
   var hidden = document.getElementById("hiddenRow");
   hidden.setAttribute("style", "display:visible");
@@ -591,6 +562,41 @@ function createTc() { //unhide the 'hiddenRow' section and put into it the basic
 
 
 /************************
+ * Function: detectClassSwitch()
+ * Purpose: Look for class ".btn-warning" and counts how many exist. If none exists for feature page then it enables the delete test case button.
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
+function detectClassSwitch() {
+
+  var count = 0;
+  var total = 0;
+  var elemList = "";
+
+  var elem = document.querySelectorAll("#templatesID .btn-warning");
+
+  for (var i = 0; i < elem.length; i++) {
+    //elemList += elem[i].id + ", ";
+    //console.log(elemList);
+    count += 1;
+    total = count;
+    
+  } // end for()
+
+  if (total == 0) {
+    document.getElementById("deleteGherkin").disabled = false;
+  }
+  else {
+    // Do nothing!
+
+  } // end if/else
+
+  //console.log(total);
+
+} // end detectClassSwitch()
+
+
+/************************
  * Function: deleteTc()
  * Purpose: Deletes any test case thats selected from the TestCase table found in the test DB.  
  * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
@@ -611,9 +617,13 @@ function deleteTc() {
       data: {
         Id: Id
       },
+      error: function(data) {
+        console.log(data + 'Test case did not delete.');
+      },
       success: function(data) {
         console.log(data);
         console.log("Test case deleted!");
+        window.location = '/test-case-editor';
       }
 
     }) // end $.ajax
@@ -642,9 +652,12 @@ function cleanGherkin() {
     data: {
       id: id
     },
+    error: function(data) {
+      console.log(data + 'Gherkin did not clean.');
+    },
     success: function(data) {
       console.log(data);
-      console.log("Gherkin cleaned");
+      console.log("Gherkin cleaned!");
     }
   })
 
@@ -972,7 +985,43 @@ function deleteTestResults(Id) {
   
   
   } // end deleteTestResults(Id)
-  
+
+
+  /************************
+   * Function: addUnreliableToTestResult()
+   * Purpose: Add a 0 value to reliable and Notes to the testPass table in the database.
+   * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+   * Date: May 2018
+  ************************/
+function addUnreliableToTestResult() {
+
+  var id = document.getElementById('idTestPass').innerHTML;
+  var ckBox = document.getElementById('unreliableCkbox').value;
+  var notes = document.getElementById('textareaNotes').value;
+  //console.log(id + ' - ' + ckBox + ' - ' + notes);
+
+  $.ajax({
+    url: "/addUnreliableToTestResult",
+    type: "Get",
+    data: {
+      id: id,
+      ckBox : ckBox,
+      notes : notes
+    },
+    success : function() {
+      console.log('success');
+      location.reload(true); //Refresh page
+
+    },
+    error : function() {
+      console.log('error');
+    }
+
+  }); // end .ajax()
+
+} // end unreliableCheckBox()
+
+
 /***********************************************************************
  ***  DASHBOARD SCRIPTS - END
 ***********************************************************************/

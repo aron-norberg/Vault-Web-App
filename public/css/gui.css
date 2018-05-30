@@ -244,8 +244,8 @@ body {
   border: 0px solid #000;
 }
 
-#delBtnCont {
-  width: 100px;
+.delBtnCont {
+  width: 120px;
   float: right;
   /*display: none;*/
   padding-top: 10px;

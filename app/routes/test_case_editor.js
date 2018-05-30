@@ -48,16 +48,6 @@ exports.editTestCases = function(req, res) {  //getResultByTemplateCustom
 };
 
 
-
-
-
-
-
-
-
-
-
-// CURRENTLY IN PRODUCTION
 exports.deleteTestCases = function(req, res) {
   //console.log('Hello Waldo!');
   
@@ -75,23 +65,16 @@ exports.deleteTestCases = function(req, res) {
 
     if (TestCase >= 1) {
       console.log('PASS:  Test case - ' + Id + ' has been deleted from TestCase table.');
+      res.send(Id);
     }
     else {
       console.log('FAIL: Test case - ' + Id + ' was not found in TestCase table.');
+      res.send(Id);
     }
 
   }); // end db.TestCase.destroy().then()
 
 }; // end exports.deleteTestCases = function(req, res)
-// CURRENTLY IN PRODUCTION
-
-
-
-
-
-
-
-
 
 
 exports.newGherkin = function (req, res) {
