@@ -8,22 +8,9 @@
     var fails = <%= overall.fail %>;
     var others = <%= overall.skip %>;
     
-
-
-    
-
     // Draw the chart and set the chart values
     function drawCharts() {
       /////////////////////////////////// Pie Chart /////////////////////
-
-      if(<%= testPassInfo.Reliable !== 0  %>) {
-      var colorScheme = ['#109618', '#DC3912', '#2569ff'];
-      }
-      else {
-        var colorScheme = ['#808080', '#000000', '#C0C0C0'];
-      }
-
-
 
       var data = google.visualization.arrayToDataTable([
         ['Test', 'Passed or Failed'],
@@ -39,7 +26,16 @@
       } else {
         var legendLocation = 'none';
         
+      } // end if/else
+
+
+      if (<%= testPassInfo.Reliable !== 0  %>) {
+        var colorScheme = ['#109618', '#DC3912', '#2569ff'];
       }
+      else {
+        var colorScheme = ['#808080', '#000000', '#C0C0C0'];
+
+      } // end if/else
 
       // Optional; add a title and set the width and height of the chart
       // Options can be variables such as title: $Title
@@ -47,9 +43,7 @@
 
         'title': myTitle,
         'titleTextStyle': { fontSize: 25, bold: true, color: '#070d18' },
-        
         'colors': colorScheme,
-        
         'backgroundColor': '',
         'is3D': true,
         'chartArea': { width: '90%', height: '90%' },
