@@ -16,17 +16,7 @@ exports.addNotesToResultTable_DB = function(req, res) {
   //res.send("hello from waldo");
 
   // Gets the value from url string using get
-  /*let feature = req.query.feature;
-  let locale = req.params.locale;
-  let testcaseid = req.query.testcaseid;
-  let testPassId = req.query.testpassid;
-  let template = req.params.template;
-  let language = req.params.language;
-  let result = req.query.result;
-  let urls = req.query.urls;
-  let output = req.query.output;
-  let rundate = req.params.rundate;
-  let owner = req.query.users;*/
+  //let locale = req.params.locale;
   let id = req.query.Id;
   let notes = req.query.message;
 
