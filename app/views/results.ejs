@@ -228,7 +228,7 @@
 
                         <div>
                           <label for="resolveTest">
-                            <input type="checkbox" id="resolveTest" value="resolved" onclick="resolveTestCase();" /> Resolve test case <span id="idTestCase"><%= results[i].TestCaseId %></span>
+                            <input type="checkbox" id="resolveTest" value="resolved" onclick="resolveTestCase();" /> Resolve test case ID: <span id="idTestCase"><%= results[i].TestCaseId %></span>
                             </label>
                         </div>
 
@@ -259,6 +259,7 @@
         var testCaseId = document.getElementById('idTestCase').innerHTML;
 
         console.log('Test case id: ' + testCaseId + ' has been marked ' + testCaseResolved);
+        alert('Resolve test case feature is coming soon to a script near you!');
 
       } // end resolveTestCase()
 
