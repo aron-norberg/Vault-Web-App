@@ -19,16 +19,17 @@ rootPath = rootPath + 'temp_directory';
 // Excel functionality:
 // https://github.com/guyonroche/exceljs#create-a-workbook
 
-// This function is called when the user goes to the export-tool page or Export Results link -
-// on express.js we have - app.get('/export-tool', isLoggedIn, api_export.getExport);
-// This function provides the Test Date options for the user.  Results information is commented out
+
+
+/************************
+ * Function: getExport()
+ * Purpose: This function provides the Test Date options for the export.ejs page (used for export link on Test Results page and on the Export Results page )
+ * Parameters:
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
+
 exports.getExport = function(req, res) {
-  //db.Result.findAll().then(results => {
-
-  // Need to verify that where is working correctly...
-
-  // Need to re evaluate approach, Note will be used at a later date...for unreliable results.
-  // 
 
   db.TestPass.findAll({
     where: {
@@ -46,43 +47,18 @@ exports.getExport = function(req, res) {
       }
     }).then(statuses => {
 
-      // var features = [];
-      // var languages = [];
       var dates = [];
       var datesIds = [];
       var statusId = [];
       var statusEndTime = [];
       var testDescription = [];
-      var templates = []; //will delete
-      // var langLoc = []; // will delete
-
-      // -------------------commenting out the "Result" table query, etc.  will use an ajax call for these things after the test pass is selected--------------
-      // // Needed To convert the blob object into a string 
-      // // Otherwise it returns a buffer array object.
-      // for (var i = 0; i < results.length; i++) {
-      //   results[i].Output = String(results[i].Output);
-
-      //   // Save each unique template
-      //   if (!features.includes(results[i].Template)) {
-      //     features.push(results[i].Template);
-      //   }
-
-      //   // Save Each unique Language
-      //   if (!languages.includes(results[i].Language)) {
-      //     languages.push(results[i].Language);
-      //   }
-
-      // }
 
       // getting each date from TestPass table
       for (var i = 0; i < dateTimes.length; i++) {
         dateTimes[i].Output = String(dateTimes[i].Output);
-        //dates.push(dateTimes[i].RunDate);
         dates.push(dateTimes[i].RunDate = dateFormat(dateTimes[i].RunDate, "mm-dd-yy h:MM:ss TT")); // + " PST";
         datesIds.push(dateTimes[i].TestPassId);
         testDescription.push(dateTimes[i].Description);
-        // templates.push(dateTimes[i].Template); //will delete
-        // langLoc.push(dateTimes[i].LangLoc); //will delete
         //console.log(testDescription[i] + "----------------------------description");
       }
 
@@ -96,10 +72,6 @@ exports.getExport = function(req, res) {
 
       res.render('export', {
         title: 'Export Results',
-        // features: features,
-        // languages: languages,
-        // languages:langLoc, //will delete
-        // features:templates, //will delete
         user: req.user.firstname,
         dates: dates,
         dateIds: datesIds,
@@ -135,9 +107,17 @@ exports.getExport = function(req, res) {
 // This funciton is called when the EXPORT DATA button is selected, the html points to 'exportSelections()" (found on the runTest.js page)
 // which takes us through the express.js page with  app.get('/export', isLoggedIn, api_export.getExportFromResults, api_export.export_to_excel);
 // which takes us here...  the "return next();" lines take us to the export_to_excel function
-exports.getExportFromResults = function(req, res, next) {
-  // TODO: Export all tool
 
+
+/************************
+ * Function: getExportFromResults()
+ * Purpose: get the test results from the Results table, that meet the specific user requests from the Export Results page (export.ejs)
+ * Parameters: language, feature, testresult, testpassid, query = specify the results being requested
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
+
+exports.getExportFromResults = function(req, res, next) {
   let language = req.query.language;
   let feature = req.query.feature;
   if (feature =="All"){feature = "all";}
@@ -147,13 +127,14 @@ exports.getExportFromResults = function(req, res, next) {
   let langArray = [];
   let fArray = [];
   let testPass = req.query.testpassid;
+
   // if(testPass != "All"){
   let loopedQuery = 'SELECT * FROM Result WHERE TestPassId = ' + testPass + " AND ";
   // } else {
   //   let loopedQuery='SELECT * from Result;';
   // }
-  let results = null;
 
+  let results = null;
 
   console.log("language = " + language); // en-us
   console.log("feature = " + feature); // F2
@@ -221,8 +202,7 @@ exports.getExportFromResults = function(req, res, next) {
   } else if (feature === "all" && language === "all") {
     db.sequelize.query(`SELECT * FROM Result WHERE TestPassId = '${testPass}';`).then(results => {
       results = results[0];
-      // Needed To convert the blob object into a string 
-      // Otherwise it returns a buffer array object.
+      // Needed To convert the blob object into a string otherwise it returns a buffer array object.
       for (var i = 0; i < results.length; i++) {
         results[i].Output = String(results[i].Output);
       }
@@ -424,6 +404,13 @@ exports.getExportFromResults = function(req, res, next) {
   }
 };
 
+/************************
+ * Function: export_to_excel()
+ * Purpose: exports to an excel document with headers
+ * Parameters: results = test pass results, testPassId = the ID for the test pass (written into the excel file's name)
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 
 exports.export_to_excel = function(req, res) {
 
@@ -493,8 +480,15 @@ exports.export_to_excel = function(req, res) {
 
 
 
-// This function posts back to the Export Results page (export.ejs) sending back the Languages and Templates related to the selected Test Pass
-// so that the languages and templates can be displayed and selected in the html dropdown options before exporting to excel.
+
+/************************
+ * Function: getLangsAndTemps()
+ * Purpose: provides a list of languages and templates that are in the test pass (for display in dropdowns on export.ejs)
+ * Parameters: testPass = the test pass selected by the user
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
+
 exports.getLangsAndTemps = function(req, res) {
 
   let testPass = (req.body.testPass);

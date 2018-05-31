@@ -5,6 +5,15 @@
 const nodemailer = require('nodemailer');
 const xoauth2 = require('xoauth2');
 
+
+/************************
+ * Function: pwd_emailer()
+ * Purpose: email user for a password reset
+ * Parameters: email = user's email for recovering password
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
+
 exports.pwd_emailer = function(req, res) {
 
   // let email = req.query.email; //GET method

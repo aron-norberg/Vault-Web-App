@@ -21,7 +21,13 @@ const rowsToReturn = 25;
 // https://github.com/guyonroche/exceljs#create-a-workbook
 const Excel = require('exceljs');
 
-// Pagination part 1 of 2:
+/************************
+ * Function: paginationProcess1of2()
+ * Purpose: corrects the page number for display from a 0 index to an index starting at 1
+ * Parameters: page = the page number started on, index of 0, rowsToReturn = how many rows per page
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 function paginationProcess1of2(page, rowsToReturn) {
   if (!page) {
     page = 1;
@@ -41,7 +47,13 @@ function paginationProcess1of2(page, rowsToReturn) {
   }
 }
 
-// Pagination part 1 of 2:
+/************************
+ * Function: paginationProcess2of2()
+ * Purpose: determines how many pages there will be, sets up pages to start and end on correct rows of results
+ * Parameters: page = the current page, total = number of results, start = row page starts on, rowsToReturn = variable for number of rows to display, length = <------------------------ 
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 function paginationProcess2of2(page, total, start, rowsToReturn, length) {
 
   // Get total number of pages
@@ -61,8 +73,14 @@ function paginationProcess2of2(page, total, start, rowsToReturn, length) {
   }
 }
 
-// Process Local Urls to return correct url to ejs view template:
 
+/************************
+ * Function: processLocalPageUrls()
+ * Purpose: Process Local Urls to return correct url to ejs view template:
+ * Parameters:  <------------------------ 
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 function processLocalPageUrls(reqUrl) {
 
   let urlString = null;
@@ -106,7 +124,15 @@ function processLocalPageUrls(reqUrl) {
   return localUrlData;
 }
 
-// Get testpass Id
+
+
+/************************
+ * Function: EvaluateTestPassIdAndGetResults()
+ * Purpose:  Get testpass Ids for test passes that completed (test passes that were interrupted have an EndTime of 1970)
+ * Parameters: testPassId = ID for the selected test pass
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 function EvaluateTestPassIdAndGetResults(testPassId) {
 
   if (!testPassId) {
@@ -137,7 +163,13 @@ function EvaluateTestPassIdAndGetResults(testPassId) {
 }
 
 
-// Render the page 
+/************************
+ * Function: renderPage()
+ * Purpose:  Render the page
+ * Parameters: reqUrl =    , pfsUrl =    , custom =        <-----------------
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 function renderPage(renderPageData, req, res) {
 
   let users = renderPageData.results.users;
@@ -211,7 +243,13 @@ function renderPage(renderPageData, req, res) {
   });
 }
 
-// result
+/************************
+ * Function: postResults()
+ * Purpose:  Gets ALL results based on the selection of language and template (not broken down by testpass)
+ * Parameters: features = template page types, 
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 exports.postResults = function(req, res, next) {
 
   console.log(req.body.features);
@@ -322,6 +360,14 @@ exports.postResults = function(req, res, next) {
   }
 };
 
+
+/************************
+ * Function: getResultByIdLanguageCustom()
+ * Purpose: Displays results based on a custom test case provided in the URL, along with the template and language
+ * Parameters:custom = test case written in plain English such as "Does page render with URL provided"
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 ///results/feature/:template/locale/:locale/query/:custom
 exports.getResultByIdLanguageCustom = function(req, res) {
 
@@ -431,9 +477,13 @@ exports.getResultByIdLanguageCustom = function(req, res) {
   }
 };
 
-
-// getResultByLanguage
-
+/************************
+ * Function: getResultByLanguage()                                                      <-----------------------------  Not working,  delete?
+ * Purpose: Displays results according to the entry of a specific locale in the URL
+ * Parameters:custom = test case written in plain English such as "Does page render with URL provided"
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 exports.getResultByLanguage = function(req, res) {
 
   let template = "all";
@@ -538,6 +588,13 @@ exports.getResultByLanguage = function(req, res) {
 };
 
 
+/************************
+ * Function: getResultByIdAndLanguage()
+ * Purpose: Get results according to testpass, language (locale), and template and render the page
+ * Parameters:
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 
 // results/feature/:template/locale/:language
 exports.getResultByIdAndLanguage = function(req, res) {
@@ -572,7 +629,7 @@ exports.getResultByIdAndLanguage = function(req, res) {
 
     async.parallel({
 
-      results: function(cb) {
+      results: function(cb) { //we need to use "LIKE" next to the variable for template and language in case the use selects "all" and the "%" needs to be fed through the query
         db.sequelize.query(`SELECT * FROM Result WHERE Template LIKE '${template}' AND Language LIKE '${language}' AND TestPassId = '${testPassId}' ORDER BY TestCaseId, URLs limit ${paginationData.start}, ${rowsToReturn};`).then(results => {
           //console.log(`SELECT * FROM Result WHERE Template LIKE '${template}' AND Language LIKE '${language}' AND TestPassId = '${testPassId}' ORDER BY TestCaseId, URLs limit ${paginationData.start}, ${rowsToReturn};`);
           results = results[0];
@@ -642,7 +699,13 @@ exports.getResultByIdAndLanguage = function(req, res) {
 };
 
 
-//From express.js:
+/************************
+ * Function: getResultByLangFeatureAndTestResult()
+ * Purpose: provides "drilled-down" results when the user selects to see all the pass/skip/fail results from a test pass, rendered to the results page
+ * Parameters:
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 // /results/feature/:template/locale/:locale/testresult/:testresult/
 
 exports.getResultByLangFeatureAndTestResult = function(req, res) {
@@ -751,7 +814,13 @@ exports.getResultByLangFeatureAndTestResult = function(req, res) {
 };
 
 
-
+/************************
+ * Function: getResultByTemplateCustom()                                          <----------------  Do we need this anymore?
+ * Purpose: displays results when the user enters a template and query into the URL /results/feature/:template/query/:custom
+ * Parameters: custom = the Gherkin searched for such as "Does the page render with URL provided"
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 //app.get('/results/feature/:template/query/:custom', api_results.getResultByTemplateCustom);
 
 exports.getResultByTemplateCustom = function(req, res) {
@@ -854,7 +923,13 @@ exports.getResultByTemplateCustom = function(req, res) {
   }
 };
 
-
+/************************
+ * Function: getResultByTemplateCustomAndTestResult()
+ * Purpose: displays results when the user enters in a query, template, and pass/skip/fail into the URL /results/feature/:template/query/:custom/testresult/:testresult
+ * Parameters: testresult = pas/skip/fail
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 //app.get('/results/feature/:template/query/:custom/testresult/:testresult', api_results.getResultByTemplateCustomAndTestResult);
 
 exports.getResultByTemplateCustomAndTestResult = function(req, res) {
@@ -958,7 +1033,13 @@ exports.getResultByTemplateCustomAndTestResult = function(req, res) {
 };
 
 
-// from express.js:
+/************************
+ * Function: getResultByLangAndTestResult()
+ * Purpose: displays results when the user enteres in the locale and pass/skip/fail into the URL /results/:locale/testresult/:testResult
+ * Parameters:
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 // app.get('/results/:locale/testresult/:testResult', api_results.getResultByLangAndTestResult);
 exports.getResultByLangAndTestResult = function(req, res) {
 
@@ -1058,7 +1139,13 @@ exports.getResultByLangAndTestResult = function(req, res) {
     });
   }
 };
-
+/************************
+ * Function: getResultByIdLanguageCustomTestResult()                                            <-------------- Do we need this? delete?
+ * Purpose: displays results with selected template, locale, query, and testresult
+ * Parameters:
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 //app.get('/results/feature/:template/locale/:locale/query/:custom/testresult/:testresult/', api_results.getResultByIdLanguageCustomTestResult)
 
 exports.getResultByIdLanguageCustomTestResult = function(req, res) {
