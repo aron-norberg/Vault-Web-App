@@ -619,12 +619,14 @@ function deleteTc() {
       },
       error: function(data) {
         console.log(data + 'Test case did not delete.');
-      },
+
+      }, // end error : function()
       success: function(data) {
         console.log(data);
         console.log("Test case deleted!");
         window.location = '/test-case-editor';
-      }
+
+      } // end success : function()
 
     }) // end $.ajax
   } else {
@@ -654,11 +656,14 @@ function cleanGherkin() {
     },
     error: function(data) {
       console.log(data + 'Gherkin did not clean.');
-    },
+
+    }, // end error : function()
     success: function(data) {
       console.log(data);
       console.log("Gherkin cleaned!");
-    }
+
+    } // end success : function()
+
   })
 
 } // end cleanGherkin()
@@ -984,7 +989,7 @@ function deleteTestResults(Id) {
   } // end if/else
   
   
-  } // end deleteTestResults(Id)
+} // end deleteTestResults(Id)
 
 
   /************************
@@ -995,29 +1000,37 @@ function deleteTestResults(Id) {
   ************************/
 function addUnreliableToTestResult() {
 
-  var id = document.getElementById('idTestPass').innerHTML;
+  var Id = document.getElementById('idTestPass').innerHTML;
   var ckBox = document.getElementById('unreliableCkbox').value;
   var notes = document.getElementById('textareaNotes').value;
-  //console.log(id + ' - ' + ckBox + ' - ' + notes);
+  var unreliableConfirm = confirm("Are you sure you want to mark this test result ID: " + Id + " unreliable?");
 
-  $.ajax({
-    url: "/addUnreliableToTestResult",
-    type: "Get",
-    data: {
-      id: id,
-      ckBox : ckBox,
-      notes : notes
-    },
-    success : function() {
-      console.log('success');
-      location.reload(true); //Refresh page
+  if (unreliableConfirm == true) {
 
-    },
-    error : function() {
-      console.log('error');
-    }
+    $.ajax({
+      url: "/addUnreliableToTestResult",
+      type: "Get",
+      data: {
+        Id: Id,
+        ckBox : ckBox,
+        notes : notes
+      },
+      success : function() {
+        console.log('success');
+        location.reload(true); //Refresh page
+  
+      },
+      error : function() {
+        console.log('error');
+      }
+  
+    }); // end .ajax()
 
-  }); // end .ajax()
+  }
+  else {
+    //alert('unreliable canceled!');
+  
+  } // end if/else
 
 } // end unreliableCheckBox()
 
@@ -1249,6 +1262,38 @@ function displayInfo(data, id) {
       }
     })
 }
+
+
+/************************
+ * Function: getSelectValsel
+ * Purpose: 
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: March 2018
+************************/
+function getSelectVal(sel) {
+
+  $.ajax({
+    url : "/addOwnerToResultsPage",
+    type : "GET",
+    dataType:"html",
+    data: {
+      Id: $(sel).closest("form").find("input[type=hidden]").prop("name", "Id").val(),
+      users: sel.value
+    },
+    success : function() {
+      console.log('success');
+      location.reload(true);  //Refresh page
+
+    }, // end success : function()
+    error : function() {
+      console.log('error');
+
+    } // end error : function()
+
+  }); // end .ajax()
+
+} // end getSelectVal()
+
 
 /***********************************************************************
  ***  EXPORT RESULTS SCRIPTS - END

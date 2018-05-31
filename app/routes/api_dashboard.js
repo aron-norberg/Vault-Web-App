@@ -626,7 +626,7 @@ exports.deleteTestResults = function(req, res) {
 exports.addUnreliableToTestResult = function(req, res) {
   //console.log("Hello Waldo!");
 
-  let TestPassId = req.query.id
+  let TestPassId = req.query.Id
   let Reliable = req.query.ckBox
   let Note = req.query.notes
   //console.log(TestPassId + ' - ' + Reliable + ' - ' + Note);
