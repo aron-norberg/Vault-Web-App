@@ -1158,7 +1158,7 @@ exports.getResultByIdLanguageCustomTestResult = function(req, res) {
   let testresult = req.params.testresult;
   let pfsUrl = `/results/feature/${template}/locale/${language}/query/${custom}/testresult/`;
   let reqUrl = req.url;
-
+  console.log(custom);
 
   // Clean custom string to remove white space
 

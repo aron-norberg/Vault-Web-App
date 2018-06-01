@@ -1,6 +1,14 @@
 // Invoke 'strict' JavaScript mode
 'use strict';
 
+/************************
+ * Function: 
+ * Purpose: This page loads module dependencies, links URL addresses to file locations, and checks if the user is logged in before allowing them to route to a page
+ * Parameters:
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: April 2018
+ ************************/
+
 // Load the module dependencies
 const config = require('./config'),
   express = require('express'),
