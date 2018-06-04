@@ -4,36 +4,144 @@
   <div class="row">
     <div class="col-12 loginAndSignupTxtAlign">
       <br /><br />
-      <h1>Welcome to the Q.A. Automated Testing Suite</h1>
+      <h1>User Access Control</h1>
       
     </div><!-- end .col-sm-12 -->
   </div><!-- end .row -->
   <br />
   <div class="row">
-    <div class="col-lg-6 offset-lg-3 col-md-6 offset-md-3 form-group">
+    <div class="col-sm-12 form-group">
         <div class="loginAndSignupForm">
           <form id="signup" name="signup" method="post" action="/signup" >
-            <h4>Create a user account below</h4>
-            
-            <label for="email">Email:</label>
-            <input class="text" name="email" type="text" size="25"/><br />
-            
-            <label for="firstname">Firstname:</label>
-            <input name="firstname" type="text" size="30" /><br />
-      
-            <label for="lastname">Lastname:</label>
-            <input name="lastname" type="text" size="30" /><br />
-      
-            <label for="password">Password:</label>
-            <input name="password" type="password" size="30" />
-      
-            <!--input type="submit" class="btn btn-primary" value="Sign Up" /-->
-            <button type="submit" class="btn btn-primary login" value="Sign Up">Sign Up</button>
-          </form>
+
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="createUser-tab" data-toggle="tab" href="#createUser" role="tab" aria-controls="createUser" aria-selected="true">Create user</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="updateUser-tab" data-toggle="tab" href="#updateUser" role="tab" aria-controls="updateUser" aria-selected="false">Update user</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="removeUser-tab" data-toggle="tab" href="#removeUser" role="tab" aria-controls="removeUser" aria-selected="false">Remove user</a>
+              </li>
+            </ul>
+
+            <div class="tab-content" id="myTabContent">
+              <!-- Create user tab BEGIN -->
+              <div class="tab-pane fade show active" id="createUser" role="tabpanel" aria-labelledby="createUser-tab">
+                <label for="email">Email:</label>
+                <input class="text" name="email" type="text" size="25"/><br />
+                
+                <label for="firstname">Firstname:</label>
+                <input name="firstname" type="text" size="30" /><br />
+          
+                <label for="lastname">Lastname:</label>
+                <input name="lastname" type="text" size="30" /><br />
+          
+                <label for="password">Password:</label>
+                <input name="password" type="password" size="30" />
+    
+                <label for="role">User Access:</label><br />
+                <input name="role" type="radio" value="1" /> Basic<br />
+                <input name="role" type="radio" value="2" /> Admin<br />
+                <!--input name="role" type="radio" value="3" /> Dev<br /-->
+    
+                <button type="submit" class="btn btn-primary login" value="Sign Up">Sign Up</button>
+              </div><!-- Create user tab END -->
+
+
+              <!-- Update user tab BEGIN -->
+              <div class="tab-pane fade" id="updateUser" role="tabpanel" aria-labelledby="updateUser-tab">
+                <table class="table table-striped updateUser">
+                  <thead>
+                    <tr>
+                      <th scope="col">Users</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% for(var i=0; i < users.length; i++) { %>
+                    <tr>
+                      <td>
+                        <input type="radio" name="updateUserRad" value="<%= users[i].id %>" /> <%= users[i].firstname %> <%= users[i].lastname %>
+                      </td>
+                    <% }%><!-- end for() -->
+                    </tr>
+                  </tbody>
+                </table><!-- end .table -->
+
+                <div class="roles_title">
+                  <span style="font-weight: bold;">Roles</span><br />
+                  <input type="radio" name="updateUserRoles" value="1" /> Basic<br />
+                  <input type="radio" name="updateUserRoles" value="2" /> Admin
+                </div>
+
+                <br />
+                <input type="button" class="btn btn-warning" value="Update" onclick="updateUser();" />
+              </div><!-- Update user tab END -->
+
+
+              <!-- Remove user tab BEGIN -->
+              <div class="tab-pane fade" id="removeUser" role="tabpanel" aria-labelledby="removeUser-tab">
+                <table class="table table-striped updateUser">
+                    <thead>
+                      <tr>
+                        <th scope="col">Users</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    <% for(var i=0; i < users.length; i++) { %>
+                      <tr>
+                        <td>
+                          <input type="radio" name="removeUserRad" value="<%= users[i].id %>" /> <%= users[i].firstname %> <%= users[i].lastname %>
+                        </td>
+                      </tr>
+                    <% }%>
+                    </tbody>
+                  </table>  
+                <br />
+                <input type="button" class="btn btn-warning" value="Remove" onclick="removeUser();" /> 
+              </div><!-- Remove user END -->
+
+            </div><!-- end .tab-content -->
+
+          </form><!-- end .signup -->
         </div><!-- end loginDiv -->
-    </div><!-- end .col-md-6 offset-md-3 -->
+    </div><!-- end .col-sm-12 -->
   </div><!-- end .row -->
 </div><!-- end .container-fluid -->
 
+<script>
+function removeUser() {
+  var usersRadId = document.getElementsByName('removeUserRad');
+  var usersId = '';
+
+  for (var i = 0; i < usersRadId.length; i++ ) {
+    if (usersRadId[i].checked === true) {
+      //Id += usersRadId[i].value; //used for checkboxes
+      usersId = usersRadId[i].value; //used for radio buttons
+    } // end if
+  } // end for()
+
+  console.log('Users ID: ' + usersId);
+
+  $.ajax({
+    url: "/removeUser",
+    type: "POST",
+    data: {
+      Id: usersId
+    },
+    success : function() {
+      console.log('success');
+      //location.reload(true); //Refresh page
+
+    },
+    error : function() {
+      console.log('error');
+    }
+
+  }); // end .ajax()
+
+} // end updateUser()
+</script>
 
 <%- include('footer') %>

@@ -1,4 +1,10 @@
 
+@media (min-width: 390px) {
+  .nav-tabs {
+    display: flex !important;
+  }
+}
+
 @media (min-width: 576px) {
   .exportTool {
     text-align: center !important;
@@ -13,7 +19,6 @@
   .dashboardDropdown {
     width: 90% !important;
   }
-  
 }
 
 @media (min-width: 768px) {
@@ -35,6 +40,11 @@
   #pieChart-1 {
     width: 90% !important;
     height: 350px !important;
+  }
+  .updateUser tbody {
+    width: 100%;
+    height: 300px !important;
+    overflow-y: auto;
   }
 }
 
@@ -474,6 +484,27 @@ input[type=checkbox] {
 button[type=submit].login {
   margin-top: 20px;
 }
+
+.nav-tabs {
+  display: block;
+  border: 0px solid #000;
+}
+
+.updateUser thead,tbody,tr,td,th {
+  display: block;
+}
+.updateUser tbody {
+  width: 100%;
+  height: 150px;
+  overflow-y: auto;
+  border: 0px solid #000;
+}
+
+.roles_title {
+  /*margin-left: 10px;*/
+  padding-left: 15px;
+}
+
 /* end login and signup pages */
 
 

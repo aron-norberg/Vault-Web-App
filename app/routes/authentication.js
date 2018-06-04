@@ -1,9 +1,27 @@
 'use strict';
 
+const db = require('../../config/sequelize');
+const Sequelize = require('sequelize');
+
+
 exports.signup = function(req, res) {
-  res.render('signup', {
-    title: 'sign up'
-  });
+
+  db.sequelize.query(`SELECT * FROM User;`).then(function(id) {
+
+    let users = id[0];
+    console.log(users);
+
+    res.render('signup', {
+      title: 'sign up',
+      users: users,
+      id: req.user.id,
+      firstname: req.user.firstname,
+      lastname: req.user.lastname,
+      role: req.user.role
+    });
+
+}); // end db.sequelize.query("SELECT * FROM user;")
+
 }
 
 exports.login = function(req, res) {

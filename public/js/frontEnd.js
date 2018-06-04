@@ -5,6 +5,7 @@
 /***********************************************************************
  ***  TEST CASE EDITOR SCRIPTS - BEGIN
 ***********************************************************************/
+
 function grabTCsForFeature() {
 
   let reader = new FileReader();
@@ -1034,7 +1035,6 @@ function addUnreliableToTestResult() {
 
 } // end unreliableCheckBox()
 
-
 /***********************************************************************
  ***  DASHBOARD SCRIPTS - END
 ***********************************************************************/
@@ -1043,9 +1043,7 @@ function addUnreliableToTestResult() {
 /***********************************************************************
  ***  EXPORT RESULTS SCRIPTS - BEGIN
 ***********************************************************************/
-//Export functions used on the 
-// - Export Results page
-//
+
 function exportSelections() { //this function is triggered on the "Export Data" button.
 
   let template = '';
@@ -1300,6 +1298,60 @@ function getSelectVal(sel) {
 ***********************************************************************/
 
 
+/***********************************************************************
+ ***  USER ACCESS SCRIPTS - BEGIN
+***********************************************************************/
+
+/************************
+ * Function: updateUser()
+ * Purpose: Updates the user's roles in database - Basic = 1 / Admin = 2.
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: June 2018
+************************/
+function updateUser() {
+  var usersRadId = document.getElementsByName('updateUserRad');
+  var usersRoles = document.getElementsByName('updateUserRoles');
+  var usersId = '';
+  var usersRole = '';
+
+  for (var i = 0; i < usersRadId.length; i++ ) {
+    if (usersRadId[i].checked === true) {
+      //Id += usersRadId[i].value; //used for checkboxes
+      usersId = usersRadId[i].value; //used for radio buttons
+    } // end if
+  } // end for()
+
+  for (var j = 0; j < usersRoles.length; j++) {
+    if (usersRoles[j].checked === true) {
+      //Id += usersRadId[i].value; //used for checkboxes
+      usersRole = usersRoles[j].value; //used for radio buttons
+    }
+  }
+
+  $.ajax({
+    url: "/updateUser",
+    type: "POST",
+    data: {
+      Id: usersId,
+      role: usersRole
+    },
+    success : function() {
+      console.log('success');
+      //location.reload(true); //Refresh page
+
+    },
+    error : function() {
+      console.log('error');
+    }
+
+  }); // end .ajax()
+
+} // end updateUser()
+
+/***********************************************************************
+ ***  USER ACCESS SCRIPTS - END
+***********************************************************************/
+
 
 /***********************************************************************
  ***  DOCUMENTATION SCRIPTS - BEGIN
@@ -1319,11 +1371,9 @@ function showLess(something, theButton){
   myButton.style.display="block";
 }
 
-
 /***********************************************************************
  ***  DOCUMENTATION SCRIPTS - END
 ***********************************************************************/
-
 
 
 /***********************************************************************

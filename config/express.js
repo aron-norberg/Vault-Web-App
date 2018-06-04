@@ -35,6 +35,7 @@ const authenticate = require('../app/routes/authentication');
 const api_testRunner = require('../app/routes/api_testRunner');
 const api_emailer = require('../app/routes/api_emailer');
 const api_documents = require('../app/routes/api_documents');
+const api_userAccess = require('../app/routes/api_userAccess');
 
 
 // const api_login = require('../app/routes/api_login');
@@ -144,12 +145,15 @@ module.exports = function() {
 
   app.get('/signup', authenticate.signup);
 
-  //app.get('/signup', isLoggedIn, authenticate.signup);
-
   app.post('/signup', passport.authenticate('local-signup', {
     successRedirect: '/dashboard',
     failureRedirect: '/signup'
   }));
+
+  // User Access page
+  app.post('/updateUser', isLoggedIn, api_userAccess.updateUser);
+  app.post('/removeUser', isLoggedIn, api_userAccess.removeUser);
+  //app.get('/signup', isLoggedIn, api_userAccess.removeUser);
 
   app.get('/login', authenticate.login);
 
