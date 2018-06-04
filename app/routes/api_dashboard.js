@@ -6,8 +6,13 @@ const Sequelize = require('sequelize');
 const dateFormat = require('dateformat');
 
 
-// Create a new 'render' controller method
-// this runs when the user comes to the page, or selects from the dropdown menu of test date options
+/************************
+ * Function: export function
+ * Purpose: Exports most recent test pass information to dashboard.ejs for display in a graph, and the details for all test passes (for selection from a dropdown) excluding incomplete passes 
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
+
 exports.getOverview = function(req, res) {
   
   let feature = "ALL";
@@ -41,6 +46,9 @@ exports.getOverview = function(req, res) {
 
   if (!req.query.testpassid) { // happens when the user first opens the page
 
+    //an EndTime of 1970 exists in the database for any test pass that was interrupted -indicating that those test pass results are incomplete 
+    //only results with a later EndTime (post 1970) should be displayed and considered accurate results
+
     db.sequelize.query(`select TestPassId from Status where EndTime > '1971' order by RunDate DESC;`).then(testPassId => { 
 
       testPassIds = testPassId[0];
@@ -61,7 +69,14 @@ exports.getOverview = function(req, res) {
     });
   }
 
-
+  /************************
+   * Function: GetResultOverview()
+   * Purpose: Gets the test paramaters for all test passes (for display if the test pass is selected from the Dashboard dropdown), and gets the pass/skip/fail totals 
+   *   for the most recent test pass, and pushes this to the dashboard.ejs page
+   * Parameters: testPassId - the most recent test pass, testPassIds - a list of all the test passes
+   * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+   * Date: May 2018
+   ************************/
   function GetResultOverview(testPassId, testPassIds) {
 
     db.sequelize.query(`select distinct Language from Result where TestPassID = ${testPassId};`).then(results => {
@@ -197,7 +212,13 @@ exports.getOverview = function(req, res) {
 
 
 
-//app.get('/dashboard/custom/:custom', api_dashbboard.getResultMetaByCustom)
+/************************
+ * Function: getResultMetaByCustom()
+ * Purpose:                                                                 <-------------------------------- Do we need this function?  
+ * Parameters:                                                              <--------------------------------app.get('/dashboard/query/:custom', isLoggedIn, api_dashboard.getResultMetaByCustom);
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 
 exports.getResultMetaByCustom = function(req, res) {
 
@@ -250,7 +271,13 @@ exports.getResultMetaByCustom = function(req, res) {
 
   }
 
-  //function GetResultOverview(testPassId) {
+    /************************
+   * Function: getResultsTotal()
+   * Purpose:                                                                  <-------------------------------- Do we need this function?  
+   * Parameters:                                                               <--------------------------------app.get('/dashboard/query/:custom', isLoggedIn, api_dashboard.getResultMetaByCustom);
+   * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+   * Date: May 2018
+   ************************/
 
   function getResultsTotal(i, testPassId) {
 
@@ -383,6 +410,14 @@ exports.getResultMetaByCustom = function(req, res) {
   }
 };
 
+
+/************************
+ * Function: getResultMetaByLocale()
+ * Purpose:                                                                 <-------------------------------- Do we need this function?  
+ * Parameters:                                                              <--------------------------------app.get('/dashboard/locale/:locale', isLoggedIn, api_dashboard.getResultMetaByLocale);
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 exports.getResultMetaByLocale = function(req, res) {
 
   let locale = req.params.locale;
@@ -561,8 +596,14 @@ exports.getResultMetaByLocale = function(req, res) {
   }
 };
 
+/************************
+ * Function: deleteTestResults()
+ * Purpose:  Delete Test results by TestPassId from TestPass, Status, and Result tables.
+ * Parameters: Id = test pass Id selected for deletion
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 
-// Delete Test results by TestPassId from TestPass, Status, and Result tables.
 exports.deleteTestResults = function(req, res) {
   // console.log('Hey everyone I found Waldo!');
   let Id = req.query.Id; //GET method
@@ -622,6 +663,13 @@ exports.deleteTestResults = function(req, res) {
 
 }; // end exports.deleteTestResults = function(req, res)
 
+/************************
+ * Function: addUnreliableToTestResult()
+ * Purpose:  mark a test pass as unreliable in the database and add a note
+ * Parameters: TestPassId = selected test pass, Reliable = checkbox for marking test pass unreliable, Note = comment on why the test pass is unreliable
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 
 exports.addUnreliableToTestResult = function(req, res) {
   //console.log("Hello Waldo!");
