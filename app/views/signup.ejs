@@ -52,6 +52,7 @@
 
               <!-- Update user tab BEGIN -->
               <div class="tab-pane fade" id="updateUser" role="tabpanel" aria-labelledby="updateUser-tab">
+                <div id="updateConfirm"></div><!-- Update user roles confirmation Msg. -->
                 <table class="table table-striped updateUser">
                   <thead>
                     <tr>
@@ -82,6 +83,7 @@
 
               <!-- Remove user tab BEGIN -->
               <div class="tab-pane fade" id="removeUser" role="tabpanel" aria-labelledby="removeUser-tab">
+                  <div id="removeConfirm"></div><!-- Remove user confirmation Msg. -->
                 <table class="table table-striped updateUser">
                     <thead>
                       <tr>
@@ -92,7 +94,7 @@
                     <% for(var i=0; i < users.length; i++) { %>
                       <tr>
                         <td>
-                          <input type="radio" name="removeUserRad" value="<%= users[i].id %>" /> <%= users[i].firstname %> <%= users[i].lastname %>
+                          <input type="radio" name="removeUserRad" value="<%= users[i].id %> <%= users[i].firstname %> <%= users[i].lastname %>" /> <%= users[i].firstname %> <%= users[i].lastname %>
                         </td>
                       </tr>
                     <% }%>
@@ -109,39 +111,5 @@
     </div><!-- end .col-sm-12 -->
   </div><!-- end .row -->
 </div><!-- end .container-fluid -->
-
-<script>
-function removeUser() {
-  var usersRadId = document.getElementsByName('removeUserRad');
-  var usersId = '';
-
-  for (var i = 0; i < usersRadId.length; i++ ) {
-    if (usersRadId[i].checked === true) {
-      //Id += usersRadId[i].value; //used for checkboxes
-      usersId = usersRadId[i].value; //used for radio buttons
-    } // end if
-  } // end for()
-
-  console.log('Users ID: ' + usersId);
-
-  $.ajax({
-    url: "/removeUser",
-    type: "POST",
-    data: {
-      Id: usersId
-    },
-    success : function() {
-      console.log('success');
-      //location.reload(true); //Refresh page
-
-    },
-    error : function() {
-      console.log('error');
-    }
-
-  }); // end .ajax()
-
-} // end updateUser()
-</script>
 
 <%- include('footer') %>

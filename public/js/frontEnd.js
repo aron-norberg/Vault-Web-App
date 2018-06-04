@@ -1308,11 +1308,12 @@ function getSelectVal(sel) {
  * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
  * Date: June 2018
 ************************/
+
 function updateUser() {
   var usersRadId = document.getElementsByName('updateUserRad');
   var usersRoles = document.getElementsByName('updateUserRoles');
-  var usersId = '';
-  var usersRole = '';
+  var usersId = 0;
+  var usersRole = 0;
 
   for (var i = 0; i < usersRadId.length; i++ ) {
     if (usersRadId[i].checked === true) {
@@ -1331,13 +1332,24 @@ function updateUser() {
   $.ajax({
     url: "/updateUser",
     type: "POST",
+    dataType: "text",
     data: {
       Id: usersId,
       role: usersRole
     },
-    success : function() {
-      console.log('success');
-      //location.reload(true); //Refresh page
+    success : function(userName) {
+      //console.log('success');
+      if (usersRole == 1) {
+        var updatedRole = 'Basic';
+      }
+      else if (usersRole == 2) {
+        var updatedRole = 'Admin';
+      }
+
+      document.getElementById('updateConfirm').innerHTML = userName + ' has been updated to ' + updatedRole + ' role!';
+      document.getElementById('updateConfirm').style.fontSize = "1.3em";
+      document.getElementById('updateConfirm').style.fontWeight = "bold";
+      document.getElementById('updateConfirm').style.color = "red";
 
     },
     error : function() {
@@ -1347,6 +1359,65 @@ function updateUser() {
   }); // end .ajax()
 
 } // end updateUser()
+
+
+/************************
+ * Function: removeUser()
+ * Purpose: Removes a user form the database. 
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: June 2018
+************************/
+
+function removeUser() {
+  
+  var usersRadId = document.getElementsByName('removeUserRad');
+  var userData = [];
+  var usersId = 0;
+  var userName = '';
+
+  for (var i = 0; i < usersRadId.length; i++ ) {
+    if (usersRadId[i].checked === true) {
+      //Id += usersRadId[i].value; //used for checkboxes
+      userData = usersRadId[i].value; //used for radio buttons
+      usersId = userData.slice(0,2);
+      userName = userData.slice(2);
+    } // end if
+  } // end for()
+
+  console.log(usersId + ' - ' +userName);
+
+  var delConfirm = confirm("Are you sure you want to delete user: " + userName + "?");
+
+  if (delConfirm == true) {
+
+    $.ajax({
+      url: "/removeUser",
+      type: "POST",
+      dataType: "text",
+      data: {
+        Id: usersId
+      },
+      success : function(userName) {
+        //console.log('success');
+        document.getElementById('removeConfirm').innerHTML = userName + ' has been removed!';
+        document.getElementById('removeConfirm').style.fontSize = "1.3em";
+        document.getElementById('removeConfirm').style.fontWeight = "bold";
+        document.getElementById('removeConfirm').style.color = "red";
+
+      },
+      error : function() {
+        console.log('error');
+      }
+
+    }); // end .ajax()
+
+  }
+  else {
+    //alert('Delete canceled!');
+  
+  } // end if/else
+
+} // end removeUser()
 
 /***********************************************************************
  ***  USER ACCESS SCRIPTS - END

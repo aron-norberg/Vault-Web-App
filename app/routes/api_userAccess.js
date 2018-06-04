@@ -9,24 +9,31 @@ exports.updateUser = function(req, res) {
 
   let Id = 0;
   let newUserRole = 0;
+  let userName = {};
+  let firstname = '';
+  let lastname = '';
 
   Id = req.body.Id;
   newUserRole = req.body.role;
-  //console.log(Id);
-  //console.log(newUserRole);
 
   db.user.update({ role: newUserRole }, { where: { Id: Id }}).then(function(User) {
 
-    if (User) {
-      console.log('\n' + "Users role successfully updated!" + '\n');
-      res.send(Id)
+    db.sequelize.query(`SELECT * FROM user WHERE Id = ${Id}`, { type: Sequelize.QueryTypes.SELECT}).then(userName => {
 
-    }
-    else {
-      console.log('\n' + "Something went wrong, please try again" + '\n');
-      res.send(Id)
+      userName = userName[0];
 
-    } // end if/else
+      if (User) {
+        console.log('\n' + "Users role successfully updated!" + '\n');
+        res.send(userName.firstname + ' ' + userName.lastname)
+
+      }
+      else {
+        console.log('\n' + "Something went wrong, please try again" + '\n');
+        res.send(Id)
+
+      } // end if/else
+
+    }); // end db.sequelize.query(`SELECT firstname, lastname FROM user WHERE Id = ${Id}`).then(function(userName)
 
   }); // end User.update({ password: userPassword }, { where: { email: email }}).then(function(User)
 
@@ -34,27 +41,37 @@ exports.updateUser = function(req, res) {
 
 
 exports.removeUser = function(req, res) {
-  console.log('Hello Waldo!');
+  //console.log('Hello Waldo!');
 
   let Id = 0;
-
+  let userName = {};
+  let firstname = '';
+  let lastname = '';
+  
   Id = req.body.Id;
 
-  console.log(Id);
+  db.sequelize.query(`SELECT * FROM user WHERE Id = ${Id}`, { type: Sequelize.QueryTypes.SELECT}).then(userName => {
 
-  /*db.user.destroy({ Id: Id }, { where: { Id: Id }}).then(function(User) {
+    db.user.destroy({ where: { id: Id }}).then(function(User) {
 
-    if (User) {
-      console.log('\n' + "User has been removed successfully!" + '\n');
-      res.send(Id)
+      userName = userName[0];
+      //userName = JSON.parse(userName);
+      //userName = JSON.stringify(userName);
+      //console.log(userName.firstname + ' ' + userName.lastname);
 
-    }
-    else {
-      console.log('\n' + "Something went wrong, please try again." + '\n');
-      res.send(Id)
+      if (User >= 1) {
+        console.log('\n' + "User has been removed successfully!" + '\n');
+        res.send(userName.firstname + ' ' + userName.lastname)
 
-    } // end if/else
+      }
+      else {
+        console.log('\n' + "Something went wrong, please try again" + '\n');
+        res.send(Id)
 
-  }); // end User.update({ password: userPassword }, { where: { email: email }}).then(function(User)*/
+      } // end if/else
+
+    }); // end User.update({ password: userPassword }, { where: { email: email }}).then(function(User)*/
+
+  }); // end db.sequelize.query(`SELECT firstname, lastname FROM user WHERE Id = ${Id}`).then(function(userName)
 
 }; // end exports.updateUser(req, res)
