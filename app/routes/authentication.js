@@ -17,7 +17,8 @@ exports.signup = function(req, res) {
       id: req.user.id,
       firstname: req.user.firstname,
       lastname: req.user.lastname,
-      role: req.user.role
+      role: req.user.role,
+      activeUser: req.user.firstname
     });
 
 }); // end db.sequelize.query("SELECT * FROM user;")

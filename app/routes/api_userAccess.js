@@ -6,7 +6,7 @@ const Sequelize = require('sequelize');
 
 exports.updateUser = function(req, res) {
   //console.log('Hello Waldo!');
-
+  
   let Id = 0;
   let newUserRole = 0;
   let userName = {};
@@ -18,14 +18,13 @@ exports.updateUser = function(req, res) {
 
   db.user.update({ role: newUserRole }, { where: { Id: Id }}).then(function(User) {
 
-    db.sequelize.query(`SELECT * FROM user WHERE Id = ${Id}`, { type: Sequelize.QueryTypes.SELECT}).then(userName => {
+    db.sequelize.query(`SELECT * FROM User WHERE Id = ${Id}`, { type: Sequelize.QueryTypes.SELECT}).then(userName => {
 
       userName = userName[0];
 
       if (User) {
         console.log('\n' + "Users role successfully updated!" + '\n');
         res.send(userName.firstname + ' ' + userName.lastname)
-
       }
       else {
         console.log('\n' + "Something went wrong, please try again" + '\n');
@@ -47,10 +46,10 @@ exports.removeUser = function(req, res) {
   let userName = {};
   let firstname = '';
   let lastname = '';
-  
+
   Id = req.body.Id;
 
-  db.sequelize.query(`SELECT * FROM user WHERE Id = ${Id}`, { type: Sequelize.QueryTypes.SELECT}).then(userName => {
+  db.sequelize.query(`SELECT * FROM User WHERE Id = ${Id}`, { type: Sequelize.QueryTypes.SELECT}).then(userName => {
 
     db.user.destroy({ where: { id: Id }}).then(function(User) {
 
