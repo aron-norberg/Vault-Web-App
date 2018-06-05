@@ -490,7 +490,7 @@ button[type=submit].login {
   border: 0px solid #000;
 }
 
-.updateUser thead,tbody,tr,td,th {
+.updateUser thead tbody tr td th {
   display: block;
 }
 .updateUser tbody {

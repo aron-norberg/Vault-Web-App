@@ -2,45 +2,8 @@
 'use strict';
 
 /***********************************************************************
- ***  DASHBOARD SCRIPTS - BEGIN
-***********************************************************************/
-
-//pie
-// Load google charts
-google.charts.load('current', {'packages':['corechart']});
-google.charts.setOnLoadCallback(drawChart);
-
-// Draw the chart and set the chart values
-function drawChart() {
-  var data = google.visualization.arrayToDataTable([
-    ['Test', 'Passed or Failed'],
-    ['Passed', 8],
-    ['Failed', 9],
-    ['Other', 4],
-
-  ]);
-  // Optional; add a title and set the width and height of the chart
-  // Options can be variables such as title: $Title
-  var options = {
-    'title': 'Cumulative Results',
-    'colors': ['green', '#E2453C', 'grey'],
-    'backgroundColor': '',
-    'is3D': true,
-    'chartArea': { width: '350', height: '80%' },
-    'legend': { textStyle: { fontSize: 20 }, alignment: 'center', position: 'left' },
-    'slices': {
-      0: { offset: 0.0 },
-      1: { offset: 0.2 },
-      2: { offset: 0.0 }
-    }
-
-  };
-
-  // Display the chart inside the <div> element with id="pieChart"
-  var chart = new google.visualization.PieChart(document.getElementById('pieChart'));
-  chart.draw(data, options);
-}
-
+ ***  Dashboard scripts - BEGIN
+ ***********************************************************************/
 
 /************************
  * Function: dashboardPage()
@@ -59,7 +22,6 @@ function dashboardPage() {
     document.getElementById('dashboard-1').style.display = "none";
     //document.getElementById('dashboard-2').style.display = "block";
   }
-
 } // end dashboardPage()
 
 
@@ -154,7 +116,6 @@ function addUnreliableToTestResult() {
 /***********************************************************************
  ***  EXPORT RESULTS SCRIPTS - BEGIN
 ***********************************************************************/
-
 function exportSelections() { //this function is triggered on the "Export Data" button.
 
   let template = '';
@@ -201,7 +162,6 @@ function exportSelections() { //this function is triggered on the "Export Data" 
 
 } // end exportSelections()
 
-
 // This function populates the languages and templates for display in the drop-down menus.
 function displayInfo(data, id) {
   document.getElementById("testData").innerHTML = (data);
@@ -214,6 +174,7 @@ function displayInfo(data, id) {
   while (lkids.firstChild) {
     lkids.removeChild(lkids.firstChild);
   }
+
   while (pkids.firstChild) {
     pkids.removeChild(pkids.firstChild);
   }
@@ -241,10 +202,23 @@ function displayInfo(data, id) {
     data: object,
     contentType: "application/json",
     error: function(data) {
-      console.log(data);
+      console.log("This is the data" + data);
+      if (data.testpassCount == 0) {
+        noticeBox.innerHTML = "";
+      }
     },
     success: function(data) {
       console.log(data);
+      console.log("Successful post request.");
+
+      data = JSON.parse(data);
+      // Get the id 
+      let stopId = data.jsonStartPath;
+      // console.log(data.testPassCount);
+
+      if (data.testPassCount == 0) {
+        noticeBox.innerHTML = "";
+      }
 
       // if the query was successful, populate the lang and template dropdowns with the results
       var theTemplates = data[0].Template.split(",");
@@ -418,7 +392,6 @@ function getSelectVal(sel) {
 // - Export Results page, Run Tests page
 //
 function displayChecked(checkedID, ULID, allID, destinationID, element) {
-
 
   var checkBox = document.getElementById(checkedID); // Get the selected item
   var parentClass = checkBox.parentNode.parentNode.className; // grabs the UL's class
@@ -629,7 +602,6 @@ function showTemplates() {
   let templateParagraph = document.getElementById("selectedTemplates");
   let templateArray = document.getElementsByClassName("form-check-input double");
   let langParagraphLength = document.getElementById("chosenLangs").innerHTML;
-
   templateParagraph.innerHTML = "<b>Template: </b>";
   for (var q = 0; q < templateArray.length; q++) {
     if (templateArray[q].checked == true) {
@@ -654,6 +626,45 @@ function showInput() {
   box.setAttribute("style", "display:block;");
 
 }
+
+/************************
+ * Function: getBehatLogFile(id)
+ * Purpose: Produces log file per test pass, file output is seen in console
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: June 2018
+ ************************/
+
+function getBehatLogFile(id) {
+
+  id = {
+    id: id
+  }
+
+  id = JSON.stringify(id);
+
+  $.ajax({
+    url: '/getlogfile',
+    type: 'POST',
+    data: id,
+    contentType: "application/json",
+    error: function(data) {
+      console.log(data + "Retrieving Log File failed.");
+    },
+    success: function(data) {
+      // This should be a log file
+      console.log(data);
+
+    }
+  })
+}
+
+// Show Input on the test Runner for Urls
+function showInput() {
+  let box = document.getElementById("typedURL");
+  box.setAttribute("style", "display:block;");
+
+}
+
 
 // Show url choice on test runner page
 function showURLChoice() {
@@ -683,6 +694,7 @@ function showURLChoice() {
 
 // Send a json object to server to run a test 
 // with given parameters
+
 
 function runit() {
   let noticeBox = document.getElementById("notice");
@@ -781,7 +793,8 @@ function runit() {
     data: testParamsJSON,
     contentType: "application/json",
     error: function(data) {
-      console.log(data);
+      console.log(data + "Gherkin data has failed at ajax request response.");
+
     },
     success: function(data) {
 
@@ -944,7 +957,6 @@ function exportAll() {
       console.log(xmlhttp);
     }
   }
-
 }
 
 
@@ -1141,7 +1153,6 @@ function detectClassSwitch() {
 
 } // end detectClassSwitch()
 
-
 /************************
  * Function: deleteTc()
  * Purpose: Deletes any test case thats selected from the TestCase table found in the test DB.  
@@ -1181,7 +1192,6 @@ function deleteTc() {
   } // end if/else
 
 } // end deleteTc()
-
 
 /************************
  * Function: cleanGherkin()
@@ -1229,7 +1239,6 @@ function filterFunction() {
     }
   }
 }
-
 
 function exportGherkin() {
 
@@ -1293,23 +1302,7 @@ function exportGherkin() {
 
 };
 
-/***********************************************************************
- ***  TEST CASE EDITOR SCRIPTS - END
-***********************************************************************/
 
-
-
-
-
-
-
-
-
-
-
-/***********************************************************************
- ***  USER ACCESS SCRIPTS - BEGIN
-***********************************************************************/
 
 /************************
  * Function: updateUser()
@@ -1429,11 +1422,6 @@ function removeUser() {
 } // end removeUser()
 
 /***********************************************************************
- ***  USER ACCESS SCRIPTS - END
-***********************************************************************/
-
-
-/***********************************************************************
  ***  DOCUMENTATION SCRIPTS - BEGIN
 ***********************************************************************/
 
@@ -1458,25 +1446,25 @@ function showLess(something, theButton){
 
 /***********************************************************************
  ***  PAGE LOADING SCRIPTS - BEGIN
-***********************************************************************/
+ ***********************************************************************/
 // The below functions are used when transitioning to a new page
 // - all pages
 
-function uncheckAll(){ 
-  var w = document.getElementsByTagName('input'); 
-  for(var i = 0; i < w.length; i++){ 
-    if(w[i].type=='checkbox'){ 
-      w[i].checked = false; 
+function uncheckAll() {
+  var w = document.getElementsByTagName('input');
+  for (var i = 0; i < w.length; i++) {
+    if (w[i].type == 'checkbox') {
+      w[i].checked = false;
     }
   }
-} 
+}
 
 function loadingAnimation() {
-document.getElementById("loading").style.display = "block";
-document.getElementById("page").style.display = "none";
-// alert("This might take a moment.  Hit OK");
+  document.getElementById("loading").style.display = "block";
+  document.getElementById("page").style.display = "none";
+  // alert("This might take a moment.  Hit OK");
 }
 
 /***********************************************************************
  ***  PAGE LOADING SCRIPTS - END
-***********************************************************************/
+ ***********************************************************************/
