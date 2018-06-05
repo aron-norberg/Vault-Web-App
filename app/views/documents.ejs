@@ -7,16 +7,23 @@
         <h1  class="text-center"><%= title %></h1>
         <br />
         <ul>
-                <li><a href="#readMe">Read Me</a></li>
+                <li><a href="#readMe">The Vault Application</a></li>
                 <ul>
-                        <li><a href="#application">The Vault Application</a></li>
-                        <li><a href="#templates">Template Pages</a></li>
-                        <li><a href="#tcs">Test Cases</a></li>
+                        <li><a href="#application">About Vault</a></li>
+                        <li><a href="#howto">How To</a></li>
+                        <ul>
+                                <li><a href="#viewtestresults">View Test Results</a></li>
+                                <li><a href="#exportresults">Export Test Results</a></li>
+                                <li><a href="#edittestcases">Edit Test Cases</a></li>
+                                <li><a href="#createtestcases">Create Test Cases</a></li>
+                                <li><a href="#runtests">Run Content Tests</a></li>
+                        </ul>
+                        <li><a href="#templates">About Template Pages</a></li>
+                        <li><a href="#tcs">About Test Cases</a></li>
                         <li><a href="#links">Useful Links</a></li>
                         <li><a href="#aboutUrls">About URLs</a></li>
                         <li><a href="#developers">Set-ups for Developers</a></li>
                 </ul>
-                <li><a href="#gherkin">Current Gherkin Definition List</a></li>
                 <li><a href="#database">Database Information</a></li>
                 <ul>
                         <li><a href="#testcase">The Test Case table</a></li>
@@ -27,23 +34,115 @@
                         <li><a href="#result">The Result table</a></li> 
                         <li><a href="#user">The User table</a></li>           
                 </ul>
+                <li><a href="#gherkin">Current Gherkin Definition List</a></li>
         </ul> <br /> <br />
         <div class="anchor" id="readMe"></div>
-        <h2>Read Me File</h2>
+        <h2>The Vault Application</h2>
         <div class="anchor"  id="application"></div>
-        <h4>The Vault Application</h4>
+        <h4>About Vault</h4>
         <p>The Vault application may be used to:</p>
                 <ul>
                 <li>Run a Fluke site test, give that test pass a name, and view the test's status (whether in progress or recently completed).</li>
                 <li>View test pass results (for completed tests only).</li>
-                <li>Delete old test passes (administrator rights required).</li>
-                <li>Mark test results as unreliable (administrator rights required).</li>
                 <li>Claim ownership of test results (for taking action on them).</li>
                 <li>Export test pass results to Excel.</li>
                 <li>Edit the test cases (Scenarios and Gherkin) that are run on the Fluke website pages.</li>
+                <li>Delete old test passes (administrator rights required).</li>
+                <li>Mark test results as unreliable (administrator rights required).</li>
                 </ul>
+        <div class = "anchor" id="howto"></div>
+        <h4>How To</h4>
+        <div class = "anchor" id="viewtestresults"></div>
+        <p>View Test Results</p>
+                <ol>
+                        <li>Click on the Dashboard link (found in the header and on the Home page).</li>
+                        <li>Select a test pass from the drop down menu at the top of the page.</li>
+                        <li>Information about that test pass will display in the "Test Pass Information" section.</li>
+                        Administrators will see two buttons under this section - "Delete" and "Unreliable" which affect the selected test pass.
+                        <li>Beneath the test pass graph, select results by language or by template page.</li>
+                        <li>On the next page, sort result further by pass/fail/skip or, depending on your earlier selection, by template or language.</li>
+                        <li>The "Test Results" page now shows line by line the results for each test Case.  You may now select:</li>
+                        <ul>
+                                <li>Pass/Fail/Skip to sort results further.</li>
+                                <li>The specific Scenario to view all results in the selected test pass for that scenario.</li>
+                                <li>The URL link that the test case was run on</li>
+                                <li>The "Owner" drop down allows you to assign ownership of a result for that specific scenario on that specific test pass.</li>
+                                <li>The "Edit" option in the "Notes" column is useful for noting the Jira ticket related to that specific test result.</li>
+                                <li>The "Export" option under the page Title allows the user to download a complete set of (Excel) results for the selected test pass.</li>
+                        </ul>
+                </ol>
+        <div class = "anchor" id="exportresults"></div>        
+        <p>Export Test Results</p>
+                <ol>
+                        <li>Click on the "Export Results" link in the header.</li>
+                        <li>From the "Test Date" drop-down, select the test pass you want results for.</li>
+                        <li>From the "Language Locale" and the "(FX) Page" drop-downs you may select "all" or a subset of test results.</li>
+                        <li>Select "Export Data" for an Excel download of results.</li>
+                        The Excel document will allow for filtering of results.  In order to filter results:
+                        <ol>
+                                <li>click on "Enable Editing."</li>
+                                <li>click on "Insert" in the Ribbon.</li>
+                                <li>click on "Table" in the Ribbon towards the left.</li>
+                                <li>Accept the default selection, make sure "My table has headers" is checked, and click "OK."</li>
+                                You may now sort the results using the drop-downs at the top of the Excel chart columns.
+                        </ol>
+                               
+                </ol>
+                <div class="text-center" ><img src="/img/exceldoc.PNG"></div>
+        <div class = "anchor" id="edittestcases"></div>  
+        <p>Edit Test Cases</p>
+                <ol>
+                        <li>Select the test case that should be edited on the Test Case Editor page.</li>
+                        Administrators will have an option to delete the selected test case.
+                        <li>Click "Edit Selected Test Case."</li>
+                        <li>The user may now check "Function test."</li>
+                        Function tests only apply to a "test" page, ensuring a functionality works which does not need testing across all pages.
+                        <li>The Scenario and Gherkin may be edited (be sure to read below notes on the Scenario and Gherkin before making changes).</li>
+                        <li>In the "Apply to Feature Page" section, you may edit what templates the test is applied to.</li>
+                        <ul>
+                                <li>Template pages that already have the test applied to them are Yellow.</li>
+                                <li>Whte template pages do not currently have the test applied to them.</li>
+                                <li>Clicking on a white template page will turn it green, and indicates you wish to add your test case to the template.</li>
+                                <li>clicking on a yellow template will turn it red, indicating you wish to remove the test case from the template.</li>
+                        </ul>
+                        <li>Save edits when you are sure of your changes</li>
+                </ol>
+        <div class = "anchor" id="createtestcases"></div>         
+        <p>Create Test Case</p>
+                <ol>
+                        <li>Click the "Create New Test Case" button on the Test Case Editor page.</li>
+                        <li>If you will want to run tests with this test case right away, note the ID for later.</li>
+                        <li>If this test is a functional test, check the box for only running this test case against a single "test" page.</li>
+                        <li>Add your Scenario and Gherkin (be sure to read below notes on the Scenario and Gherkin prior to creating them).</li>
+                        <li>Select the Template pages you wish to apply your test case to (see the below list for template information).</li>
+                        <li>Save your test case.</li>
+                        Note:
+                </ol>
+        <div class = "anchor" id="runtests"></div>  
+        <p>Run Content Tests</p>
+                <ol>
+                        <li>Select the Language (Locale), Template, Test Cases and URLs you wish to test on the Run Tests page.</li>
+                        <li>Click the "Run" button.</li>
+                        Note: Some tests take a while to run (such as selecting all languages and all template pages).
+                        The Test's status will be displayed for 10 minutes in the "Test Status" section.
+                        
+                </ol>
+        <p>Run Functional Tests</p>
+                <ol>
+                        <li>Select 'Functional Test' on the Run Tests page.</li>
+                        <li><i>more to come...</i></li>
+
+                </ol>
+        <p>Run Custom Tests</p>
+                <ol>
+                        <li><i>more to come...</i></li>
+                </ol>
+        <p>Test Scheduler</p>
+                <ol>
+                        <li><i>more to come...</i></li>
+                </ol>
         <div class="anchor" id="templates"></div>
-        <h4>Template Pages</h4>
+        <h4>About Template Pages</h4>
         <p>The Fluke website has been broken down into page templates for development as well as for testing.
                 These page templates have been given the names "F1", "F2", "F3" etc.  When viewing the Fluke website, the template used for any specific page 
                 can be found in the body tag with "template-F16" listed as a class.  Each page requirement has been written into a test called a "test case." Different 
@@ -77,18 +176,19 @@
                 </ul>
         
         <div class="anchor" id="tcs"></div>
-        <h4>Test Cases</h4>
+        <h4>About Test Cases</h4>
         <p>Tests have been written using <a target="_blank" href="http://docs.behat.org/en/v2.5/quick_intro.html">Behat</a>, with code in <a target="_blank" href="https://github.com/cucumber/cucumber/wiki/Gherkin">Gherkin</a> 
                 (a human readable language) and <a target="_blank" href="http://php.net/manual/en/intro-whatis.php">PHP</a>. Each test case starts with a <a target="_blank" href="http://docs.behat.org/en/v2.5/guides/1.gherkin.html#scenarios">Scenario</a>, which is often
                 copied directly from a website page requirements list. An example is "Scenario: Does page render with URL provided?" The Scenario is a note on a single line
                 within the code and changing the Scenario does not affect how the code is run or the functions used for that test case. Following the Scenario is one or more lines of Gherkin
                 which begin with key words <a target="_blank" href="http://docs.behat.org/en/v2.5/guides/1.gherkin.html#whens">When, Then, or Given</a>.  These key words do not matter to the code and are meant to add to the Gherkin's readability.
-                Once Gherkin is written, it is linked to PHP in the background (by a developer), with each line of Gherkin calling a specific function.  When Gherkin is changed, (other than variables which are in quotes) the related PHP function must be updated by a developer for the Gherkin to continue to call the correct function. In a Test Case where several line of Gherkin are used,
+                Once Gherkin is written, it is linked to PHP in the background (by a developer), with each line of Gherkin calling a specific function.  When Gherkin is changed, (other than variables which are in quotes) the related PHP function must 
+                be updated by a developer for the Gherkin to continue to call the correct function. In a Test Case where several lines of Gherkin are used,
                 if any single line of Gherkin fails during testing, subsequent lines of Gherkin within that Test Case will be skipped.
         </p>
         <p>If the user wishes to change the Gherkin used within a Test Case, it is recommended that the user review the Gherkin that has already been created to see if the needed
                 functionality already exists.  A list
-                is provided below. Reusing Gherkin that has already been created means that no additional code will be needed in order to run the test case. Changing Gherkin in any way, including just adding a space or comma,
+                is provided <a href="#gherkin">below</a>. Reusing Gherkin that has already been created means that no additional code will be needed in order to run the test case. Changing Gherkin in any way, including just adding a space or comma,
                 will cause the system to treat it as new (unknown) Gherkin.  Newly created Gherkin will "fail" during test runs until PHP has been written or updated to support it.
         </p>
         <p>An example Test Case found in the Vault database (with only one line of Gherkin):</p>
@@ -119,9 +219,9 @@
         <h4>About URLs</h4>
         <p>Several domains can be tested.  The Domain can be chosen on the Run Tests page. This will help determine what URLs are to be tested in a test pass.      
                 <ul>
-                        <li>https://live-igcommerce.pantheonsite.io/en</li>
-                        <li>https://test-igcommerce.pantheonsite.io/en</li>
-                        <li>https://dev-igcommerce.pantheonsite.io/en</li>
+                        <li>https://live-igcommerce.pantheonsite.io/en-us</li>
+                        <li>https://test-igcommerce.pantheonsite.io/en-us</li>
+                        <li>https://dev-igcommerce.pantheonsite.io/en-us</li>
                 </ul>
         </p>
         <p>
@@ -137,6 +237,7 @@
                 URLs are currently on the website, however, DEEPCRAWLs do not include information on the template used for each page.  A separate
                  crawl is utilized to look at the body tags for any new website pages and determine what template that URL links to. Knowing the template then 
                  allows us to determine what test cases should be run on that page. </p>
+                 <p>For additional information about the URLs being tested, please speak with your QA test developer.</p>
                  <br />
                  <br />
 
@@ -144,12 +245,48 @@
 
         <div class="anchor" id="developers"></div>
         <h4>Set-ups for Developers</h4>
+        <p>Package Manager</p>
+        <ul>
+                <li>NPM (npm is a package manager for the JavaScript programming language)</li>
+        </ul>
+        <p>Languages used in the Vault project:</p>
+        <ul>
+                <li>Gherkin (used to call PHP functions)</li>
+                <li>PHP (used to examine website pages)</li>
+                <li>Perl (used for test automation, triggering shell commands)</li>
+                <li>HTML</li>
+                <li>CSS</li>
+                <li>Javascript</li>
+                <li>MySQL (Vault application access to the Vault database)</li>
+                <li>JSON (Communicates information between backend and front end)</li>
+                <li>Bash programming language (executes the Gherkin)</li>
+        </ul>
+        <p>Frameworks used:</p>
+        <ul>
+                <li>Bootstrap 4</li>
+                <li>Express.js (a web application framework for Node.js)</li>
+        </ul>
+        <p>Runtime environment:</p>
+        <ul>
+                <li>Node.js</li>
+        </ul>
+        <p>Libraries used:</p>
+        <ul>
+                <li>jQuery</li>
+                <li>Sequelize</li>
+        </ul>
+        <p>Methodologies:</p>
+        <ul>
+                <li>AJAX</li>
+        </ul>
+
         <p>Developers will need to update PHP code as web-devs change the structure of website pages, and as Vault users add additional Gherkin to the database.<br />
         If a user determines that a test is incorrectly failing, passing, or skipping, the PHP will need to be corrected so that proper results are obtained from test passes. <br />
         Below are the steps for setting up to edit PHP code.</p>
         <ul>
                 <li>Download <a href="https://code.visualstudio.com/?wt.mc_id=adw-brand&gclid=Cj0KCQjw6J7YBRC4ARIsAJMXXscxjk2LNn-ZbPrfIlAgUq6ZRr7E55gFGZHet94xl0e-bXx2rt7H_FIaAiGLEALw_wcB">
                         Visual Studio Code</a> </li>
+                <li><i>more to come...</i></li>
         </ul>
 
 
@@ -157,23 +294,142 @@
         <br /><br />
         <div class="anchor" id="links"></div>
         <h4 >Useful Links</h4>
-        <p><a target="_blank" href="http://docs.behat.org/en/v2.5/quick_intro.html">Introduction to Behat Testing</a></p>
+        <p><a target="_blank" href="http://docs.behat.org/en/v2.5/quick_intro.html">Introduction to Behat Testing (Behat interprets Gherkin and uses PHP)</a></p>
         <p><a target="_blank" href="https://github.com/Behat/Behat">Download Behat version 3.2</a></p>
         <p><a target="_blank" href="https://github.com/cucumber/cucumber/wiki/Gherkin">About Gherkin</a></p>
         <p><a target="_blank" href="https://github.com/fluke-corporation/Vault-Web-App">Vault git-hub repository (application code)</a></p>
         <p><a target="_blank" href="https://github.com/fluke-corporation/behat_projects">behat_project git-hub repository (test case code)</a></p>
         <br /><br />
-        <h2 id="gherkin">Current Gherkin Definition List</h2>
+       
+
+        <div class="anchor" id="database"></div>
+        <h2>Database Information</h2>
+        <p>Developers will have two databases that need to mirror each other, the database on the
+                EC2 instance (http://ec2-35-168-52-214.compute-1.amazonaws.com/) and the database(s) used on local machines. 
+        </p>
+        <p>The database has 7 tables as seen below. These tables are used by the Vault application for running tests.</p>
+        <p>When a user selects what Language and Template to test, they are narrowing down what URLs are to be tested. Selecting the domain also determines URL options. The
+                user then can select the specific Test Cases that were written for the selected Template page type, narrowing down even 
+                further what is to be tested. 
+        </p>
+        <br />
+        <br />
         
-        Use ctrl + f to search the below list of Gherkin code.  Click <a href="#database">here</a> to skip to the next section.
+        <div class="text-center" ><img src="/img/schema.PNG"></div>
+        <br />
+        <br />
+        <div class="anchor" id="testcase"></div>
+        <br />
+        <h4>TestCase</h4>
+        <p>[a single test that is run on a website page]<br />
+                Some test cases are functional tests which means only one or a few pages need to be tested in order to know if that 
+                functionality is working for all web pages. If choosing to only run functional tests, only a few specific URLs
+                that are set up for running all functional tests (for that template), are tested.<br />
+        <span class="font-weight-bold">TestCaseId</span> - numerical key <br />
+        <span class="font-weight-bold">HashValue</span> - encrypted value used to prevent the entry of duplicative Gherkin <br />
+        <span class="font-weight-bold">TestCaseDescription</span> - the scenario (note) for the test case <br />
+        <span class="font-weight-bold">Live</span> - indicates if the Gherkin is being used currently <br />
+        <span class="font-weight-bold">Gherkin</span> - includes the scenario with all lines of Gherkin code for each test case <br />
+        <span class="font-weight-bold">IsFunctionalTest</span> - 1 for true, 0 for false, this indicates if the test tests functionality vs. content <br />
+        <br />
+        <div class="anchor" id="template"></div>
+        <h4>Template</h4>
+        <p>[a page template that specific test cases are designed for]<br />
+        <span class="font-weight-bold">Id</span> - "f1", "f2", "f3" type page template key <br />
+        <span class="font-weight-bold">TestCaseId</span> - a list of all the test case Ids that are run against the page template<br />
+        </p>
+        <br />
+        <div class="anchor" id="urls"></div>
+        <h4>Urls</h4>
+        <p>[a page address we test]<br />
+        <span class="font-weight-bold">UrlId</span> - numerical key<br />
+        <span class="font-weight-bold">TemplateId</span> - the ID of the type of page template that the URL links to<br />
+        <span class="font-weight-bold">Language</span> - "en-us", "en-au",(etc) language of the page the URL links to <br />
+        <span class="font-weight-bold">Url</span> - the URL address<br />
+        <span class="font-weight-bold">Rank</span> - intended for prioritizing URLs so that highly trafficked pages could be tested more often. Currently not used.<br />
+        &emsp; F4, the template for which we have the most URLs, is set up to test 100 random F4 URLs when "all" F4 URLs are selected for testing <br />
+        </p>
+        <br />
+        <div class="anchor" id="testpass"></div>
+        <h4>TestPass</h4>
+        <p>[a set of tests that are run at a specific time]<br />
+        <span class="font-weight-bold">TestPassId</span> - numerical key<br />
+        <span class="font-weight-bold">Template</span> - a list of the template pages that were tested in the test pass<br />
+        <span class="font-weight-bold">Language</span> - a list of the languages tested in the test pass<br />
+        &emsp; Note: the Template and Language selections narrow down what URLs will be tested<br />
+        <span class="font-weight-bold">TestCases</span> - a list of the test case IDs that were tested in that test pass<br />
+        <span class="font-weight-bold">RunDate</span> - the date and time that the test pass started (as opposed to the completion time)<br />
+        <span class="font-weight-bold">UrlIds</span> - a list of the URL IDs that were tested<br />
+        <span class="font-weight-bold">Domain</span> - the domain selected for testing (this helps determine which URLs are tested)<br />
+        <span class="font-weight-bold">Description</span> - a note on what was tested such as "All Templates, All Languages, Limited number of URLs"<br />
+        <span class="font-weight-bold">Reliable</span> - "1" for true, "0" for false, often left null.  If "0," the results have been marked as unreliable by an administrator<br />
+        <span class="font-weight-bold">Note</span> - if marked unreliable, a note can be added explaining why, such as "The internet went down during testing - results unreliable"</p>
+        <br />
+        <div class="anchor" id="status"></div>
+        <h4>Status</h4>
+        <p>[data that determines if a test pass is complete or still running] <br />
+                When a test is run, the Status table updates to show a start time, and an end time of 1970 until the test
+                actually completes and the correct end time is entered into the database.  While the test pass is running, the status can be seen on the Test
+                Status page. <br />
+        <span class="font-weight-bold">TestpassId</span> - the numerical ID of the test pass that was run<br />
+        <span class="font-weight-bold">RunDate</span> - the date and time on which the test was started<br />
+        <span class="font-weight-bold">StartTime</span> - the date and time on which the test was started<br />
+        <span class="font-weight-bold">EndTime</span> - when the test pass concluded.  <br />
+        &emsp; Note: if the test pass was interrupted, an end time of January 1970 is entered into the database<br />
+        &emsp; The Vault application is set to not display results on the dashboard for test passes that were stopped before completion<br />
+        </p>
+        <br />
+        <div class="anchor" id="result"></div>
+        <h4>Result</h4>
+        <p>[the pass/skip/fail result of a single test]<br />
+                Once a test pass is complete, results are then added to the database Result table, recording each pass, skip, and fail result.<br />
+        <span class="font-weight-bold">TestCaseId</span> - the test case for which we have a test result<br />
+        <span class="font-weight-bold">TestPassId</span> - the test pass that the results come from<br />
+        <span class="font-weight-bold">Template</span> - the page type that the test result applies to<br />
+        <span class="font-weight-bold">Language</span> - the language of the page that the result applies to<br />
+        <span class="font-weight-bold">Result</span> - "pass" or "skip" or "fail"<br />
+        <span class="font-weight-bold">URLs</span> - the address of the page that was tested<br />
+        <span class="font-weight-bold">Output</span> - the scenario tested as well as any messages that came out of testing.<br />
+        &emsp; Example: Does page render with URL provided?<br />
+        &emsp; &thinsp;Result: The Response Status Code Returned a 404<br />
+        <span class="font-weight-bold">RunDate</span> - the start time for when the test was run<br />
+        <span class="font-weight-bold">Owner</span> - when a user selects to "own" a test result and take action on it's outcome<br />
+        <span class="font-weight-bold">Notes</span> - whena  user claims ownership, they can add a note on what action they are taking for that test result<br />
+        </p>
+        <br />
+        <div class="anchor" id="user"></div>
+        <h4>User</h4>
+        <p>[person who has access to the Vault application]<br />
+        <span class="font-weight-bold">id</span> - numerical key<br />
+        <span class="font-weight-bold">firstname</span> - first name of the user<br />
+        <span class="font-weight-bold">lastname</span> - last name of the user<br />
+        <span class="font-weight-bold">username</span> - the email of the user<br />
+        <span class="font-weight-bold">email</span> - the email of the user<br />
+        <span class="font-weight-bold">password</span> - the (encrypted) password the user set up<br />
+        <span class="font-weight-bold">last_login</span> - NULL<br />
+        <span class="font-weight-bold">role</span> - a numerical value with "1" for a basic user, "2" for an administrator, "3" for a developer<br />
+        &emsp; NOTE: an administrator has access to additional features such as:<br />
+        &emsp; &emsp; - Delete an entire test pass from the Dashboard page<br />
+        &emsp; &emsp; - Delete a test case from the Test Case Editor page<br />
+        &emsp; &emsp; - Mark a test pass as unreliable and add a note about it<br />
+        </p>
         <br />    
         <br />
-        <p>A current list of Gherkin can be viewed by going into the bash shell, <br>
-            into the project file 'master_tests' (downloaded from Git) and typing the following command: vendor/bin/behat -di<br><br>
+
+        <div class="anchor" id="gherkin"></div>
+        <h2>Current Gherkin Definition List</h2>
+        
+        Use ctrl + f to search the below list of Gherkin code if you know the exact Gherkin. 
+        Be aware that the code can be set up to accept variables such [Then|*] which can be replaced with "When" in the Gherkin
+        <br />    
+        <br />
+        <p>A current list of Gherkin can be viewed by opening the bash shell, <br>
+            go into the project file 'master_tests' (downloaded from Git) and typing the following command: vendor/bin/behat -di<br><br>
             /Vault-Web-App/behat_projects/master_tests$ vendor/bin/behat -di<br><br>
         This list includes the Gherkin added through the MINK extension and was last updated: 05.24.18</p>
         
-        <pre><code></code>
+
+        <pre><code>
 [Then|*] skip test
         | Skip a test during testing if content or functionality is incomplete
         | at `FeatureContext::skipTest()`
@@ -269,7 +525,21 @@
 [Then|*] I should see that text :elements with attribute :attribute will match the correct language
         | Validates that an elements text based on its attribute is in the correct language a database or Google language detect
         | at `FeatureContext::checkAttributeTextInCorrectLanguage()`
+        </code></pre>
 
+
+
+        <button id="showButton" onclick="showMore('showMoreSection', 'showButton')">See More</button>
+
+
+
+
+
+       <div id="showMoreSection" style="display:none"> 
+               
+               <button id="hideButton" onclick="showLess('showMoreSection', 'showButton')">See Less</button>
+        
+        <pre><code>
 [Then|*] check :text is in correct language
         | Compares the url language locale to &lt;html lang&gt; and
         | uses langid to validate language with a provided
@@ -1021,117 +1291,10 @@
         | Example: And show last response
         | at `FeatureContext::showLastResponse()`
 
-    </code></pre> <br /><br />
-        <div class="anchor" id="database"></div>
-        <h2>Database Information</h2>
-        <p>Developers will have two databases that need to mirror each other, the database on the
-                EC2 instance (http://ec2-35-168-52-214.compute-1.amazonaws.com/) and the database(s) used on local machines. 
-        </p>
-        <p>The database has 7 tables as seen below. These tables are used by the Vault application for running tests.</p>
-        <p>When a user selects what Language and Template to test, they are narrowing down what URLs are to be tested. Selecting the domain also determines URL options. The
-                user then can select the specific Test Cases that were written for the selected Template page type, narrowing down even 
-                further what is to be tested. 
-        </p>
-        <br />
-        <br />
-        
-        <div class="text-center" ><img src="/img/schema.PNG"></div>
-        <br />
-        <br />
-        <div class="anchor" id="testcase"></div>
-        <br />
-        <h4>TestCase</h4>
-        <p>[a single test that is run on a website page]<br />
-                Some test cases are functional tests which means only one or a few pages need to be tested in order to know if that 
-                functionality is working for all web pages. If choosing to only run functional tests, only a few specific URLs
-                that are set up for running all functional tests (for that template), are tested.<br />
-        <span class="font-weight-bold">TestCaseId</span> - numerical key <br />
-        <span class="font-weight-bold">HashValue</span> - encrypted value used to prevent the entry of duplicative Gherkin <br />
-        <span class="font-weight-bold">TestCaseDescription</span> - the scenario (note) for the test case <br />
-        <span class="font-weight-bold">Live</span> - indicates if the Gherkin is being used currently <br />
-        <span class="font-weight-bold">Gherkin</span> - includes the scenario with all lines of Gherkin code for each test case <br />
-        <span class="font-weight-bold">IsFunctionalTest</span> - 1 for true, 0 for false, this indicates if the test tests functionality vs. content <br />
-        <br />
-        <h4 id="template">Template</h4>
-        <p>[a page template that specific test cases are designed for]<br />
-        <span class="font-weight-bold">Id</span> - "f1", "f2", "f3" type page template key <br />
-        <span class="font-weight-bold">TestCaseId</span> - a list of all the test case Ids that are run against the page template<br />
-        </p>
-        <br />
-        <div class="anchor" id="urls"></div>
-        <h4>Urls</h4>
-        <p>[a page address we test]<br />
-        <span class="font-weight-bold">UrlId</span> - numerical key<br />
-        <span class="font-weight-bold">TemplateId</span> - the ID of the type of page template that the URL links to<br />
-        <span class="font-weight-bold">Language</span> - "en-us", "en-au",(etc) language of the page the URL links to <br />
-        <span class="font-weight-bold">Url</span> - the URL address<br />
-        <span class="font-weight-bold">Rank</span> - intended for prioritizing URLs so that highly trafficked pages could be tested more often. Currently not used.<br />
-        &emsp; F4, the template for which we have the most URLs, is set up to test 100 random F4 URLs when "all" F4 URLs are selected for testing <br />
-        </p>
-        <br />
-        <div class="anchor" id="testpass"></div>
-        <h4>TestPass</h4>
-        <p>[a set of tests that are run at a specific time]<br />
-        <span class="font-weight-bold">TestPassId</span> - numerical key<br />
-        <span class="font-weight-bold">Template</span> - a list of the template pages that were tested in the test pass<br />
-        <span class="font-weight-bold">Language</span> - a list of the languages tested in the test pass<br />
-        &emsp; Note: the Template and Language selections narrow down what URLs will be tested<br />
-        <span class="font-weight-bold">TestCases</span> - a list of the test case IDs that were tested in that test pass<br />
-        <span class="font-weight-bold">RunDate</span> - the date and time that the test pass started (as opposed to the completion time)<br />
-        <span class="font-weight-bold">UrlIds</span> - a list of the URL IDs that were tested<br />
-        <span class="font-weight-bold">Domain</span> - the domain selected for testing (this helps determine which URLs are tested)<br />
-        <span class="font-weight-bold">Description</span> - a note on what was tested such as "All Templates, All Languages, Limited number of URLs"<br />
-        <span class="font-weight-bold">Reliable</span> - "1" for true, "0" for false, often left null.  If "0," the results have been marked as unreliable by an administrator<br />
-        <span class="font-weight-bold">Note</span> - if marked unreliable, a note can be added explaining why, such as "The internet went down during testing - results unreliable"</p>
-        <br />
-        <div class="anchor" id="status"></div>
-        <h4>Status</h4>
-        <p>[data that determines if a test pass is complete or still running] <br />
-                When a test is run, the Status table updates to show a start time, and an end time of 1970 until the test
-                actually completes and the correct end time is entered into the database.  While the test pass is running, the status can be seen on the Test
-                Status page. <br />
-        <span class="font-weight-bold">TestpassId</span> - the numerical ID of the test pass that was run<br />
-        <span class="font-weight-bold">RunDate</span> - the date and time on which the test was started<br />
-        <span class="font-weight-bold">StartTime</span> - the date and time on which the test was started<br />
-        <span class="font-weight-bold">EndTime</span> - when the test pass concluded.  <br />
-        &emsp; Note: if the test pass was interrupted, an end time of January 1970 is entered into the database<br />
-        &emsp; The Vault application is set to not display results on the dashboard for test passes that were stopped before completion<br />
-        </p>
-        <br />
-        <div class="anchor" id="result"></div>
-        <h4>Result</h4>
-        <p>[the pass/skip/fail result of a single test]<br />
-                Once a test pass is complete, results are then added to the database Result table, recording each pass, skip, and fail result.<br />
-        <span class="font-weight-bold">TestCaseId</span> - the test case for which we have a test result<br />
-        <span class="font-weight-bold">TestPassId</span> - the test pass that the results come from<br />
-        <span class="font-weight-bold">Template</span> - the page type that the test result applies to<br />
-        <span class="font-weight-bold">Language</span> - the language of the page that the result applies to<br />
-        <span class="font-weight-bold">Result</span> - "pass" or "skip" or "fail"<br />
-        <span class="font-weight-bold">URLs</span> - the address of the page that was tested<br />
-        <span class="font-weight-bold">Output</span> - the scenario tested as well as any messages that came out of testing.<br />
-        &emsp; Example: Does page render with URL provided?<br />
-        &emsp; &thinsp;Result: The Response Status Code Returned a 404<br />
-        <span class="font-weight-bold">RunDate</span> - the start time for when the test was run<br />
-        <span class="font-weight-bold">Owner</span> - when a user selects to "own" a test result and take action on it's outcome<br />
-        <span class="font-weight-bold">Notes</span> - whena  user claims ownership, they can add a note on what action they are taking for that test result<br />
-        </p>
-        <br />
-        <div class="anchor" id="user"></div>
-        <h4>User</h4>
-        <p>[person who has access to the Vault application]<br />
-        <span class="font-weight-bold">id</span> - numerical key<br />
-        <span class="font-weight-bold">firstname</span> - first name of the user<br />
-        <span class="font-weight-bold">lastname</span> - last name of the user<br />
-        <span class="font-weight-bold">username</span> - the email of the user<br />
-        <span class="font-weight-bold">email</span> - the email of the user<br />
-        <span class="font-weight-bold">password</span> - the (encrypted) password the user set up<br />
-        <span class="font-weight-bold">last_login</span> - NULL<br />
-        <span class="font-weight-bold">role</span> - a numerical value with "1" for a basic user, "2" for an administrator, "3" for a developer<br />
-        &emsp; NOTE: an administrator has access to additional features such as:<br />
-        &emsp; &emsp; - Delete an entire test pass from the Dashboard page<br />
-        &emsp; &emsp; - Delete a test case from the Test Case Editor page<br />
-        &emsp; &emsp; - Mark a test pass as unreliable and add a note about it<br />
-        </p>
+        </code></pre> </div>
+
+
+        <br /><br />
     </div><!-- end .col-lg-12 -->
   </div><!-- end .row -->
 </div><!-- end .container-fluid -->

@@ -6,6 +6,13 @@ const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
 
+/************************
+ * Function: editTestCases()
+ * Purpose: provides all  test cases and templates
+ * Parameters:
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 
 exports.editTestCases = function(req, res) {  //getResultByTemplateCustom
 
@@ -47,6 +54,13 @@ exports.editTestCases = function(req, res) {  //getResultByTemplateCustom
   
 };
 
+/************************
+ * Function: deleteTestCases()
+ * Purpose: removes test cases from the database
+ * Parameters:
+ * Author:  James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 
 exports.deleteTestCases = function(req, res) {
   //console.log('Hello Waldo!');
@@ -110,6 +124,13 @@ exports.newGherkin = function (req, res) {
     })
 }
 
+/************************
+ * Function: updateTestCaseAndTemplate()
+ * Purpose: updates all aspects of a test case, including what templates it is applied to on the Template table
+ * Parameters:
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 
 function updateTestCaseAndTemplate(req, jsonObject){
 
@@ -215,6 +236,13 @@ function updateTestCaseAndTemplate(req, jsonObject){
 }
 
 
+/************************
+ * Function: postGherkin()
+ * Purpose: sends test case edits to updateTestCaseAndTemplate
+ * Parameters:
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 
 exports.postGherkin = function(req, res) {  // the user clicked on "Save Edits"
     console.log("here I am");

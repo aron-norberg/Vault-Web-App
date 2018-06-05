@@ -18,6 +18,14 @@ let rootPath = path.normalize(__dirname + '../../../');
 rootPath = rootPath + '/behat_projects/master_tests';
 let behat_path = rootPath;
 
+/************************
+ * Function: broadcastData()
+ * Purpose: determine if a test is running
+ * Parameters:
+ * Author: James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
+
 function broadcastData(req, res, dataString, count, ppid) {
 
   const io = req.app.get('socketio');
@@ -40,6 +48,13 @@ function broadcastData(req, res, dataString, count, ppid) {
   }
 }
 
+/************************
+ * Function: broadcastTestProgress()
+ * Purpose: determine progress of test pass
+ * Parameters:
+ * Author: James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 // Long poll the db 
 function broadcastTestProgress(req, testId, count, ppid) {
   const io = req.app.get('socketio');
@@ -77,7 +92,13 @@ function broadcastTestProgress(req, testId, count, ppid) {
   }, 1500);
 };
 
-
+/************************
+ * Function: checkIfProcessRunningByPPID()     
+ * Purpose: 
+ * Parameters:
+ * Author: James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 // beta tests...may need to loop process to ensure working as expected.
 
 function checkIfProcessRunningByPPID(ppid) {
@@ -97,7 +118,13 @@ function checkIfProcessRunningByPPID(ppid) {
   });
 }
 
-
+/************************
+ * Function: getTestStatus()
+ * Purpose: Get the status of all                                <----------------  ?  Is this getting the status of completed tests?
+ * Parameters:
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 exports.getTestStatus = function(req, res) {
 
   async.parallel({
@@ -147,6 +174,14 @@ exports.getTestStatus = function(req, res) {
   });
 }
 
+
+/************************
+ * Function: getProcesses()
+ * Purpose: 
+ * Parameters:
+ * Author: James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 exports.getProcesses = function(req, res) {
 
   // Option all 
@@ -187,6 +222,14 @@ exports.getProcesses = function(req, res) {
 
 }
 
+
+/************************
+ * Function: postTest()
+ * Purpose: 
+ * Parameters:
+ * Author: James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 exports.postTest = function(req, res, next) {
 
   let now = new Date();
@@ -241,7 +284,13 @@ exports.postTest = function(req, res, next) {
   })
 }
 
-
+/************************
+ * Function: startProcess()
+ * Purpose: 
+ * Parameters:
+ * Author: James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 exports.startProcess = function(req, res) {
 
   let jsonPath = req.jsonpath;
@@ -294,6 +343,13 @@ exports.startProcess = function(req, res) {
   res.send(testPassData);
 }
 
+/************************
+ * Function: stopTest()
+ * Purpose: 
+ * Parameters:
+ * Author: James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 exports.stopTest = function(req, res) {
 
   let id = req.query.testid;
@@ -346,6 +402,14 @@ exports.stopTest = function(req, res) {
   });
 }
 
+
+/************************
+ * Function: getTotalNumberOfTestCases()
+ * Purpose: 
+ * Parameters:
+ * Author: James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 function getTotalNumberOfTestCases(testParameterObject) {
 
   return new Promise((resolve, reject) => {
@@ -395,7 +459,7 @@ function getTotalNumberOfTestCases(testParameterObject) {
           finalCount += count[i];
         }
 
-        // if test case selections is all, query db for correct test cases
+        // if test case selections is "all", query db for correct test cases
         if (testParameterObject.TestCaseSelections[0] == "all") {
 
           db.sequelize.query(`select TestCaseId from Template where Id = '${testParameterObject.features}'`).then(testCaseCount => {

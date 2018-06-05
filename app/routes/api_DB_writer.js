@@ -10,23 +10,20 @@ const dateFormat = require('dateformat');
 var datetime = require('node-datetime');
 
 
-// Add Notes to result table in database
+/************************
+ * Function: addNotesToResultTable_DB()
+ * Purpose: Add Notes to result table in database
+ * Parameters: id = the test result id (autoincremented in the database), notes = the text entered by the user on the Test Results page
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
+
 exports.addNotesToResultTable_DB = function(req, res) {
   //console.log('Hey Waldo, run the addOwnerToDB function!');
   //res.send("hello from waldo");
 
   // Gets the value from url string using get
-  /*let feature = req.query.feature;
-  let locale = req.params.locale;
-  let testcaseid = req.query.testcaseid;
-  let testPassId = req.query.testpassid;
-  let template = req.params.template;
-  let language = req.params.language;
-  let result = req.query.result;
-  let urls = req.query.urls;
-  let output = req.query.output;
-  let rundate = req.params.rundate;
-  let owner = req.query.users;*/
+  //let locale = req.params.locale;
   let id = req.query.Id;
   let notes = req.query.message;
 
@@ -86,7 +83,14 @@ exports.addNotesToResultTable_DB = function(req, res) {
 }; // end exports.addOwnerToDB = function(req, res)
 
 
-// Add Owner to result table in database
+/************************
+ * Function: addOwnerToResultTable_DB()
+ * Purpose: Add Owner to result table in database
+ * Parameters: id = the test result id (autoincremented in the database), owner = the user selected from a dropdown menu
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
+
 exports.addOwnerToResultTable_DB = function(req, res) {
 
   // Gets the value from url string using get
@@ -119,7 +123,14 @@ exports.addOwnerToResultTable_DB = function(req, res) {
 }; // end exports.addOwnerToResultTable_DB = function(req, res)
 
 
-// Removes empty Gherkin ids from testcase table in database
+/************************
+ * Function: cleanGherkin_DB()
+ * Purpose: Removes empty Gherkin ids from testcase table in database
+ * Parameters: 
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
+
 exports.cleanGherkin_DB = function(req, res) {
 
   // Gets the value from url string using get

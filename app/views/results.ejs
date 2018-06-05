@@ -219,11 +219,20 @@
                           <textarea class="form-control notes" name="message" rows="5"></textarea>
                         </div>
                         <%} else {%>
-                          <div class="">
+                          <div class="form-group">
                             <label for="usr">Add a Note:</label>
                             <textarea class="form-control notes" name="message" rows="5"></textarea>
                           </div>
-                        <% } %> 
+                        <% } %>
+
+
+                        <div>
+                          <label for="resolveTest">
+                            <input type="checkbox" id="resolveTest" value="resolved" onclick="resolveTestCase();" /> Resolve test case ID: <span id="idTestCase"><%= results[i].TestCaseId %></span>
+                            </label>
+                        </div>
+
+
                     </div><!-- end .col-md-12 -->
                   </div><!-- end .row -->
                 </div><!-- end modal-body-->
@@ -231,7 +240,6 @@
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                   <button type="submit" class="btn btn-primary">Save changes</button>
-                  <!--button type="button" class="btn btn-primary" onclick="saveChanges('<%= i %>')">Save changes</button-->
                 </div> <!-- end modal-footer-->
 
               </div><!-- end modal-content-->
@@ -242,6 +250,23 @@
         </tr>
       </table>
 
+
+
+      <script>
+
+      function resolveTestCase() {
+        var testCaseResolved = document.getElementById('resolveTest').value;
+        var testCaseId = document.getElementById('idTestCase').innerHTML;
+
+        console.log('Test case id: ' + testCaseId + ' has been marked ' + testCaseResolved);
+        alert('Resolve test case feature is coming soon to a script near you!');
+
+      } // end resolveTestCase()
+
+      </script>
+
+
+
       <!-- DO NOT DELETE: hidden fields used to pass values on submit via GET -->
       <input type="hidden" name="Id" value="<%= results[i].Id %>" />
       <input type="hidden" name="RunDate" value="<%= results[i].RunDate %>" />
@@ -249,36 +274,6 @@
       <input type="hidden" name="Template" value="<%= results[i].Template %>" />
       <input type="hidden" name="Language" value="<%= results[i].Language %>" />
 
-      <script>        
-        function getSelectVal(sel) {
-          //var id = $(sel).closest("form").find("input[type=hidden]").prop("name", "Id").val();
-          //var users = sel.value;
-
-          $.ajax({
-            url : "/addOwnerToResultsPage",
-            type : "GET",
-            dataType:"html",
-            //data: {"Id": id, "users": users},
-            data: {
-              Id: $(sel).closest("form").find("input[type=hidden]").prop("name", "Id").val(),
-              users: sel.value
-
-            },
-            success : function() {
-              console.log('success');
-              location.reload(true);  //Refresh page
-
-            }, // end success : function()
-            error : function() {
-              console.log('error');
-
-            } // end error : function()
-
-          }); // end .ajax()
-
-        } // end getSelectVal()
-
-      </script>
       </form><!-- end form -->
 
       <% }} %>

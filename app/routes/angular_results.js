@@ -3,7 +3,12 @@
 const db = require('../../config/sequelize');
 const Sequelize = require('sequelize');
 
-/* GET ALL Results */
+/************************
+ * Function: export function
+ * Purpose: Receives ALL test results from the Result table and provides that data to the results.ejs views file.
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 exports.all = function(req, res) {
 
   db.result.findAll().then(results => {

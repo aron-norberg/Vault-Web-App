@@ -1,6 +1,14 @@
 // Invoke 'strict' JavaScript mode
 'use strict';
 
+/************************
+ * Function: 
+ * Purpose: This page loads module dependencies, links URL addresses to file locations, and checks if the user is logged in before allowing them to route to a page
+ * Parameters:
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: April 2018
+ ************************/
+
 // Load the module dependencies
 const config = require('./config'),
   express = require('express'),
@@ -34,6 +42,7 @@ const authenticate = require('../app/routes/authentication');
 const api_testRunner = require('../app/routes/api_testRunner');
 const api_emailer = require('../app/routes/api_emailer');
 const api_documents = require('../app/routes/api_documents');
+const api_userAccess = require('../app/routes/api_userAccess');
 
 // const api_login = require('../app/routes/api_login');
 const test_case_editor = require('../app/routes/test_case_editor');
@@ -142,12 +151,15 @@ module.exports = function() {
 
   app.get('/signup', authenticate.signup);
 
-  //app.get('/signup', isLoggedIn, authenticate.signup);
-
   app.post('/signup', passport.authenticate('local-signup', {
-    successRedirect: '/dashboard',
+    successRedirect: '/login',
     failureRedirect: '/signup'
   }));
+
+  // User Access page
+  app.post('/updateUser', isLoggedIn, api_userAccess.updateUser);
+  app.post('/removeUser', isLoggedIn, api_userAccess.removeUser);
+  //app.get('/signup', isLoggedIn, api_userAccess.removeUser);
 
   app.get('/login', authenticate.login);
 

@@ -19,6 +19,15 @@ const path = require('path');
 let rootPath = path.normalize(__dirname + '../../../');
 rootPath = rootPath + 'temp_directory';
 
+
+/************************
+ * Function: getTestCases()
+ * Purpose: Gets a list of test cases run against the selected template page
+ * Parameters:
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
+
 exports.getTestCases = function(req, res) {
 
   // let jsonObject = JSON.stringify(req.body);
@@ -68,6 +77,13 @@ exports.getTestCases = function(req, res) {
 };
 
 
+/************************
+ * Function: getTestCasesAndUrlsFromDB()                                    <---------------- delete?
+ * Purpose: Gets a list of test cases and URLs
+ * Parameters:
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 
 function getTestCasesAndUrlsFromDB() { //this is not in use currently with URLs no longer being populated. Test case selections use the above function
   return new Promise(function(resolve, reject) {
@@ -97,17 +113,14 @@ function getTestCasesAndUrlsFromDB() { //this is not in use currently with URLs 
   });
 };
 
-/*######################################
-##
-## Check to see if a process is running 
-## Uses promises and a call to system 
-## PS grep "keyword to check if running"
-## Parameters: 
-##
-## 1. ProcessName ie. java
-## 2. nameToMatch ie. selenium
-##
-####################################### */
+
+/************************
+ * Function: checkProcessByName()
+ * Purpose: Check to see if a process is running, Uses promises and a call to system, PS grep "keyword to check if running"
+ * Parameters: ProcessName ie. java, nameToMatch ie. selenium
+ * Author: James Sandoval, Aron T Norberg
+ * Date: April 2018
+ ************************/
 
 function checkProcessByName(processName, nameToMatch) {
   return new Promise(function(resolve, reject) {
@@ -164,14 +177,13 @@ function checkProcessByName(processName, nameToMatch) {
   })
 }
 
-/*######################################
-##
-## Check to see if a process is running
-## By using the Process Id
-## 
-## Parameters: PID
-##
-####################################### */
+/************************
+ * Function: checkProcessByPID()
+ * Purpose: Check to see if a process is running By using the Process Id
+ * Parameters: PID
+ * Author: James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 
 function checkProcessByPID(pid, item) {
 
@@ -222,13 +234,14 @@ function checkProcessByPID(pid, item) {
   })
 }
 
-/*######################################
-##
-## Start Either Selenium or Phantomjs
-## 
-## Parameters: program to start
-##
-####################################### */
+
+/************************
+ * Function: startProcess()
+ * Purpose: Start Either Selenium or Phantomjs
+ * Parameters:program to start
+ * Author: James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 
 function startProcess(processToStart) {
 
@@ -272,14 +285,14 @@ function startProcess(processToStart) {
   }
 }
 
-/*######################################
-##
-## Check to see if selenium or Phantom js 
-## Is running  
-##
-## Parameters: None
-##
-####################################### */
+
+/************************
+ * Function: checkEnvironmentSettings()
+ * Purpose: Check to see if selenium or Phantom js Is running 
+ * Parameters:None
+ * Author: James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 
 function checkEnvironmentSettings() {
 
@@ -350,13 +363,13 @@ function checkEnvironmentSettings() {
 
 };
 
-/*######################################
-##
-## Get Test status information
-##
-## Parameters: None
-##
-####################################### */
+/************************
+ * Function: getTestProcessesFromDB()
+ * Purpose: Get Test status information
+ * Parameters:None
+ * Author: James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 
 function getTestProcessesFromDB() {
 
@@ -415,13 +428,14 @@ function getTestProcessesFromDB() {
   });
 };
 
-/*######################################
-##
-## Check to see if tests are still running
-##
-## Parameters: test pass object
-##
-####################################### */
+
+/************************
+ * Function: checkTestProcessWithSystemPS()
+ * Purpose: Check to see if tests are still running
+ * Parameters:test pass object
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 
 function checkTestProcessWithSystemPS(testPassTableResults) {
 
@@ -496,6 +510,13 @@ function checkTestProcessWithSystemPS(testPassTableResults) {
     });
   })
 }
+/************************
+ * Function: getOverview()
+ * Purpose: render the Run Tests page
+ * Parameters:
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 
 exports.getOverview = function(req, res) {
 

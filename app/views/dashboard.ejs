@@ -1,55 +1,67 @@
 <%- include('header') %>
   <script>
-  google.charts.load('current', { 'packages': ['corechart'] });
-  google.charts.setOnLoadCallback(drawCharts);
 
-  var passes = <%= overall.pass %>;
-  var fails = <%= overall.fail %>;
-  var others = <%= overall.skip %>;
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawCharts);
+
+    var passes = <%= overall.pass %>;
+    var fails = <%= overall.fail %>;
+    var others = <%= overall.skip %>;
+    
+    // Draw the chart and set the chart values
+    function drawCharts() {
+      /////////////////////////////////// Pie Chart /////////////////////
+
+      var data = google.visualization.arrayToDataTable([
+        ['Test', 'Passed or Failed'],
+        ['Passed', passes],
+        ['Failed', fails],
+        ['Other', others],
+      ]);
+
+      var myTitle = '';
+      if (<%= language =='ALL' %>) {
+        var legendLocation = { textStyle: { fontSize: 20 }, alignment: 'center', position: 'left' };
+        
+      } else {
+        var legendLocation = 'none';
+        
+      } // end if/else
 
 
-  // Draw the chart and set the chart values
-  function drawCharts() {
-    /////////////////////////////////// Pie Chart /////////////////////
-
-    var data = google.visualization.arrayToDataTable([
-      ['Test', 'Passed or Failed'],
-      ['Passed', passes],
-      ['Failed', fails],
-      ['Other', others],
-    ]);
-
-    var myTitle = '';
-    if (<%= language =='ALL' %>) {
-      var legendLocation = { textStyle: { fontSize: 20 }, alignment: 'center', position: 'left' };
-
-    } else {
-      var legendLocation = 'none';
-
-    }
-
-    // Optional; add a title and set the width and height of the chart
-    // Options can be variables such as title: $Title
-    var options = {
-
-      'title': myTitle,
-      'titleTextStyle': { fontSize: 25, bold: true, color: '#070d18' },
-      <% if(testPassInfo.Reliable !== 0){ %>
-      'colors': ['#109618', '#DC3912', '#2569ff'],
-      <% } else { %>
-      'colors': ['#808080', '#000000', '#C0C0C0'],
-      <% } %>
-      'backgroundColor': '',
-      'is3D': true,
-      'chartArea': { width: '90%', height: '90%' },
-      'legend': legendLocation,
-      'slices': {
-        0: { offset: 0.0 },
-        1: { offset: 0.2 },
-        2: { offset: 0.0 }
+      if (<%= testPassInfo.Reliable !== 0  %>) {
+        var colorScheme = ['#109618', '#DC3912', '#2569ff'];
       }
-    };
+      else {
+        var colorScheme = ['#808080', '#000000', '#C0C0C0'];
 
+      } // end if/else
+
+      // Optional; add a title and set the width and height of the chart
+      // Options can be variables such as title: $Title
+      var options = {
+
+        'title': myTitle,
+        'titleTextStyle': { fontSize: 25, bold: true, color: '#070d18' },
+        'colors': colorScheme,
+        'backgroundColor': '',
+        'is3D': true,
+        'chartArea': { width: '90%', height: '90%' },
+        'legend': legendLocation,
+        'slices': {
+          0: { offset: 0.0 },
+          1: { offset: 0.2 },
+          2: { offset: 0.0 }
+        }
+      };
+
+      // Display the chart inside the <div> element with id="pieChart"
+      var chart1 = new google.visualization.PieChart(document.getElementById('pieChart-1'));
+      chart1.draw(data, options);
+
+      var chart3 = new google.visualization.PieChart(document.getElementById('pieChart-2'));
+      chart3.draw(data, options);
+      
     /////////////////////////////////// Bar Chart /////////////////////
     var data2 = google.visualization.arrayToDataTable([
       ['Test', 'Pass', 'Fail', 'Other', { role: 'annotation' }],
