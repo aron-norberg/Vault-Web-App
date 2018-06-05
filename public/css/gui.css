@@ -567,7 +567,6 @@ button[type=submit].login {
   border-radius: 50%;
   border: 5px solid transparent;
   border-top-color: #3498db;
-  ;
   -webkit-animation: spin 1.5s linear infinite;
   /* Chrome, Opera 15+, Safari 5+ */
   animation: spin 1.5s linear infinite;
