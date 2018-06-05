@@ -183,9 +183,13 @@ module.exports = function() {
   app.get('/dashboardTWO', api_dashboardTWO.render);
   app.get('/dashboard/locale/:locale', isLoggedIn, api_dashboard.getResultMetaByLocale);
   app.get('/dashboard/query/:custom', isLoggedIn, api_dashboard.getResultMetaByCustom);
+  app.get('/addUnreliableToTestResult', isLoggedIn, api_dashboard.addUnreliableToTestResult);
 
   // Dashboard page - delete Test Results by Id
   app.get('/deleteTestResults', isLoggedIn, api_dashboard.deleteTestResults);
+
+  // Dashboard Page - get log file from file system
+  app.post('/getlogfile', isLoggedIn, api_dashboard.getLogFile);
   
   // Results Pages 
   app.get('/results/locale/:locale', isLoggedIn, api_results.getResultByLanguage);

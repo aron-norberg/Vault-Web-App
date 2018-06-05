@@ -250,12 +250,19 @@ function runit() {
 
       data = JSON.parse(data);
 
-      console.log(data.testpassCount);
+      // Get the id 
+      let stopId = data.jsonStartPath;
 
-      if (data.testpassCount == 0) {
+
+      
+
+      console.log(data.testPassCount);
+
+      if (data.testPassCount == 0) {
 
         noticeBox.innerHTML = "";
       }
+
     }
   })
 }
@@ -604,6 +611,37 @@ function detectClassSwitch() {
 
 } // end detectClassSwitch()
 
+/************************
+ * Function: deleteTc()
+ * Purpose: Makes an ajax request and returns the proper logfile for behat output
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: June 2018
+ ************************/
+
+function getBehatLogFile(id) {
+
+  id = {
+    id: id
+  }
+
+  id = JSON.stringify(id);
+
+  $.ajax({
+    url: '/getlogfile',
+    type: 'POST',
+    data: id,
+    contentType: "application/json",
+    error: function(data) {
+      console.log(data + "Retrieving Log File failed.");
+    },
+    success: function(data) {
+      // This should be a log file
+      console.log(data);
+
+    }
+  })
+}
+
 
 /************************
  * Function: deleteTc()
@@ -630,9 +668,8 @@ function deleteTc() {
         console.log(data + 'Test case did not delete.');
       },
       success: function(data) {
+
         console.log(data);
-        console.log("Test case deleted!");
-        window.location = '/test-case-editor';
       }
 
     }) // end $.ajax
@@ -740,7 +777,7 @@ function exportGherkin() {
     data: finalObject,
     contentType: "application/json",
     error: function(data) {
-      console.log(data + "------------ it didn't work -----------------");
+      console.log(data + "Gherkin data has failed at ajax request response.");
     },
     success: function(data) {
       console.log(data);
@@ -922,6 +959,7 @@ function dashboardPage() {
 /************************
  * Function: deleteTestResults(Id)
  * Purpose: Deletes Test result by TestPassId from TestPass, Status, and Result tables from the dashboard page.
+ * Parameters: Id = Test Pass Id
  * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
  * Date: May 2018
  ************************/
@@ -956,7 +994,43 @@ function deleteTestResults(Id) {
   } // end if/else
 
 
+
 } // end deleteTestResults(Id)
+
+
+/************************
+ * Function: addUnreliableToTestResult()
+ * Purpose: Add a 0 value to reliable and Notes to the testPass table in the database.
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
+function addUnreliableToTestResult() {
+
+  var id = document.getElementById('idTestPass').innerHTML;
+  var ckBox = document.getElementById('unreliableCkbox').value;
+  var notes = document.getElementById('textareaNotes').value;
+  //console.log(id + ' - ' + ckBox + ' - ' + notes);
+
+  $.ajax({
+    url: "/addUnreliableToTestResult",
+    type: "Get",
+    data: {
+      id: id,
+      ckBox: ckBox,
+      notes: notes
+    },
+    success: function() {
+      console.log('success');
+      location.reload(true); //Refresh page
+
+    },
+    error: function() {
+      console.log('error');
+    }
+
+  }); // end .ajax()
+
+} // end unreliableCheckBox()
 
 /***********************************************************************
  ***  DASHBOARD SCRIPTS - END

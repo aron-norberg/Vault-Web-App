@@ -309,6 +309,12 @@ body {
   border: 1px solid #E5AB01;
 }
 
+.log-file-btn {
+  display: inline; 
+  float: left; 
+  margin:5px;
+}
+
 #runTest {
   background-color: #FFC20E;
   border: 1px solid #E5AB01;

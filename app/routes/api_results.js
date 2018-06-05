@@ -1075,7 +1075,7 @@ exports.getResultByIdLanguageCustomTestResult = function(req, res) {
 
   // Clean custom string to remove white space
 
-  custom.replace(/ /g,"%20");
+  //custom.replace(/ /g,"%20");
 
   let localUrlData = processLocalPageUrls(reqUrl);
   let paginationData = paginationProcess1of2(page, rowsToReturn);

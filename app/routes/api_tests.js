@@ -285,17 +285,19 @@ exports.startProcess = function(req, res) {
     script.stdin.end();
   });
 
-  let testPassCount = {
-    "testpassCount": count
+  let testPassData = {
+    "testPassCount": count,
+    "jsonStartPath": jsonPath
   }
 
-  testPassCount = JSON.stringify(testPassCount);
-  res.send(testPassCount);
+  testPassData = JSON.stringify(testPassData);
+  res.send(testPassData);
 }
 
 exports.stopTest = function(req, res) {
 
   let id = req.query.testid;
+  let testPassString = req.query.jsonStartPath;
 
   // Query Test Pass by id, get the PID
   db.sequelize.query(`SELECT Note from TestPass where TestPassId = "${id}"`).then(pid => {
@@ -309,7 +311,7 @@ exports.stopTest = function(req, res) {
     // Execute System command to stop the process by PID
 
     let spawn = require('child_process').spawn,
-      script = spawn('pkill', ['-9', pid]);
+      script = spawn('pkill', ['f', testPassString]);
 
     // get output 
     script.stdout.on('data', (data) => {
@@ -330,6 +332,8 @@ exports.stopTest = function(req, res) {
     });
 
     console.log(" I should be killing the processes.")
+
+    // create object with test id.
 
     res.send("process has been killed.");
 

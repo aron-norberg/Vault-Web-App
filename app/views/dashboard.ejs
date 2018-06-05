@@ -1,287 +1,330 @@
 <%- include('header') %>
-
   <script>
-    google.charts.load('current', { 'packages': ['corechart'] });
-    google.charts.setOnLoadCallback(drawCharts);
+  google.charts.load('current', { 'packages': ['corechart'] });
+  google.charts.setOnLoadCallback(drawCharts);
 
-    var passes = <%= overall.pass %>;
-    var fails = <%= overall.fail %>;
-    var others = <%= overall.skip %>;
- 
-    
-    // Draw the chart and set the chart values
-    function drawCharts() {
-      /////////////////////////////////// Pie Chart /////////////////////
+  var passes = <%= overall.pass %>;
+  var fails = <%= overall.fail %>;
+  var others = <%= overall.skip %>;
 
-      var data = google.visualization.arrayToDataTable([
-        ['Test', 'Passed or Failed'],
-        ['Passed', passes],
-        ['Failed', fails],
-        ['Other', others],
-      ]);
 
-      var myTitle = '';
-      if (<%= language =='ALL' %>) {
-        var legendLocation = { textStyle: { fontSize: 20 }, alignment: 'center', position: 'left' };
-        
-      } else {
-        var legendLocation = 'none';
-        
+  // Draw the chart and set the chart values
+  function drawCharts() {
+    /////////////////////////////////// Pie Chart /////////////////////
+
+    var data = google.visualization.arrayToDataTable([
+      ['Test', 'Passed or Failed'],
+      ['Passed', passes],
+      ['Failed', fails],
+      ['Other', others],
+    ]);
+
+    var myTitle = '';
+    if (<%= language =='ALL' %>) {
+      var legendLocation = { textStyle: { fontSize: 20 }, alignment: 'center', position: 'left' };
+
+    } else {
+      var legendLocation = 'none';
+
+    }
+
+    // Optional; add a title and set the width and height of the chart
+    // Options can be variables such as title: $Title
+    var options = {
+
+      'title': myTitle,
+      'titleTextStyle': { fontSize: 25, bold: true, color: '#070d18' },
+      <% if(testPassInfo.Reliable !== 0){ %>
+      'colors': ['#109618', '#DC3912', '#2569ff'],
+      <% } else { %>
+      'colors': ['#808080', '#000000', '#C0C0C0'],
+      <% } %>
+      'backgroundColor': '',
+      'is3D': true,
+      'chartArea': { width: '90%', height: '90%' },
+      'legend': legendLocation,
+      'slices': {
+        0: { offset: 0.0 },
+        1: { offset: 0.2 },
+        2: { offset: 0.0 }
       }
+    };
 
-      // Optional; add a title and set the width and height of the chart
-      // Options can be variables such as title: $Title
-      var options = {
+    /////////////////////////////////// Bar Chart /////////////////////
+    var data2 = google.visualization.arrayToDataTable([
+      ['Test', 'Pass', 'Fail', 'Other', { role: 'annotation' }],
 
-        'title': myTitle,
-        'titleTextStyle': { fontSize: 25, bold: true, color: '#070d18' },
-        <% if(testPassInfo.Reliable !== 0){ %>
-        'colors': ['#109618', '#DC3912', '#2569ff'],
-        <% } else { %>
-        'colors': ['#808080', '#000000', '#C0C0C0'],
-        <% } %>
-        'backgroundColor': '',
-        'is3D': true,
-        'chartArea': { width: '90%', height: '90%' },
-        'legend': legendLocation,
-        'slices': {
-          0: { offset: 0.0 },
-          1: { offset: 0.2 },
-          2: { offset: 0.0 }
-        }
-      };
-      
-      /////////////////////////////////// Bar Chart /////////////////////
-      var data2 = google.visualization.arrayToDataTable([
-        ['Test', 'Pass', 'Fail', 'Other', { role: 'annotation' }],
+      <% if(resultsTotal){ %>
+      <% for(var i=0; i < resultsTotal.length; i++) { %> ['<%= resultsTotal[i].feature %>', <%= resultsTotal[i].pass%>, <%= resultsTotal[i].fail%>, <%= resultsTotal[i].skip%>, ''],
 
-        <% if(resultsTotal){ %>
-        <% for(var i=0; i < resultsTotal.length; i++) { %> 
-          ['<%= resultsTotal[i].feature %>', <%= resultsTotal[i].pass%>, <%= resultsTotal[i].fail%>, <%= resultsTotal[i].skip%>, ''],
+      <% }} %>
 
-        <% }} %>
+    ]);
 
-      ]);
+    var options2 = {
 
-      var options2 = {
+      'title': '<%= language %>',
 
-        'title': '<%= language %>',
+      'isStacked': 'percent',
+      'titleTextStyle': { fontSize: 25, bold: true, color: '#070d18' },
+      'colors': ['#109618', '#DC3912', '#2569ff'],
+      'backgroundColor': '',
+      'is3D': true,
+      'chartArea': { width: '80%', height: '80%' },
+      'legend': { textStyle: { fontSize: 20 }, alignment: 'center', position: 'left' },
+      'hAxis': {
+        'minValue': 0,
+        'ticks': [0, .3, .6, .9, 1]
+      }
+    };
 
-        'isStacked': 'percent',
-        'titleTextStyle': { fontSize: 25, bold: true, color: '#070d18' },
-        'colors': ['#109618', '#DC3912', '#2569ff'],
-        'backgroundColor': '',
-        'is3D': true,
-        'chartArea': { width: '80%', height: '80%' },
-        'legend': { textStyle: { fontSize: 20 }, alignment: 'center', position: 'left' },
-        'hAxis': {
-          'minValue': 0,
-          'ticks': [0, .3, .6, .9, 1]
-        }
-      };
+    // Display the chart inside the <div> element with id="pieChart"
+    var chart1 = new google.visualization.PieChart($('#pieChart-1')[0]);
+    chart1.draw(data, options);
 
-      // Display the chart inside the <div> element with id="pieChart"
-      var chart1 = new google.visualization.PieChart($('#pieChart-1')[0]);
-      chart1.draw(data, options);
+    // Display the chart inside the <div> element with id="barGraph"
+    var chart2 = new google.visualization.BarChart($('#barGraph')[0]);
+    chart2.draw(data2, options2);
 
-      // Display the chart inside the <div> element with id="barGraph"
-      var chart2 = new google.visualization.BarChart($('#barGraph')[0]);
-      chart2.draw(data2, options2);
+    var chart3 = new google.visualization.PieChart($('#pieChart-2')[0]);
+    chart3.draw(data, options);
 
-      var chart3 = new google.visualization.PieChart($('#pieChart-2')[0]);
-      chart3.draw(data, options);
-
-    } //end of Draw Charts function 
-
-
+  } //end of Draw Charts function
 
   </script>
-
-
-<div id="loading" style="display: none;">
+  <div id="loading" style="display: none;">
     <div id="loader-wrapper">
       <div id="loader"></div>
-    </div><!--end of loader-wrapper-->
-</div><!--end of loading-->
-
-<div class="container-fluid" id="page">
-  <div class="row">
-    <div class="col-lg-4 offset-lg-4 text-center">
-      <br /><br>
-      <h2 id="h2Title"><%= title %></h2>
-      <!--<h5><span class="badge badge-light">ID: <%=// testPassInfo.TestPassId %></span> <%=// testPassInfo.Description %> </h5>-->
-      <!--<h5><b><%= //testPassInfo.RunDate %></b><h5>-->
-
-    </div><!-- end .col-lg-12 -->
-  </div><!-- end .row -->
-
-<% if( title === "Dashboard") { %>
-  <div class="row">
-    <div class="col-sm-12 col-lg-10 offset-lg-2 col-xl-9 offset-xl-3">
-      <form id="dashboardSelect" action="/dashboard" method="get" class="form-inline">
-        <div class="form-group">
-
-        <select class="form-control dashboardDropdown" name="testpassid" id="testpassid" onchange="this.form.submit()">
-          <option name="testpassid" value=""> Select a Set of Test Results </option>
-          
-          <% for(var i=0; i < testPassData.length; i++) { %> 
-          
-          <option name="testpassid" value="<%= testPassData[i].TestPassId %>">
-          
-          <%= testPassData[i].RunDate %> | Description: <%= testPassData[i].Description %>
-          </option>
-
-          <% }%>
-        </select>
-
-        </div><!-- end .form-group -->
-      </form><!-- end form -->
-    </div><!-- end .col-sm-12 col-lg-10 offset-lg-2 col-xl-9 offset-xl-3 -->
-  </div><!-- end .row -->
-
-  <% } %>
-
-  <br />
-
-  <div class="row text-center">
-    <div class="col-sm-12 col-lg-10 offset-lg-2 col-xl-9 offset-xl-3">
-
-      <!-- Title BEGIN -->
-      <div class="dashboardTitle">
-        <!-- Note (if unreliable) -->
-        <% if(testPassInfo.Reliable == 0){ %>
-          <h4 style="color:red;"><%= testPassInfo.Note %></h4> 
-        <% } %>
+    </div>
+    <!--end of loader-wrapper-->
+  </div>
+  <!--end of loading-->
+  <div class="container-fluid" id="page">
+    <div class="row">
+      <div class="col-lg-4 offset-lg-4 text-center">
+        <br />
+        <br>
+        <h2 id="h2Title"><%= title %></h2>
+        <!--<h5><span class="badge badge-light">ID: <%=// testPassInfo.TestPassId %></span> <%=// testPassInfo.Description %> </h5>-->
+        <!--<h5><b><%= //testPassInfo.RunDate %></b><h5>-->
       </div>
-    </div><!-- end .col-sm-12 col-lg-10 offset-lg-2 col-xl-9 offset-xl-3 -->
-  </div><!-- end .row -->
-  <!-- Title END -->
-  <!-- Dashboard-1 BEGIN -->
-  <div class="row text-center" id="dashboard-1">
-    <div class="col-sm-12 col-lg-6 col-xl-5 offset-xl-1">
-      <!-- legend module here -->
-      <div id="pieChart-1"></div>
-      <!-- legend module here -->
-    </div><!-- end .col-lg-5 offset-lg-3 col-xl-4 offset-xl-3 -->
-
-    <div class="col-sm-12 col-lg-5 col-xl-5" id="toolTipContainer">
-      <h4 id="toolTipTitle">Dropdown Tool Tip</h4>
-      <div id="dropdownToolTip">
-        <% if(testPassId == null){ %>
-            <span><%= language %></span> 
-          <% } 
+      <!-- end .col-lg-12 -->
+    </div>
+    <!-- end .row -->
+    <% if( title === "Dashboard") { %>
+      <div class="row">
+        <div class="col-sm-12 col-lg-10 offset-lg-2 col-xl-9 offset-xl-3">
+          <form id="dashboardSelect" action="/dashboard" method="get" class="form-inline">
+            <div class="form-group">
+              <select class="form-control dashboardDropdown" name="testpassid" id="testpassid" onchange="this.form.submit()">
+                <option name="testpassid" value=""> Select a Set of Test Results </option>
+                <% for(var i=0; i < testPassData.length; i++) { %>
+                  <option name="testpassid" value="<%= testPassData[i].TestPassId %>">
+                    <%= testPassData[i].RunDate %> | Description:
+                      <%= testPassData[i].Description %>
+                  </option>
+                  <% }%>
+              </select>
+            </div>
+            <!-- end .form-group -->
+          </form>
+          <!-- end form -->
+        </div>
+        <!-- end .col-sm-12 col-lg-10 offset-lg-2 col-xl-9 offset-xl-3 -->
+      </div>
+      <!-- end .row -->
+      <% } %>
+        <br />
+        <div class="row text-center">
+          <div class="col-sm-12 col-lg-10 offset-lg-2 col-xl-9 offset-xl-3">
+            <!-- Title BEGIN -->
+            <div class="dashboardTitle">
+              <!-- Note (if unreliable) -->
+              <% if(testPassInfo.Reliable == 0){ %>
+                <h4 style="color:red;"><%= testPassInfo.Note %></h4>
+                <% } %>
+            </div>
+          </div>
+          <!-- end .col-sm-12 col-lg-10 offset-lg-2 col-xl-9 offset-xl-3 -->
+        </div>
+        <!-- end .row -->
+        <!-- Title END -->
+        <!-- Dashboard-1 BEGIN -->
+        <div class="row text-center" id="dashboard-1">
+          <div class="col-sm-12 col-lg-6 col-xl-5 offset-xl-1">
+            <!-- legend module here -->
+            <div id="pieChart-1"></div>
+            <!-- legend module here -->
+          </div>
+          <!-- end .col-lg-5 offset-lg-3 col-xl-4 offset-xl-3 -->
+          <div class="col-sm-12 col-lg-5 col-xl-5" id="toolTipContainer">
+            <h4 id="toolTipTitle">Dropdown Tool Tip</h4>
+            <div id="dropdownToolTip">
+              <% if(testPassId == null){ %>
+                <span><%= language %></span>
+                <% } 
           else { //console.log(testPassInfo);%>
-            <span>ID: <%= testPassInfo.TestPassId %><br />
+                  <span>ID: <%= testPassInfo.TestPassId %><br />
               Template: <%= testPassInfo.Template %><br />
               Language: <%= testPassInfo.Language %><br />
               Test cases: <%= testPassInfo.TestCases %><br />
               Run date: <%= testPassInfo.RunDate %><br />
               Reliable: <%= testPassInfo.Reliable %><br />
               Note: <%= testPassInfo.Note %><br />
-              Description: <%= testPassInfo.Description %></span>
-        <% } %>
-      </div>
-      
-      <% if(user.role === 2) { %>
-        
-        <div class="delBtnCont">
-          <input type="button" id="delBtn" value="Delete" onclick="deleteTestResults(<%= testPassInfo.TestPassId %>);" />
+              Description: <%= testPassInfo.Description %><br>
+              </span>
+                  <% } %>
+            </div>
+            <% if(user.role === 2) { %>
+              <div class="log-file-btn">
+                <span href class="btn btn-sm btn-outline-secondary" id="behat-log" onclick="getBehatLogFile(<%= testPassInfo.TestPassId %>)">Behat Log</span>
+              </div>
+              <div class="delBtnCont">
+                <input class="btn btn-sm btn-outline-danger" type="button" id="delBtn" value="Delete" onclick="deleteTestResults(<%= testPassInfo.TestPassId %>);" />
+              </div>
+              <form name="<%= testPassInfo.TestPassId  %>" action="/addUnreliableToTestResult" method="get">
+                <div class="delBtnCont">
+                  <label for="unreliableCkbox">
+                    <input type="checkbox" id="unreliableCkbox" data-toggle="modal" data-target="#unreliableModal" value="0" /> Unreliable</label>
+                </div>
+                <!-- Modal BEGIN -->
+                <div class="modal fade" id="unreliableModal" tabindex="-1" role="dialog" aria-labelledby="unreliableModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Unreliable Test</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="row">
+                          <div class="col-lg-12" style="text-align: left;">
+                            <p>ID: <span id="idTestPass"><%= testPassInfo.TestPassId %></span>
+                              <br /> Template:
+                              <%= testPassInfo.Template %>
+                                <br /> Language:
+                                <%= testPassInfo.Language %>
+                            </p>
+                          </div>
+                          <!-- end .col-lg-12 -->
+                        </div>
+                        <!-- end .row -->
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <div class="form-group">
+                              <label for="usr">Add a Note:</label>
+                              <textarea class="form-control notes" name="message" id="textareaNotes" rows="5"></textarea>
+                            </div>
+                          </div>
+                          <!-- end .col-lg-12 -->
+                        </div>
+                        <!-- end .row -->
+                      </div>
+                      <!-- end .modal-body -->
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="addUnreliableToTestResult();">Save changes</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Modal END -->
+              </form>
+              <!-- end form -->
+              <% } %>
+          </div>
+          <!-- end .col-lg-4 col-xl-3 -->
         </div>
-
-        <div class="delBtnCont">
-          <label for="unreliableCkbox"><input type="checkbox" id="unreliableCkbox" value="0" onclick="#" /> Unreliable</label>
-        </div>
-
-      <% } %>
-
-    </div><!-- end .col-lg-4 col-xl-3 -->
-  </div><!-- end .row / #dashboard-1 -->
-  <!-- Dashboard-1 END -->
-
-
-  <!-- Dashboard-2 BEGIN -->
-  <div class="row text-center" id="dashboard-2">
-    <div class="col-sm-12 col-lg-4 offset-lg-2">
-      <br /><br />
-      <!-- Module for Specific Language -->
-      <% if(language != "ALL"){ console.log("this is the url: " +  currentUrl);%>
-      <div class="drill-down passFailSkipLegend">
-        
-        <a href="/results/feature/<%= feature %>/locale/<%= language %>/testresult/PASS?testpassid=<%= testPassId %>">
+        <!-- end .row / #dashboard-1 -->
+        <!-- Dashboard-1 END -->
+        <!-- Dashboard-2 BEGIN -->
+        <div class="row text-center" id="dashboard-2">
+          <div class="col-sm-12 col-lg-4 offset-lg-2">
+            <br />
+            <br />
+            <!-- Module for Specific Language -->
+            <% if(language != "ALL"){ console.log("this is the url: " +  currentUrl);%>
+              <div class="drill-down passFailSkipLegend">
+                <a href="/results/feature/<%= feature %>/locale/<%= language %>/testresult/PASS?testpassid=<%= testPassId %>">
           <span class="legend Pass"></span>
           <span class="LinksToResults">Pass</span>
         </a>
-        <a href="/results/feature/<%= feature %>/locale/<%= language %>/testresult/FAIL?testpassid=<%= testPassId %>">
+                <a href="/results/feature/<%= feature %>/locale/<%= language %>/testresult/FAIL?testpassid=<%= testPassId %>">
           <span class="legend Fail"></span>
           <span class="LinksToResults">Fail</span>
         </a>
-        <a href="/results/feature/<%= feature %>/locale/<%= language %>/testresult/SKIP?testpassid=<%= testPassId %>">
+                <a href="/results/feature/<%= feature %>/locale/<%= language %>/testresult/SKIP?testpassid=<%= testPassId %>">
           <span class="legend Skip"></span>
           <span class="LinksToResults">Skip</span>
         </a>
-      </div><!-- end .drill-down -->
-      <%}%>
-        <!-- legend module here -->
-        <div id="pieChart-2"></div>
-        <!-- legend module here -->
-    </div><!-- end .col-lg-5 offset-lg-3 col-xl-4 offset-xl-4 -->
-    
-    <div class="col-sm-12 col-lg-6 col-xl-5" id="barGraphCont">
-      <!-- Secondary Bar Graph Goes here -->
-      <% if(resultsTotal){ %>
-        <div id="barGraph" class="pieChart">BarGraph</div>
-        <%  } %>
-      <!-- Secondary Bar Graph Ends here -->
-    </div><!-- end .col-lg-4 col-xl-4 -->
-  </div><!-- end .row / #dashboard-2 -->
-    <!-- Dashboard-2 END -->
-
-  <br />
-    
-  <div class="row">
-    <div class="col-lg-8 offset-lg-2 col-xl-6 offset-xl-3">
-      <!-- Dashboard button links : BEGIN-->
-      <% if(!resultsTotal){ %>
-        <h3> Click on Locale links for more detailed information:</h3>
-        <h6>Please note that results may take a few moments to load.</h6>
+              </div>
+              <!-- end .drill-down -->
+              <%}%>
+                <!-- legend module here -->
+                <div id="pieChart-2"></div>
+                <!-- legend module here -->
+          </div>
+          <!-- end .col-lg-5 offset-lg-3 col-xl-4 offset-xl-4 -->
+          <div class="col-sm-12 col-lg-6 col-xl-5" id="barGraphCont">
+            <!-- Secondary Bar Graph Goes here -->
+            <% if(resultsTotal){ %>
+              <div id="barGraph" class="pieChart">BarGraph</div>
+              <%  } %>
+                <!-- Secondary Bar Graph Ends here -->
+          </div>
+          <!-- end .col-lg-4 col-xl-4 -->
+        </div>
+        <!-- end .row / #dashboard-2 -->
+        <!-- Dashboard-2 END -->
         <br />
-        <br />
-        <% for(var i=0; i < languagesArray.length; i++) { %>
-          <a href='/dashboard/locale/<%= languagesArray[i].Language %>?testpassid=<%= testPassId %>'>
-            <button type="button" class="btn btn-warning locale-button" onclick="loadingAnimation()">
-              <b><%= languagesArray[i].Language %></b>
-            </button>
-          </a>
-        <% }%><!-- end for(var i=0; i < languagesArray.length; i++) -->
-      <% }%><!-- end if(!resultsTotal) -->
-      <!-- Dashboard button links : END -->
-
-
-      <!-- Results by Language button links : BEGIN-->
-      <% if(resultsTotal){ %>
-        <h3> Click on Feature links below for more detailed information:</h3>
-        <h6>Please note that results may take a few moments to load.</h6>
-        <br>
-        <br>
-        <% for(var i=0; i < resultsTotal.length; i++) { 
+        <div class="row">
+          <div class="col-lg-8 offset-lg-2 col-xl-6 offset-xl-3">
+            <!-- Dashboard button links : BEGIN-->
+            <% if(!resultsTotal){ %>
+              <h3> Click on Locale links for more detailed information:</h3>
+              <h6>Please note that results may take a few moments to load.</h6>
+              <br />
+              <br />
+              <% for(var i=0; i < languagesArray.length; i++) { %>
+                <a href='/dashboard/locale/<%= languagesArray[i].Language %>?testpassid=<%= testPassId %>'>
+                  <button type="button" class="btn btn-warning locale-button" onclick="loadingAnimation()">
+                    <b><%= languagesArray[i].Language %></b>
+                  </button>
+                </a>
+                <% }%>
+                  <!-- end for(var i=0; i < languagesArray.length; i++) -->
+                  <% }%>
+                    <!-- end if(!resultsTotal) -->
+                    <!-- Dashboard button links : END -->
+                    <!-- Results by Language button links : BEGIN-->
+                    <% if(resultsTotal){ %>
+                      <h3> Click on Feature links below for more detailed information:</h3>
+                      <h6>Please note that results may take a few moments to load.</h6>
+                      <br>
+                      <br>
+                      <% for(var i=0; i < resultsTotal.length; i++) { 
           if(resultsTotal[i].pass > 0 || resultsTotal[i].fail >0 || resultsTotal[i].skip >0){%>
+                        <a href='/results/feature/<%= resultsTotal[i].feature %>/locale/<%= language %>?testpassid=<%= testPassId %>'>
+                          <button type="button" class="btn btn-warning locale-button" onclick="loadingAnimation()">
+                            <b><%=resultsTotal[i].feature%></b>
+                            <br>
+                          </button>
+                        </a>
+                        <% }} %>
+                          <!-- end for(var i=1; i < 25; i++) -->
+                          <% } %>
+                            <!-- end if(resultsTotal) -->
+                            <!-- Results by Language button links : END -->
+          </div>
+          <!-- end .col-lg-8 offset-lg-2 col-xl-6 offset-xl-3 -->
+        </div>
+        <!-- end .row -->
+  </div>
+  <!-- end .container-fluid -->
+  <script>
+  // Please leave this scrip here because it activates with page load. 
+  document.addEventListener('DOMContentLoaded', function() { dashboardPage(); }, false);
 
-            <a href='/results/feature/<%= resultsTotal[i].feature %>/locale/<%= language %>?testpassid=<%= testPassId %>'>
-              <button type="button" class="btn btn-warning locale-button" onclick="loadingAnimation()">
-              <b><%=resultsTotal[i].feature%></b>
-              <br>
-              </button>
-            </a>
-        <% }} %><!-- end for(var i=1; i < 25; i++) -->
-      <% } %><!-- end if(resultsTotal) -->
-      <!-- Results by Language button links : END -->
-    </div><!-- end .col-lg-8 offset-lg-2 col-xl-6 offset-xl-3 -->
-  </div><!-- end .row -->
-</div><!-- end .container-fluid -->
-
-<script>
-// Please leave this scrip here because it activates with page load. 
-document.addEventListener('DOMContentLoaded', function() { dashboardPage(); }, false);
-</script>
-
-<%- include('footer') %>
+  </script>
+  <%- include('footer') %>

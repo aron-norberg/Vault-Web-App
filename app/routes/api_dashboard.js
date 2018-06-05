@@ -6,13 +6,17 @@ const Sequelize = require('sequelize');
 const dateFormat = require('dateformat');
 const moment = require('moment');
 
-
-
+const fs = require('fs');
+var mkdirp = require('mkdirp');
+const path = require('path');
+//### NEED to find out correct path
+let rootPath = path.normalize(__dirname + '../../../');
+let logFilePath = rootPath + '/behat_projects/master_tests/logs';
 
 // Create a new 'render' controller method
 // this runs when the user comes to the page, or selects from the dropdown menu of test date options
 exports.getOverview = function(req, res) {
-  
+
   let feature = "ALL";
   let language = "ALL";
   let lang = [];
@@ -27,7 +31,7 @@ exports.getOverview = function(req, res) {
   let note = null;
   let description = null;
   let queryString = "";
-  let idArray =[];
+  let idArray = [];
 
   let overall = {
     pass: 0,
@@ -44,7 +48,7 @@ exports.getOverview = function(req, res) {
 
   if (!req.query.testpassid) { // happens when the user first opens the page
 
-    db.sequelize.query(`select TestPassId from Status where EndTime > '1971' order by RunDate DESC;`).then(testPassId => { 
+    db.sequelize.query(`select TestPassId from Status where EndTime > '1971' order by RunDate DESC;`).then(testPassId => {
 
       testPassIds = testPassId[0];
       testPassId = testPassId[0][0].TestPassId;
@@ -54,11 +58,11 @@ exports.getOverview = function(req, res) {
     });
 
   } else {
-    db.sequelize.query(`select TestPassId from Status where EndTime > '1971' order by RunDate DESC;`).then(testPassId => { 
+    db.sequelize.query(`select TestPassId from Status where EndTime > '1971' order by RunDate DESC;`).then(testPassId => {
 
       testPassIds = testPassId[0];
       testPassId = parseInt(req.query.testpassid); // happens when a user selects from the dropdown
-      
+
       GetResultOverview(testPassId, testPassIds);
       // console.log("second thing "+ testPassId);
     });
@@ -69,23 +73,22 @@ exports.getOverview = function(req, res) {
 
     db.sequelize.query(`select distinct Language from Result where TestPassID = ${testPassId};`).then(results => {
 
-      results = results[0];                     // happens when page is opened or a user selects from the dropdown
+      results = results[0]; // happens when page is opened or a user selects from the dropdown
       // console.log("third thing");
       //console.log(results[0].Language);
 
       lang = results;
       //console.log('The value is - ' + lang[0].Language);
 
-      if (testPassIds){
-        for (var x =0; x<testPassIds.length; x++){
+      if (testPassIds) {
+        for (var x = 0; x < testPassIds.length; x++) {
           idArray.push(testPassIds[x].TestPassId);
           // console.log(idArray);
         }
         let string = idArray.join("' OR TestPassId = '");
-        queryString = "select TestPassId, Template, Language, TestCases, RunDate, Description, Reliable, Note from TestPass where TestPassId = '"+ string +"' order by RunDate DESC;";
+        queryString = "select TestPassId, Template, Language, TestCases, RunDate, Description, Reliable, Note from TestPass where TestPassId = '" + string + "' order by RunDate DESC;";
         // console.log ("queryString is "+queryString);
-      }
-      else {
+      } else {
         queryString = 'select TestPassId, Template, Language, TestCases, RunDate, Description, Reliable, Note from TestPass order by RunDate DESC;';
       }
       db.sequelize.query(queryString).then(results => {
@@ -96,7 +99,7 @@ exports.getOverview = function(req, res) {
 
         for (let i = testPassData.length - 1; i >= 0; i--) {
           testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "mm-dd-yy h:MM TT"); // + " PST";
-          
+
           if (testPassData[i].TestPassId === testPassId) {
             testPassInfo = testPassData[i];
             template = testPassData[i].Template;
@@ -105,13 +108,13 @@ exports.getOverview = function(req, res) {
             note = testPassData[i].Note;
             description = testPassData[i].Description;
           }
-        
+
         }
 
         // select count(*) from results where result = 'PASS';
         db.sequelize.query(`select count(*) from Result where Result = 'PASS' and TestPassID = ${testPassId};`).then(results => {
 
-          results = results[0];              //these are what populate the google chart on the Dashboard (overall...)
+          results = results[0]; //these are what populate the google chart on the Dashboard (overall...)
 
           overall.pass = JSON.stringify(results[0]);
           overall.pass = overall.pass.replace("{\"count(*)\":", "");
@@ -576,12 +579,11 @@ exports.deleteTestResults = function(req, res) {
       TestPassId: req.query.Id
     }
 
-  }).then(function (TestPass) {
+  }).then(function(TestPass) {
 
     if (TestPass >= 1) {
       console.log('PASS:  Test result - ' + Id + ' has been deleted from TestPass table.');
-    }
-    else {
+    } else {
       console.log('FAIL: Test result - ' + Id + ' was not found in TestPass table.');
     }
 
@@ -593,12 +595,11 @@ exports.deleteTestResults = function(req, res) {
       TestPassId: req.query.Id
     }
 
-  }).then(function (Status) {
+  }).then(function(Status) {
 
     if (Status >= 1) {
       console.log('PASS: Test result - ' + Id + ' has been deleted from Status table.');
-    }
-    else {
+    } else {
       console.log('FAIL: Test result - ' + Id + ' was not found in Status table.');
     }
 
@@ -610,12 +611,11 @@ exports.deleteTestResults = function(req, res) {
       TestPassId: req.query.Id
     }
 
-  }).then(function (Result) {
+  }).then(function(Result) {
 
     if (Result >= 1) {
       console.log('PASS: Test result - ' + Id + ' has been deleted from Result table.');
-    }
-    else {
+    } else {
       console.log('FAIL: Test result - ' + Id + ' was not found in Result table.');
     }
 
@@ -624,3 +624,48 @@ exports.deleteTestResults = function(req, res) {
   res.redirect('/dashboard');
 
 }; // end exports.deleteTestResults = function(req, res)
+
+
+exports.addUnreliableToTestResult = function(req, res) {
+  //console.log("Hello Waldo!");
+
+  let TestPassId = req.query.id
+  let Reliable = req.query.ckBox
+  let Note = req.query.notes
+  //console.log(TestPassId + ' - ' + Reliable + ' - ' + Note);
+
+  db.TestPass.update({ Reliable: Reliable }, { where: { TestPassId: TestPassId } }).then(function(TestPass) {
+    console.log("Reliable status has been updated!")
+  });
+
+  db.TestPass.update({ Note: Note }, { where: { TestPassId: TestPassId } }).then(function(TestPass) {
+    console.log("Note record has been updated!")
+  });
+
+  res.send('success')
+
+}; // end exports.unreliable = function(req, res)
+
+
+// This function returns the log file based on the specified test pass id
+
+exports.getLogFile = function(req, res) {
+ 
+  //behat_projects/master_tests/logs'
+
+  let filename = "test-pass-id-" + req.body.id + ".txt";
+
+  let filepath = logFilePath + "/" + filename;
+
+  //res.setHeader(`Content-disposition', 'attachment', filename=${filename}`);
+  res.sendFile(filepath);
+
+}
+
+
+
+
+
+
+
+
