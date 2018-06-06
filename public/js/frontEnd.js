@@ -723,6 +723,11 @@ function runit() {
   // Parse Test Case Data
   tcs = document.getElementById('chosenTestCases').innerHTML.split("\n");
 
+  // Validate if all 
+  let tcsCheckIfAll = tcs;
+  tcsCheckIfAll = tcs[1];
+  tcsCheckIfAll = tcsCheckIfAll.split(";").pop();
+
   if(tcsCheckIfAll.includes("all")){
 
     tcs[0] = "all";
