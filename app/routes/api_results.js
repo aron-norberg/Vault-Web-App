@@ -189,9 +189,13 @@ function renderPage(renderPageData, req, res) {
   let testPassId = renderPageData.testPassId;
   let total = renderPageData.results.count;
 
-  custom = custom.replace(/[^a-zA-Z0-9%]/g, "%");
-  console.log("custom = "+ custom + "<-------------------------------------------------------------------");
 
+  if (typeof custom != "undefined"){
+    custom = custom.replace(/[^a-zA-Z0-9%]/g, "%");
+    
+  }
+  console.log("custom = "+ custom + "<-------------------------------------------------------------------");
+  console.log (typeof custom);
   // console.log(users + "users");
   //console.log(testPassData + "testPassData");
   //console.log(length + "length");  
