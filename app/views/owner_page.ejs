@@ -1,0 +1,78 @@
+<%- include('header') %>
+
+
+<div id="loading" style="display: none;">
+    <div id="loader-wrapper">
+        <div id="loader"></div>
+    </div><!--end of loader-wrapper-->
+</div><!--end of loading-->
+
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-4 offset-lg-4 text-center">
+      <br /><br />
+      <h1><%= title%></h1>
+      
+    </div><!-- end .col-sm-12 -->
+  </div><!-- end .row -->
+  <br />
+
+
+    <div class="row">
+        <div class="col-sm-12 col-lg-10 offset-lg-2 col-xl-9 offset-xl-3">
+            <form id="userSelect" action="/owner_page" method="get" class="form-inline">
+                <div class="form-group">
+                    <select class="form-control dashboardDropdown" name="username" id="username" onchange="this.form.submit()">
+                        <option name="testpassid" value=""> Select a User </option>
+                        <% for(var i=0; i < theNames.length; i++) { 
+                            if(theNames[i].firstname == user.firstname){%>
+                            <option name="theNames" value="<%= theNames[i].firstname %>" selected><%= theNames[i].firstname %> <%= theNames[i].lastname %>
+                            </option>
+                            <%} else{ %>
+                            <option name="theNames" value="<%= theNames[i].firstname %>"><%= theNames[i].firstname %> <%= theNames[i].lastname %>
+                            </option>
+                        <% }} %>
+                    </select>
+                </div>
+                <!-- end .form-group -->
+            </form>
+            <!-- end form -->
+        </div>
+        <!-- end .col-sm-12 col-lg-10 offset-lg-2 col-xl-9 offset-xl-3 -->
+    </div>
+    <!-- end .row -->
+
+
+
+  <div class="row">
+    <div class="col-lg-6 offset-lg-3 col-md-6 offset-md-3 form-group">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Test Pass ID</th>
+                    <th scope="col">Template</th>
+                    <th scope="col">Language</th>
+                    <th scope="col">Scenario</th>
+                    <th scope="col">Note</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                <% for (var x = 0; x < results.length; x++){ %>
+                <tr> 
+                    <td scope="col"><%=results[x].Id%></td>
+                    <td scope="col"><%=results[x].Template%></td>
+                    <td scope="col"><%=results[x].Language%></td>
+                    <td scope="col"><%=results[x].Output%></td>
+                    <td scope="col"><%=results[x].Notes%></td>   
+                </tr>>
+                <% } %>
+            </tbody>
+        </table>
+    </div><!-- end .col-md-6 offset-md-3 -->
+  </div><!-- end .row -->
+</div><!-- end .container-fluid -->
+
+
+<%- include('footer') %>
