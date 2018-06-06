@@ -189,6 +189,7 @@ function renderPage(renderPageData, req, res) {
   let testPassId = renderPageData.testPassId;
   let total = renderPageData.results.count;
 
+  console.log("custom = "+ custom + "<-------------------------------------------------------------------");
 
   // console.log(users + "users");
   //console.log(testPassData + "testPassData");
