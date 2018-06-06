@@ -25,7 +25,8 @@ module.exports = function(passport, user) {
 
   });
 
-
+  
+  //LOCAL SIGNUP
   passport.use('local-signup', new LocalStrategy(
 
     {
@@ -44,7 +45,8 @@ module.exports = function(passport, user) {
 
         if (user) {
           return done(null, false, { message: 'That email is already taken' });
-        } else {
+        } 
+        else {
           let userPassword = generateHash(password);
 
           let data = {
@@ -52,23 +54,32 @@ module.exports = function(passport, user) {
             email: email,
             password: userPassword,
             firstname: req.body.firstname,
-            lastname: req.body.lastname
+            lastname: req.body.lastname,
+            role: req.body.role
           };
 
-          User.create(data).then(function(newUser, created) {
+          User.create(data).then(function(newUser) {
+            //var newUser = data.firstname + ' ' + data.lastname;
+            //console.log("New user " + newUser + " was created!");
+            
             if (!newUser) {
               return done(null, false);
             }
 
             if (newUser) {
               return done(null, newUser);
-
             }
-          });
-        }
-      });
-    }
-  ));
+
+          }); // end User.create(data).then(function(newUser, created) 
+
+        } // end if/else
+
+      }); // end User.findOne({ where: { email: email } }).then(function(user)
+
+    } // end passport.use('local-signup', new LocalStrategy()
+
+  )); // end module.exports = function(passport, user)
+
 
   //LOCAL SIGNIN
   passport.use('local-signin', new LocalStrategy(

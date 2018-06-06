@@ -1164,7 +1164,7 @@ exports.getResultByIdLanguageCustomTestResult = function(req, res) {
   custom = custom.split(' ').join('%');
   //custom.replace(/ /g,"%20");
 
-  console.log("our custom is "+custom);
+  //console.log("our custom is "+custom);
 
   let localUrlData = processLocalPageUrls(reqUrl);
   let paginationData = paginationProcess1of2(page, rowsToReturn);

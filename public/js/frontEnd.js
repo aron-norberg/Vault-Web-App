@@ -1,10 +1,533 @@
 // Invoke 'strict' JavaScript mode
 'use strict';
 
+/***********************************************************************
+ ***  Dashboard scripts - BEGIN
+ ***********************************************************************/
+
+/************************
+ * Function: dashboardPage()
+ * Purpose: Hides container id='dashboard-2' if title = 'Dashboard' if not then it shows its on the dashboard page.
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+************************/
+
+function dashboardPage() {
+  var dashboardTitle = document.getElementById('h2Title').innerHTML;
+
+  if (dashboardTitle === 'Dashboard') {
+    //document.getElementById('dashboard-1').style.display = "block";
+    document.getElementById('dashboard-2').style.display = "none";
+  } 
+  else {
+    document.getElementById('dashboard-1').style.display = "none";
+    //document.getElementById('dashboard-2').style.display = "block";
+  }
+} // end dashboardPage()
+
+
+/************************
+ * Function: deleteTestResults(Id)
+ * Purpose: Deletes Test result by TestPassId from TestPass, Status, and Result tables from the dashboard page.
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+************************/
+
+function deleteTestResults(Id) {
+  
+  var delConfirm = confirm("Are you sure you want to delete test result ID: " + Id + "?");
+  
+  if (delConfirm == true) {
+  
+    $.ajax({
+    url: "/deleteTestResults",
+    type: "GET",
+    dataType: "html",
+    data: {
+      Id: Id
+    },
+    success : function() {
+      console.log('success');
+      window.location = '/dashboard';
+  
+    }, // end success : function()
+    error : function() {
+      console.log('error');
+  
+    } // end error : function()
+  
+    }); // end .ajax()
+  
+  }
+  else {
+    //alert('Delete canceled!');
+  
+  } // end if/else
+  
+  
+} // end deleteTestResults(Id)
+
+
+/************************
+ * Function: addUnreliableToTestResult()
+ * Purpose: Add a 0 value to reliable and Notes to the testPass table in the database.
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+************************/
+
+function addUnreliableToTestResult() {
+
+  var Id = document.getElementById('idTestPass').innerHTML;
+  var ckBox = document.getElementById('unreliableCkbox').value;
+  var notes = document.getElementById('textareaNotes').value;
+  var unreliableConfirm = confirm("Are you sure you want to mark this test result ID: " + Id + " unreliable?");
+
+  if (unreliableConfirm == true) {
+
+    $.ajax({
+      url: "/addUnreliableToTestResult",
+      type: "Get",
+      data: {
+        Id: Id,
+        ckBox : ckBox,
+        notes : notes
+      },
+      success : function() {
+        console.log('success');
+        location.reload(true); //Refresh page
+  
+      },
+      error : function() {
+        console.log('error');
+      }
+  
+    }); // end .ajax()
+
+  }
+  else {
+    //alert('unreliable canceled!');
+  
+  } // end if/else
+
+} // end unreliableCheckBox()
+
+/***********************************************************************
+ ***  DASHBOARD SCRIPTS - END
+***********************************************************************/
+
+
+/***********************************************************************
+ ***  EXPORT RESULTS SCRIPTS - BEGIN
+***********************************************************************/
+
+function exportSelections() { //this function is triggered on the "Export Data" button.
+
+  let template = '';
+  let language = '';
+  let testresult = "";
+  let query = "";
+  let thehref = "";
+
+  let TchildCount = document.getElementById("pageChildren").children.length;
+  let LchildCount = document.getElementById("langChildren").children.length;
+
+  template = document.getElementById("pageChildren").children[0].id; // this takes the first child and puts it in 'template'
+  template = template.slice(0, -1);
+
+  for (var x = 1; x < TchildCount; x++) { // if there are additional children, we add a comma and the feature page for each child
+    let t = document.getElementById("pageChildren").children[x].id;
+    t = t.slice(0, -1);
+    template = template + "," + t;
+  }
+
+  language = document.getElementById("langChildren").children[0].id; // this takes the first language child and puts it in 'language'
+  language = language.slice(0, -1);
+
+  for (var y = 1; y < LchildCount; y++) { // if additional languages were chosen, we add a comma and the language for each one selected
+    let l = document.getElementById("langChildren").children[y].id;
+    l = l.slice(0, -1);
+    language = language + "," + l;
+  }
+
+  var testdate = document.getElementById("radialChild").children[0].id;
+  testdate = testdate.slice(0, -1);
+  // testdate = testdate.substring(0, testdate.indexOf(' | '))
+  console.log("the testdate is " + testdate);
+  console.log("/export?feature=" + template + "&language=" + language + "&testresult=" + testresult + "&query=" + query + "&testpassid=" + testdate);
+
+  //the href will contain a list of each languages as 'en-us,de-de' and features will be 'f1,f3,f5' 
+  // in the getExportFromResults() function on 'api_export.js' these commas are watched for, so that the string can be split to an array and a query created for all the selections
+
+  //thehref="/export?feature="+ template + "&language=" + language + "&testresult=" + testresult + "&query=" + query + "&testpassid=" + testdate;
+  thehref = "/export?feature=" + template + "&language=" + language + "&testresult=" + testresult + "&query=" + query + "&testpassid=" + testdate;
+  document.getElementById("myhref").href = thehref;
+
+  // location.reload(); //resets the export selection tool
+
+} // end exportSelections()
+
+// This function populates the languages and templates for display in the drop-down menus.
+function displayInfo(data, id) {
+  document.getElementById("testData").innerHTML = (data);
+  document.getElementById("langButton").disabled = false;
+  document.getElementById("mybutton").disabled = false;
+  document.getElementById("runTest").disabled = false;
+  var lkids = document.getElementById("langChildren");
+  var pkids = document.getElementById("pageChildren");
+
+  while (lkids.firstChild) {
+    lkids.removeChild(lkids.firstChild);
+  }
+
+  while (pkids.firstChild) {
+    pkids.removeChild(pkids.firstChild);
+  }
+
+  //clear out any content in the language and template dropdowns
+  var langParent = document.getElementById("langList");
+  while (langParent.hasChildNodes() && langParent.lastChild.id != "langAll") {
+    langParent.removeChild(langParent.lastChild);
+  }
+
+  var templateParent = document.getElementById("featureUL");
+  while (templateParent.hasChildNodes() && templateParent.lastChild.id != "tempAll") {
+    templateParent.removeChild(templateParent.lastChild);
+  }
+
+  let exportObject = {
+    "testPass": id
+  };
+
+  let object = JSON.stringify(exportObject);
+
+  $.ajax({
+    url: '/getTemplatesAndLangFromTestPass',
+    type: 'POST',
+    data: object,
+    contentType: "application/json",
+    error: function(data) {
+      console.log("This is the data" + data);
+      if (data.testpassCount == 0) {
+        noticeBox.innerHTML = "";
+      }
+    },
+    success: function(data) {
+      console.log(data);
+      console.log("Successful post request.");
+
+      data = JSON.parse(data);
+      // Get the id 
+      let stopId = data.jsonStartPath;
+      // console.log(data.testPassCount);
+
+      if (data.testPassCount == 0) {
+        noticeBox.innerHTML = "";
+      }
+
+      // if the query was successful, populate the lang and template dropdowns with the results
+      var theTemplates = data[0].Template.split(",");
+      var theLanguages = data[0].Language.split(",");
+      console.log(theTemplates + "<---");
+      console.log(theLanguages + "<---");
+
+      for (var x = 0; x < theLanguages.length; x++) {
+        var node = document.createElement("LI");
+        node.setAttribute("class", "width-set dropdown-item");
+
+        var span = document.createElement("SPAN");
+        span.setAttribute("id", "langParent-" + [x]);
+
+        var langinputItem = document.createElement("input");
+        langinputItem.setAttribute("class", "lang double");
+        langinputItem.setAttribute("type", "checkbox");
+        langinputItem.setAttribute("id", theLanguages[x]);
+        langinputItem.setAttribute("onclick", "displayChecked(this.id, 'langList', 'LAll', 'langChildren', 'span')");
+
+        var langtextnode = document.createTextNode("  " + theLanguages[x]);
+        node.appendChild(span);
+        span.appendChild(langinputItem);
+        span.appendChild(langtextnode);
+        document.getElementById("langList").appendChild(node);
+      }
+
+      for (var x = 0; x < theTemplates.length; x++) {
+
+        var node2 = document.createElement("LI");
+        node2.setAttribute("class", "width-set dropdown-item");
+
+        var span2 = document.createElement("SPAN");
+        span2.setAttribute("id", "templateParent-" + [x]);
+
+        var templateItem = document.createElement("input");
+        templateItem.setAttribute("class", "FX double");
+        templateItem.setAttribute("type", "checkbox");
+        templateItem.setAttribute("id", theTemplates[x]);
+        templateItem.setAttribute("onclick", "displayChecked(this.id, 'featureUL','All','pageChildren', 'span')");
+
+        var thePage = "";
+        switch (theTemplates[x]) {
+          case "F1":
+            thePage = "(F1) Home Page";
+            break;
+          case "F2":
+            thePage = "(F2) Product Tabe of Contents";
+            break;
+          case "F3":
+            thePage = "(F3) Product Sub-Category";
+            break;
+          case "F4":
+            thePage = "(F4) Product Display";
+            break;
+          case "F5":
+            thePage = "(F5) HTML Page";
+            break;
+          case "F6":
+            thePage = "(F6)";
+            break;
+          case "F7":
+            thePage = "(F7) New Fluke Products";
+            break;
+          case "F8":
+            thePage = "(F8) Promotions and Contests TOC";
+            break;
+          case "F9":
+            thePage = "(F9) Article Table of Contents";
+            break;
+          case "F10":
+            thePage = "(F10) Webcard Table of Contents";
+            break;
+          case "F11":
+            thePage = "(F11) Webcard";
+            break;
+          case "F12":
+            thePage = "(F12) Fluke News Table of Contents";
+            break;
+          case "F13":
+            thePage = "(F13) Fluke News Sub-Category";
+            break;
+          case "F14":
+            thePage = "(F14) Article";
+            break;
+          case "F15":
+            thePage = "(F15) Tradeshows and Seminars";
+            break;
+          case "F16":
+            thePage = "(F16) Training Library";
+            break;
+          case "F17":
+            thePage = "(F17) Webinars";
+            break;
+          case "F18":
+            thePage = "(F18)";
+            break;
+          case "F19":
+            thePage = "(F19) Manuals";
+            break;
+          case "F20":
+            thePage = "(F20) Press Releases";
+            break;
+          case "F21":
+            thePage = "(F21) Safety Notices";
+            break;
+          case "F22":
+            thePage = "(F22) Software Downloads";
+            break;
+          case "F23":
+            thePage = "(F23) Where to Buy";
+            break;
+          case "F24":
+            thePage = "(F24) Link to Offsite Location";
+            break;
+          case "F25":
+            thePage = "(F25) Promotions and Contests Page";
+            break;
+          default:
+            thePage = "unknown";
+        }
+        console.log("I am a success.");
+        }
+      }
+    })
+}
+
+
+/************************
+ * Function: getSelectValsel
+ * Purpose: 
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: March 2018
+************************/
+
+function getSelectVal(sel) {
+
+  $.ajax({
+    url : "/addOwnerToResultsPage",
+    type : "GET",
+    dataType:"html",
+    data: {
+      Id: $(sel).closest("form").find("input[type=hidden]").prop("name", "Id").val(),
+      users: sel.value
+    },
+    success : function() {
+      console.log('success');
+      location.reload(true);  //Refresh page
+
+    }, // end success : function()
+    error : function() {
+      console.log('error');
+
+    } // end error : function()
+
+  }); // end .ajax()
+
+} // end getSelectVal()
+
+
+/***********************************************************************
+ ***  EXPORT RESULTS SCRIPTS - END
+***********************************************************************/
+
+
+/***********************************************************************
+ ***  GLOBAL - EXPORT RESULTS AND RUN TESTS - BEGIN
+***********************************************************************/
+
+// This function is used in the dropdowns where checkboxes (including "all" options) can be selected 
+// - Export Results page, Run Tests page
+//
+function displayChecked(checkedID, ULID, allID, destinationID, element) {
+
+  var checkBox = document.getElementById(checkedID); // Get the selected item
+  var parentClass = checkBox.parentNode.parentNode.className; // grabs the UL's class
+  var text = checkBox.parentNode.textContent; // Get the checkbox's text (in the <span>)
+  var paragraph = document.createElement(element); //create a paragraph
+  var checkboxes = new Array();
+  var allBox = document.getElementById(allID);
+  var checkboxes = document.getElementsByTagName('input');
+  var placement = document.getElementById(destinationID);
+
+  if (placement.innerHTML && (!text.includes("all")) && destinationID != "chosenTestCases") {
+    // Check if 
+    text = ", " + text;
+  }
+
+  var content = document.createTextNode(text); //create text (for the new paragraph)   
+
+  // If the checkbox is checked, create a paragraph element and input the checkbox's text
+  if (checkBox.checked == true) {
+    if (parentClass == "dropdown-item radial" && document.getElementById("radialChild").hasChildNodes()) { //if a radio button was selected, remove any other radio choices from the display section
+      document.getElementById("radialChild").innerHTML = "";
+    }
+
+    //console.log(content);
+
+    paragraph.appendChild(content);
+    paragraph.setAttribute('id', checkedID + 'x');
+    placement.appendChild(paragraph);
+
+    // if the ALL button was clicked, check every box and remove anything else from the paragraph section
+    if (checkedID == allID) {
+      for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].parentNode.parentNode.parentNode.id == ULID) { // if the UL, above the Span and Input == ULID
+          checkboxes[i].checked = true;
+        }
+      }
+      while (placement.firstChild) {
+        placement.removeChild(placement.firstChild);
+      }
+      placement.appendChild(paragraph);
+
+    } else {}
+
+  } else { // If you are un-checking the box, you will remove the child paragraph element that had been created.
+
+    //If I'm un-checking the PAGE "all" box, uncheck ALL the boxes
+    if (checkedID == allID) {
+      for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].parentNode.parentNode.parentNode.id == ULID) {
+          checkboxes[i].checked = false; // un-check all the boxes 
+        }
+      }
+      var child = document.getElementById(checkedID + 'x');
+      child.parentNode.removeChild(child); // and remove "all" under pages selected
+    }
+
+    //If I'm un-checking anything other than the "all" boxes
+    else if (checkedID != allID) {
+      //console.log("I'm not unchecking an All option" + checkedID + "--"+allID);
+
+      //If the "all" box HAD been checked for the Feature Page section
+      //console.log(allBox.id);
+      if (allBox.checked == true) { // && ULID == ULID              <-----------???
+        //console.log("I've unchecked something when ALL HAD been chosen");
+        allBox.checked = false; // un-check the "all" box and remove it from the pages selected section
+        var allChild = document.getElementById(allID + "x");
+        allChild.parentNode.removeChild(allChild);
+        var eliminator = checkedID; //note which page you were un-selecting
+
+
+        //goes through all the possibilities, and if there was a checkbox for it, but it wasn't the ALL or Eliminator, add a paragraph for it
+        for (var i = 1; i < checkboxes.length - 1; i++) {
+          if (checkboxes[i].checked && checkboxes[i].parentNode.parentNode.parentNode.id == ULID) {
+            var text = checkboxes[i].id;
+            var paragraph = document.createElement(element);
+            var placement = document.getElementById(destinationID);
+
+            if (placement.innerHTML && (!text.includes("all"))) {
+              text = ", " + text;
+            }
+
+            var content = document.createTextNode(text);
+
+            if (checkboxes[i].id != eliminator) {
+              paragraph.appendChild(content);
+              paragraph.setAttribute('id', checkboxes[i].id + 'x');
+              placement.appendChild(paragraph);
+            }
+          }
+        }
+      }
+      // if something other than "all" was un-checked, but "all" had not been checked, just remove the one item from pages selected
+      else {
+        //console.log("I've unchecked something when ALL had NOT been selected" );
+        var child = document.getElementById(checkedID + 'x');
+        child.parentNode.removeChild(child);
+      }
+      //console.log("the end");
+    } //end else if
+  } //end else
+}
+
+
+// Used for searching through a list
+// - Test Case Editor page
+//
+function filterFunction() {
+
+    var input, div, filter, ul, li, a, i;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    div = document.getElementById("tcSelection");
+    a = div.getElementsByTagName("option");
+    
+    for (i = 0; i < a.length; i++) {
+        if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
+            a[i].style.display = "";
+        } else {
+            a[i].style.display = "none";
+        }
+    }
+}
+
+/***********************************************************************
+ ***  GLOBAL - EXPORT RESULTS AND RUN TESTS - END
+***********************************************************************/
+
 
 /***********************************************************************
  ***  TEST CASE EDITOR SCRIPTS - BEGIN
 ***********************************************************************/
+
 function grabTCsForFeature() {
 
   let reader = new FileReader();
@@ -83,7 +606,6 @@ function showTemplates() {
   let templateParagraph = document.getElementById("selectedTemplates");
   let templateArray = document.getElementsByClassName("form-check-input double");
   let langParagraphLength = document.getElementById("chosenLangs").innerHTML;
-
   templateParagraph.innerHTML = "<b>Template: </b>";
   for (var q = 0; q < templateArray.length; q++) {
     if (templateArray[q].checked == true) {
@@ -108,6 +630,45 @@ function showInput() {
   box.setAttribute("style", "display:block;");
 
 }
+
+/************************
+ * Function: getBehatLogFile(id)
+ * Purpose: Produces log file per test pass, file output is seen in console
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: June 2018
+ ************************/
+
+function getBehatLogFile(id) {
+
+  id = {
+    id: id
+  }
+
+  id = JSON.stringify(id);
+
+  $.ajax({
+    url: '/getlogfile',
+    type: 'POST',
+    data: id,
+    contentType: "application/json",
+    error: function(data) {
+      console.log(data + "Retrieving Log File failed.");
+    },
+    success: function(data) {
+      // This should be a log file
+      console.log(data);
+
+    }
+  })
+}
+
+// Show Input on the test Runner for Urls
+function showInput() {
+  let box = document.getElementById("typedURL");
+  box.setAttribute("style", "display:block;");
+
+}
+
 
 // Show url choice on test runner page
 function showURLChoice() {
@@ -137,6 +698,7 @@ function showURLChoice() {
 
 // Send a json object to server to run a test 
 // with given parameters
+
 
 function runit() {
   let noticeBox = document.getElementById("notice");
@@ -235,7 +797,8 @@ function runit() {
     data: testParamsJSON,
     contentType: "application/json",
     error: function(data) {
-      console.log(data);
+      console.log(data + "Gherkin data has failed at ajax request response.");
+
     },
     success: function(data) {
 
@@ -398,7 +961,6 @@ function exportAll() {
       console.log(xmlhttp);
     }
   }
-
 }
 
 
@@ -567,6 +1129,7 @@ function createTc() { //unhide the 'hiddenRow' section and put into it the basic
  * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
  * Date: May 2018
  ************************/
+
 function detectClassSwitch() {
 
   var count = 0;
@@ -602,6 +1165,7 @@ function detectClassSwitch() {
  * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
  * Date: May 2018
  ************************/
+
 function deleteTc() {
 
   var select = document.getElementById("tcSelection").selectedIndex;
@@ -684,7 +1248,6 @@ function filterFunction() {
   }
 }
 
-
 function exportGherkin() {
 
   var arrayOfObjects = new Array();
@@ -747,559 +1310,144 @@ function exportGherkin() {
 
 };
 
-/***********************************************************************
- ***  TEST CASE EDITOR SCRIPTS - END
-***********************************************************************/
+
+/************************
+ * Function: updateUser()
+ * Purpose: Updates the user's roles in database - Basic = 1 / Admin = 2.
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: June 2018
+************************/
+
+function updateUser() {
+  var usersRadId = document.getElementsByName('updateUserRad');
+  var usersRoles = document.getElementsByName('updateUserRoles');
+  var usersId = 0;
+  var usersRole = 0;
+
+  for (var i = 0; i < usersRadId.length; i++ ) {
+
+    if (usersRadId[i].checked === true) {
+      //Id += usersRadId[i].value; //used for checkboxes
+      usersId = usersRadId[i].value; //used for radio buttons
+    } // end if
+  } // end for()
+
+  if (usersId != 0) {
+
+    for (var j = 0; j < usersRoles.length; j++) {
+      if (usersRoles[j].checked === true) {
+        //Id += usersRadId[i].value; //used for checkboxes
+        usersRole = usersRoles[j].value; //used for radio buttons
+      } // end if
+    } // end for()
 
 
-/***********************************************************************
- ***  GLOBAL - EXPORT RESULTS AND RUB TESTS - BEGIN
-***********************************************************************/
+    if ( (usersRole == 1) || (usersRole == 2) ) {
 
-// This function is used in the dropdowns where checkboxes (including "all" options) can be selected 
-// - Export Results page, Run Tests page
-//
-function displayChecked(checkedID, ULID, allID, destinationID, element) {
-
-
-  var checkBox = document.getElementById(checkedID); // Get the selected item
-  var parentClass = checkBox.parentNode.parentNode.className; // grabs the UL's class
-  var text = checkBox.parentNode.textContent; // Get the checkbox's text (in the <span>)
-  var paragraph = document.createElement(element); //create a paragraph
-  var checkboxes = new Array();
-  var allBox = document.getElementById(allID);
-  var checkboxes = document.getElementsByTagName('input');
-  var placement = document.getElementById(destinationID);
-
-  if (placement.innerHTML && (!text.includes("all")) && destinationID != "chosenTestCases") {
-    // Check if 
-    text = ", " + text;
-  }
-
-  var content = document.createTextNode(text); //create text (for the new paragraph)   
-
-  // If the checkbox is checked, create a paragraph element and input the checkbox's text
-  if (checkBox.checked == true) {
-    if (parentClass == "dropdown-item radial" && document.getElementById("radialChild").hasChildNodes()) { //if a radio button was selected, remove any other radio choices from the display section
-      document.getElementById("radialChild").innerHTML = "";
-    }
-
-    //console.log(content);
-
-    paragraph.appendChild(content);
-    paragraph.setAttribute('id', checkedID + 'x');
-    placement.appendChild(paragraph);
-
-    // if the ALL button was clicked, check every box and remove anything else from the paragraph section
-    if (checkedID == allID) {
-      for (var i = 0; i < checkboxes.length; i++) {
-        if (checkboxes[i].parentNode.parentNode.parentNode.id == ULID) { // if the UL, above the Span and Input == ULID
-          checkboxes[i].checked = true;
-        }
-      }
-      while (placement.firstChild) {
-        placement.removeChild(placement.firstChild);
-      }
-      placement.appendChild(paragraph);
-
-    } else {}
-
-  } else { // If you are un-checking the box, you will remove the child paragraph element that had been created.
-
-    //If I'm un-checking the PAGE "all" box, uncheck ALL the boxes
-    if (checkedID == allID) {
-      for (var i = 0; i < checkboxes.length; i++) {
-        if (checkboxes[i].parentNode.parentNode.parentNode.id == ULID) {
-          checkboxes[i].checked = false; // un-check all the boxes 
-        }
-      }
-      var child = document.getElementById(checkedID + 'x');
-      child.parentNode.removeChild(child); // and remove "all" under pages selected
-    }
-
-    //If I'm un-checking anything other than the "all" boxes
-    else if (checkedID != allID) {
-      //console.log("I'm not unchecking an All option" + checkedID + "--"+allID);
-
-      //If the "all" box HAD been checked for the Feature Page section
-      //console.log(allBox.id);
-      if (allBox.checked == true) { // && ULID == ULID              <-----------???
-        //console.log("I've unchecked something when ALL HAD been chosen");
-        allBox.checked = false; // un-check the "all" box and remove it from the pages selected section
-        var allChild = document.getElementById(allID + "x");
-        allChild.parentNode.removeChild(allChild);
-        var eliminator = checkedID; //note which page you were un-selecting
-
-
-        //goes through all the possibilities, and if there was a checkbox for it, but it wasn't the ALL or Eliminator, add a paragraph for it
-        for (var i = 1; i < checkboxes.length - 1; i++) {
-          if (checkboxes[i].checked && checkboxes[i].parentNode.parentNode.parentNode.id == ULID) {
-            var text = checkboxes[i].id;
-            var paragraph = document.createElement(element);
-            var placement = document.getElementById(destinationID);
-
-            if (placement.innerHTML && (!text.includes("all"))) {
-              text = ", " + text;
-            }
-
-            var content = document.createTextNode(text);
-
-            if (checkboxes[i].id != eliminator) {
-              paragraph.appendChild(content);
-              paragraph.setAttribute('id', checkboxes[i].id + 'x');
-              placement.appendChild(paragraph);
-            }
+      $.ajax({
+        url: "/updateUser",
+        type: "POST",
+        dataType: "text",
+        data: {
+          Id: usersId,
+          role: usersRole
+        },
+        success : function(userName) {
+          //console.log('success');
+          if (usersRole == 1) {
+            var updatedRole = 'Basic';
           }
+          else if (usersRole == 2) {
+            var updatedRole = 'Admin';
+          }
+  
+          document.getElementById('updateConfirm').innerHTML = userName + ' has been updated to ' + updatedRole + ' role!';
+          document.getElementById('updateConfirm').style.fontSize = "1.3em";
+          document.getElementById('updateConfirm').style.fontWeight = "bold";
+          document.getElementById('updateConfirm').style.color = "red";
+  
+        },
+        error : function() {
+          console.log('error');
         }
-      }
-      // if something other than "all" was un-checked, but "all" had not been checked, just remove the one item from pages selected
-      else {
-        //console.log("I've unchecked something when ALL had NOT been selected" );
-        var child = document.getElementById(checkedID + 'x');
-        child.parentNode.removeChild(child);
-      }
-      //console.log("the end");
-    } //end else if
-  } //end else
-}
-
-
-// Used for searching through a list
-// - Test Case Editor page
-//
-function filterFunction() {
-
-    var input, div, filter, ul, li, a, i;
-    input = document.getElementById("myInput");
-    filter = input.value.toUpperCase();
-    div = document.getElementById("tcSelection");
-    a = div.getElementsByTagName("option");
-    
-    for (i = 0; i < a.length; i++) {
-        if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
-            a[i].style.display = "";
-        } else {
-            a[i].style.display = "none";
-        }
+  
+      }); // end .ajax()
     }
-}
+    else {
+      alert("Please select a user's access: Basic or Admin");
+    } // end nested if/else
 
-/***********************************************************************
- ***  GLOBAL - EXPORT RESULTS AND RUB TESTS - BEGIN
-***********************************************************************/
-
-
-/***********************************************************************
- ***  DASHBOARD SCRIPTS - BEGIN
-***********************************************************************/
-
-//pie
-// Load google charts
-google.charts.load('current', {'packages':['corechart']});
-google.charts.setOnLoadCallback(drawChart);
-
-// Draw the chart and set the chart values
-function drawChart() {
-  var data = google.visualization.arrayToDataTable([
-    ['Test', 'Passed or Failed'],
-    ['Passed', 8],
-    ['Failed', 9],
-    ['Other', 4],
-
-  ]);
-  // Optional; add a title and set the width and height of the chart
-  // Options can be variables such as title: $Title
-  var options = {
-    'title': 'Cumulative Results',
-    'colors': ['green', '#E2453C', 'grey'],
-    'backgroundColor': '',
-    'is3D': true,
-    'chartArea': { width: '350', height: '80%' },
-    'legend': { textStyle: { fontSize: 20 }, alignment: 'center', position: 'left' },
-    'slices': {
-      0: { offset: 0.0 },
-      1: { offset: 0.2 },
-      2: { offset: 0.0 }
-    }
-
-  };
-
-  // Display the chart inside the <div> element with id="pieChart"
-  var chart = new google.visualization.PieChart(document.getElementById('pieChart'));
-  chart.draw(data, options);
-}
-
-
-/************************
- * Function: dashboardPage()
- * Purpose: Hides container id='dashboard-2' if title = 'Dashboard' if not then it shows its on the dashboard page.
- * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
- * Date: May 2018
-************************/
-function dashboardPage() {
-  var dashboardTitle = document.getElementById('h2Title').innerHTML;
-
-  if (dashboardTitle === 'Dashboard') {
-    //document.getElementById('dashboard-1').style.display = "block";
-    document.getElementById('dashboard-2').style.display = "none";
-  } 
-  else {
-    document.getElementById('dashboard-1').style.display = "none";
-    //document.getElementById('dashboard-2').style.display = "block";
-  }
-
-} // end dashboardPage()
-
-
-/************************
- * Function: deleteTestResults(Id)
- * Purpose: Deletes Test result by TestPassId from TestPass, Status, and Result tables from the dashboard page.
- * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
- * Date: May 2018
-************************/
-function deleteTestResults(Id) {
-  
-  var delConfirm = confirm("Are you sure you want to delete test result ID: " + Id + "?");
-  
-  if (delConfirm == true) {
-  
-    $.ajax({
-    url: "/deleteTestResults",
-    type: "GET",
-    dataType: "html",
-    data: {
-      Id: Id
-    },
-    success : function() {
-      console.log('success');
-      window.location = '/dashboard';
-  
-    }, // end success : function()
-    error : function() {
-      console.log('error');
-  
-    } // end error : function()
-  
-    }); // end .ajax()
-  
   }
   else {
-    //alert('Delete canceled!');
-  
+    alert("Please select a user!");
   } // end if/else
+
+} // end updateUser()
+
+
+/************************
+ * Function: removeUser()
+ * Purpose: Removes a user form the database. 
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: June 2018
+************************/
+
+function removeUser() {
   
+  var usersRadId = document.getElementsByName('removeUserRad');
+  var userData = [];
+  var usersId = 0;
+  var userName = '';
+
+  for (var i = 0; i < usersRadId.length; i++ ) {
+    if (usersRadId[i].checked === true) {
+      //Id += usersRadId[i].value; //used for checkboxes
+      userData = usersRadId[i].value; //used for radio buttons
+      usersId = userData.slice(0,2);
+      userName = userData.slice(2);
+    } // end if
+  } // end for()
+
   
-} // end deleteTestResults(Id)
+  if (usersId != 0) {
 
+    var delConfirm = confirm("Are you sure you want to delete user: " + userName + "?");
 
-  /************************
-   * Function: addUnreliableToTestResult()
-   * Purpose: Add a 0 value to reliable and Notes to the testPass table in the database.
-   * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
-   * Date: May 2018
-  ************************/
-function addUnreliableToTestResult() {
+    if (delConfirm == true) {
 
-  var Id = document.getElementById('idTestPass').innerHTML;
-  var ckBox = document.getElementById('unreliableCkbox').value;
-  var notes = document.getElementById('textareaNotes').value;
-  var unreliableConfirm = confirm("Are you sure you want to mark this test result ID: " + Id + " unreliable?");
+      $.ajax({
+        url: "/removeUser",
+        type: "POST",
+        dataType: "text",
+        data: {
+          Id: usersId
+        },
+        success : function(userName) {
+          //console.log('success');
+          document.getElementById('removeConfirm').innerHTML = userName + ' has been removed!';
+          document.getElementById('removeConfirm').style.fontSize = "1.3em";
+          document.getElementById('removeConfirm').style.fontWeight = "bold";
+          document.getElementById('removeConfirm').style.color = "red";
 
-  if (unreliableConfirm == true) {
+        },
+        error : function() {
+          console.log('error');
+        }
 
-    $.ajax({
-      url: "/addUnreliableToTestResult",
-      type: "Get",
-      data: {
-        Id: Id,
-        ckBox : ckBox,
-        notes : notes
-      },
-      success : function() {
-        console.log('success');
-        location.reload(true); //Refresh page
-  
-      },
-      error : function() {
-        console.log('error');
-      }
-  
-    }); // end .ajax()
+      }); // end .ajax()
+
+    }
+    else {
+      //alert('Delete canceled!');
+    } // end nested if/else
 
   }
   else {
-    //alert('unreliable canceled!');
+    alert("Please select a user!");
   
   } // end if/else
 
-} // end unreliableCheckBox()
-
-
-/***********************************************************************
- ***  DASHBOARD SCRIPTS - END
-***********************************************************************/
-
-
-/***********************************************************************
- ***  EXPORT RESULTS SCRIPTS - BEGIN
-***********************************************************************/
-//Export functions used on the 
-// - Export Results page
-//
-function exportSelections() { //this function is triggered on the "Export Data" button.
-
-  let template = '';
-  let language = '';
-  let testresult = "";
-  let query = "";
-  let thehref = "";
-
-  let TchildCount = document.getElementById("pageChildren").children.length;
-  let LchildCount = document.getElementById("langChildren").children.length;
-
-  template = document.getElementById("pageChildren").children[0].id; // this takes the first child and puts it in 'template'
-  template = template.slice(0, -1);
-
-  for (var x = 1; x < TchildCount; x++) { // if there are additional children, we add a comma and the feature page for each child
-    let t = document.getElementById("pageChildren").children[x].id;
-    t = t.slice(0, -1);
-    template = template + "," + t;
-  }
-
-  language = document.getElementById("langChildren").children[0].id; // this takes the first language child and puts it in 'language'
-  language = language.slice(0, -1);
-
-  for (var y = 1; y < LchildCount; y++) { // if additional languages were chosen, we add a comma and the language for each one selected
-    let l = document.getElementById("langChildren").children[y].id;
-    l = l.slice(0, -1);
-    language = language + "," + l;
-  }
-
-  var testdate = document.getElementById("radialChild").children[0].id;
-  testdate = testdate.slice(0, -1);
-  // testdate = testdate.substring(0, testdate.indexOf(' | '))
-  console.log("the testdate is " + testdate);
-  console.log("/export?feature=" + template + "&language=" + language + "&testresult=" + testresult + "&query=" + query + "&testpassid=" + testdate);
-
-  //the href will contain a list of each languages as 'en-us,de-de' and features will be 'f1,f3,f5' 
-  // in the getExportFromResults() function on 'api_export.js' these commas are watched for, so that the string can be split to an array and a query created for all the selections
-
-  //thehref="/export?feature="+ template + "&language=" + language + "&testresult=" + testresult + "&query=" + query + "&testpassid=" + testdate;
-  thehref = "/export?feature=" + template + "&language=" + language + "&testresult=" + testresult + "&query=" + query + "&testpassid=" + testdate;
-  document.getElementById("myhref").href = thehref;
-
-  // location.reload(); //resets the export selection tool
-
-} // end exportSelections()
-
-
-// This function populates the languages and templates for display in the drop-down menus.
-function displayInfo(data, id) {
-  document.getElementById("testData").innerHTML = (data);
-  document.getElementById("langButton").disabled = false;
-  document.getElementById("mybutton").disabled = false;
-  document.getElementById("runTest").disabled = false;
-  var lkids = document.getElementById("langChildren");
-  var pkids = document.getElementById("pageChildren");
-
-  while (lkids.firstChild) {
-    lkids.removeChild(lkids.firstChild);
-  }
-  while (pkids.firstChild) {
-    pkids.removeChild(pkids.firstChild);
-  }
-
-  //clear out any content in the language and template dropdowns
-  var langParent = document.getElementById("langList");
-  while (langParent.hasChildNodes() && langParent.lastChild.id != "langAll") {
-    langParent.removeChild(langParent.lastChild);
-  }
-
-  var templateParent = document.getElementById("featureUL");
-  while (templateParent.hasChildNodes() && templateParent.lastChild.id != "tempAll") {
-    templateParent.removeChild(templateParent.lastChild);
-  }
-
-  let exportObject = {
-    "testPass": id
-  };
-
-  let object = JSON.stringify(exportObject);
-
-  $.ajax({
-    url: '/getTemplatesAndLangFromTestPass',
-    type: 'POST',
-    data: object,
-    contentType: "application/json",
-    error: function(data) {
-      console.log(data);
-    },
-    success: function(data) {
-      console.log(data);
-
-      // if the query was successful, populate the lang and template dropdowns with the results
-      var theTemplates = data[0].Template.split(",");
-      var theLanguages = data[0].Language.split(",");
-      console.log(theTemplates + "<---");
-      console.log(theLanguages + "<---");
-
-      for (var x = 0; x < theLanguages.length; x++) {
-        var node = document.createElement("LI");
-        node.setAttribute("class", "width-set dropdown-item");
-
-        var span = document.createElement("SPAN");
-        span.setAttribute("id", "langParent-" + [x]);
-
-        var langinputItem = document.createElement("input");
-        langinputItem.setAttribute("class", "lang double");
-        langinputItem.setAttribute("type", "checkbox");
-        langinputItem.setAttribute("id", theLanguages[x]);
-        langinputItem.setAttribute("onclick", "displayChecked(this.id, 'langList', 'LAll', 'langChildren', 'span')");
-
-        var langtextnode = document.createTextNode("  " + theLanguages[x]);
-        node.appendChild(span);
-        span.appendChild(langinputItem);
-        span.appendChild(langtextnode);
-        document.getElementById("langList").appendChild(node);
-      }
-
-      for (var x = 0; x < theTemplates.length; x++) {
-
-        var node2 = document.createElement("LI");
-        node2.setAttribute("class", "width-set dropdown-item");
-
-        var span2 = document.createElement("SPAN");
-        span2.setAttribute("id", "templateParent-" + [x]);
-
-        var templateItem = document.createElement("input");
-        templateItem.setAttribute("class", "FX double");
-        templateItem.setAttribute("type", "checkbox");
-        templateItem.setAttribute("id", theTemplates[x]);
-        templateItem.setAttribute("onclick", "displayChecked(this.id, 'featureUL','All','pageChildren', 'span')");
-
-        var thePage = "";
-        switch (theTemplates[x]) {
-          case "F1":
-            thePage = "(F1) Home Page";
-            break;
-          case "F2":
-            thePage = "(F2) Product Tabe of Contents";
-            break;
-          case "F3":
-            thePage = "(F3) Product Sub-Category";
-            break;
-          case "F4":
-            thePage = "(F4) Product Display";
-            break;
-          case "F5":
-            thePage = "(F5) HTML Page";
-            break;
-          case "F6":
-            thePage = "(F6)";
-            break;
-          case "F7":
-            thePage = "(F7) New Fluke Products";
-            break;
-          case "F8":
-            thePage = "(F8) Promotions and Contests TOC";
-            break;
-          case "F9":
-            thePage = "(F9) Article Table of Contents";
-            break;
-          case "F10":
-            thePage = "(F10) Webcard Table of Contents";
-            break;
-          case "F11":
-            thePage = "(F11) Webcard";
-            break;
-          case "F12":
-            thePage = "(F12) Fluke News Table of Contents";
-            break;
-          case "F13":
-            thePage = "(F13) Fluke News Sub-Category";
-            break;
-          case "F14":
-            thePage = "(F14) Article";
-            break;
-          case "F15":
-            thePage = "(F15) Tradeshows and Seminars";
-            break;
-          case "F16":
-            thePage = "(F16) Training Library";
-            break;
-          case "F17":
-            thePage = "(F17) Webinars";
-            break;
-          case "F18":
-            thePage = "(F18)";
-            break;
-          case "F19":
-            thePage = "(F19) Manuals";
-            break;
-          case "F20":
-            thePage = "(F20) Press Releases";
-            break;
-          case "F21":
-            thePage = "(F21) Safety Notices";
-            break;
-          case "F22":
-            thePage = "(F22) Software Downloads";
-            break;
-          case "F23":
-            thePage = "(F23) Where to Buy";
-            break;
-          case "F24":
-            thePage = "(F24) Link to Offsite Location";
-            break;
-          case "F25":
-            thePage = "(F25) Promotions and Contests Page";
-            break;
-          default:
-            thePage = "unknown";
-        }
-        console.log("I am a success.");
-        }
-      }
-    })
-}
-
-
-/************************
- * Function: getSelectValsel
- * Purpose: 
- * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
- * Date: March 2018
-************************/
-function getSelectVal(sel) {
-
-  $.ajax({
-    url : "/addOwnerToResultsPage",
-    type : "GET",
-    dataType:"html",
-    data: {
-      Id: $(sel).closest("form").find("input[type=hidden]").prop("name", "Id").val(),
-      users: sel.value
-    },
-    success : function() {
-      console.log('success');
-      location.reload(true);  //Refresh page
-
-    }, // end success : function()
-    error : function() {
-      console.log('error');
-
-    } // end error : function()
-
-  }); // end .ajax()
-
-} // end getSelectVal()
-
-
-/***********************************************************************
- ***  EXPORT RESULTS SCRIPTS - END
-***********************************************************************/
-
-
+} // end removeUser()
 
 /***********************************************************************
  ***  DOCUMENTATION SCRIPTS - BEGIN
@@ -1319,34 +1467,32 @@ function showLess(something, theButton){
   myButton.style.display="block";
 }
 
-
 /***********************************************************************
  ***  DOCUMENTATION SCRIPTS - END
 ***********************************************************************/
 
 
-
 /***********************************************************************
  ***  PAGE LOADING SCRIPTS - BEGIN
-***********************************************************************/
+ ***********************************************************************/
 // The below functions are used when transitioning to a new page
 // - all pages
 
-function uncheckAll(){ 
-  var w = document.getElementsByTagName('input'); 
-  for(var i = 0; i < w.length; i++){ 
-    if(w[i].type=='checkbox'){ 
-      w[i].checked = false; 
+function uncheckAll() {
+  var w = document.getElementsByTagName('input');
+  for (var i = 0; i < w.length; i++) {
+    if (w[i].type == 'checkbox') {
+      w[i].checked = false;
     }
   }
-} 
+}
 
 function loadingAnimation() {
-document.getElementById("loading").style.display = "block";
-document.getElementById("page").style.display = "none";
-// alert("This might take a moment.  Hit OK");
+  document.getElementById("loading").style.display = "block";
+  document.getElementById("page").style.display = "none";
+  // alert("This might take a moment.  Hit OK");
 }
 
 /***********************************************************************
  ***  PAGE LOADING SCRIPTS - END
-***********************************************************************/
+ ***********************************************************************/

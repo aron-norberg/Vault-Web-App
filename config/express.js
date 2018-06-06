@@ -27,7 +27,6 @@ const config = require('./config'),
   nodemailer = require('nodemailer'),
   SequelizeStore = require('connect-session-sequelize')(session.Store);
 
-
 //  Main Site Routes
 const api_results = require('../app/routes/api_results');
 const api_DB_writer = require('../app/routes/api_DB_writer');
@@ -43,7 +42,7 @@ const authenticate = require('../app/routes/authentication');
 const api_testRunner = require('../app/routes/api_testRunner');
 const api_emailer = require('../app/routes/api_emailer');
 const api_documents = require('../app/routes/api_documents');
-
+const api_userAccess = require('../app/routes/api_userAccess');
 
 // const api_login = require('../app/routes/api_login');
 const test_case_editor = require('../app/routes/test_case_editor');
@@ -152,12 +151,16 @@ module.exports = function() {
 
   app.get('/signup', authenticate.signup);
 
-  //app.get('/signup', isLoggedIn, authenticate.signup);
-
   app.post('/signup', passport.authenticate('local-signup', {
-    successRedirect: '/dashboard',
-    failureRedirect: '/signup'
+    successRedirect: '/signup',
+    failureRedirect: '/login',
+    session: false
   }));
+
+  // User Access page
+  app.post('/updateUser', isLoggedIn, api_userAccess.updateUser);
+  app.post('/removeUser', isLoggedIn, api_userAccess.removeUser);
+  //app.get('/signup', isLoggedIn, api_userAccess.removeUser);
 
   app.get('/login', authenticate.login);
 
@@ -197,6 +200,9 @@ module.exports = function() {
 
   // Dashboard page - delete Test Results by Id
   app.get('/deleteTestResults', isLoggedIn, api_dashboard.deleteTestResults);
+
+  // Dashboard Page - get log file from file system
+  app.post('/getlogfile', isLoggedIn, api_dashboard.getLogFile);
   
   // Results Pages 
   app.get('/results/locale/:locale', isLoggedIn, api_results.getResultByLanguage);

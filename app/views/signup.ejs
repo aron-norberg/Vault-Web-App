@@ -4,36 +4,115 @@
   <div class="row">
     <div class="col-12 loginAndSignupTxtAlign">
       <br /><br />
-      <h1>Welcome to the Q.A. Automated Testing Suite</h1>
+      <h1>User Access Control</h1>
+      
+      <!-- DO NOT DELETE: Hidden active user contaniner used to troubleshoot user access page -->
+      <div style="display: none;" id="activeUser"><%= activeUser %></div>
       
     </div><!-- end .col-sm-12 -->
   </div><!-- end .row -->
   <br />
   <div class="row">
-    <div class="col-lg-6 offset-lg-3 col-md-6 offset-md-3 form-group">
+    <div class="col-sm-12 form-group">
         <div class="loginAndSignupForm">
           <form id="signup" name="signup" method="post" action="/signup" >
-            <h4>Create a user account below</h4>
-            
-            <label for="email">Email:</label>
-            <input class="text" name="email" type="text" size="25"/><br />
-            
-            <label for="firstname">Firstname:</label>
-            <input name="firstname" type="text" size="30" /><br />
-      
-            <label for="lastname">Lastname:</label>
-            <input name="lastname" type="text" size="30" /><br />
-      
-            <label for="password">Password:</label>
-            <input name="password" type="password" size="30" />
-      
-            <!--input type="submit" class="btn btn-primary" value="Sign Up" /-->
-            <button type="submit" class="btn btn-primary login" value="Sign Up">Sign Up</button>
-          </form>
+
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="createUser-tab" data-toggle="tab" href="#createUser" role="tab" aria-controls="createUser" aria-selected="true">Create user</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="updateUser-tab" data-toggle="tab" href="#updateUser" role="tab" aria-controls="updateUser" aria-selected="false">Update user</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="removeUser-tab" data-toggle="tab" href="#removeUser" role="tab" aria-controls="removeUser" aria-selected="false">Remove user</a>
+              </li>
+            </ul>
+
+            <div class="tab-content" id="myTabContent">
+              <!-- Create user tab BEGIN -->
+              <div class="tab-pane fade show active" id="createUser" role="tabpanel" aria-labelledby="createUser-tab">
+                <label for="email">Email:</label>
+                <input class="text" name="email" type="text" size="25"/><br />
+                
+                <label for="firstname">Firstname:</label>
+                <input name="firstname" type="text" size="30" /><br />
+          
+                <label for="lastname">Lastname:</label>
+                <input name="lastname" type="text" size="30" /><br />
+          
+                <label for="password">Password:</label>
+                <input name="password" type="password" size="30" />
+    
+                <label for="role">User Access:</label><br />
+                <input name="role" type="radio" value="1" /> Basic<br />
+                <input name="role" type="radio" value="2" /> Admin<br />
+                <!--input name="role" type="radio" value="3" /> Dev<br /-->
+    
+                <button type="submit" class="btn btn-primary login" value="Sign Up">Sign Up</button>
+              </div><!-- Create user tab END -->
+
+
+              <!-- Update user tab BEGIN -->
+              <div class="tab-pane fade" id="updateUser" role="tabpanel" aria-labelledby="updateUser-tab">
+                <div id="updateConfirm"></div><!-- Update user roles confirmation Msg. -->
+                <table class="table table-striped updateUser">
+                  <thead class="updateUser">
+                    <tr class="updateUser">
+                      <th class="updateUser" scope="col">Users:</th>
+                    </tr>
+                  </thead>
+                  <tbody class="updateUser">
+                    <% for(var i=0; i < users.length; i++) { %>
+                    <tr class="updateUser">
+                      <td class="updateUser">
+                        <input type="radio" name="updateUserRad" value="<%= users[i].id %>" /> <%= users[i].firstname %> <%= users[i].lastname %>
+                      </td>
+                    <% }%><!-- end for() -->
+                    </tr>
+                  </tbody>
+                </table><!-- end .table -->
+
+                <div class="roles_title">
+                  <div style="font-weight: bold;">User Access:</div>
+                  <input type="radio" name="updateUserRoles" value="1" /> Basic<br />
+                  <input type="radio" name="updateUserRoles" value="2" /> Admin
+                </div>
+
+                <br />
+                <input type="button" class="btn btn-warning" value="Update" onclick="updateUser();" />
+              </div><!-- Update user tab END -->
+
+
+              <!-- Remove user tab BEGIN -->
+              <div class="tab-pane fade" id="removeUser" role="tabpanel" aria-labelledby="removeUser-tab">
+                  <div id="removeConfirm"></div><!-- Remove user confirmation Msg. -->
+                <table class="table table-striped updateUser">
+                    <thead class="updateUser">
+                      <tr class="updateUser">
+                        <th class="updateUser" scope="col">Users:</th>
+                      </tr>
+                    </thead>
+                    <tbody class="updateUser">
+                    <% for(var i=0; i < users.length; i++) { %>
+                      <tr class="updateUser">
+                        <td class="updateUser">
+                          <input type="radio" name="removeUserRad" value="<%= users[i].id %> <%= users[i].firstname %> <%= users[i].lastname %>" /> <%= users[i].firstname %> <%= users[i].lastname %>
+                        </td>
+                      </tr>
+                    <% }%>
+                    </tbody>
+                  </table>  
+                <br />
+                <input type="button" class="btn btn-warning" value="Remove" onclick="removeUser();" /> 
+              </div><!-- Remove user END -->
+
+            </div><!-- end .tab-content -->
+
+          </form><!-- end .signup -->
         </div><!-- end loginDiv -->
-    </div><!-- end .col-md-6 offset-md-3 -->
+    </div><!-- end .col-sm-12 -->
   </div><!-- end .row -->
 </div><!-- end .container-fluid -->
-
 
 <%- include('footer') %>

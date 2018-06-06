@@ -245,8 +245,6 @@ exports.postTest = function(req, res, next) {
 
     jsonTestparams = JSON.stringify(req.testParams)
 
-    //console.log("This is the json object you are reading:\n");
-
     // Get time down to millisecond, preventing duplication...with some degree of certainty
     let currentTime = dateFormat(now, "ddddmmmmdSyyyyhMMsslTT");
 
@@ -336,12 +334,13 @@ exports.startProcess = function(req, res) {
     script.stdin.end();
   });
 
-  let testPassCount = {
-    "testpassCount": count
+  let testPassData = {
+    "testPassCount": count,
+    "jsonStartPath": jsonPath
   }
 
-  testPassCount = JSON.stringify(testPassCount);
-  res.send(testPassCount);
+  testPassData = JSON.stringify(testPassData);
+  res.send(testPassData);
 }
 
 /************************
@@ -354,6 +353,7 @@ exports.startProcess = function(req, res) {
 exports.stopTest = function(req, res) {
 
   let id = req.query.testid;
+  let testPassString = req.query.jsonStartPath;
 
   // Query Test Pass by id, get the PID
   db.sequelize.query(`SELECT Note from TestPass where TestPassId = "${id}"`).then(pid => {
@@ -367,7 +367,7 @@ exports.stopTest = function(req, res) {
     // Execute System command to stop the process by PID
 
     let spawn = require('child_process').spawn,
-      script = spawn('pkill', ['-9', pid]);
+      script = spawn('pkill', ['f', testPassString]);
 
     // get output 
     script.stdout.on('data', (data) => {
@@ -388,6 +388,8 @@ exports.stopTest = function(req, res) {
     });
 
     console.log(" I should be killing the processes.")
+
+    // create object with test id.
 
     res.send("process has been killed.");
 
@@ -466,8 +468,8 @@ function getTotalNumberOfTestCases(testParameterObject) {
 
             finalCount = finalCount * testCaseCount;
 
-            //console.log("The final count from inside the sequelize request " + finalCount);
-            if (finalCount) {
+            console.log("The final count from inside the sequelize request " + finalCount);
+            if (finalCount !== 'undefined') {
               resolve(finalCount)
 
             } else {
@@ -488,9 +490,9 @@ function getTotalNumberOfTestCases(testParameterObject) {
 
           // multiple final count by test Cases 
           finalCount = finalCount * testParameterObject.TestCaseSelections.length;
-          //console.log("The final count is " + finalCount);
 
-          if (finalCount) {
+          if (finalCount !== 'undefined') {
+            
             resolve(finalCount)
 
           } else {
