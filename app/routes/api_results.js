@@ -1218,7 +1218,7 @@ exports.getResultByIdLanguageCustomTestResult = function(req, res) {
         });
       },
       count: function(cb) {
-        db.sequelize.query(`select count(*) from Result WHERE Language = '${language}' AND Template = '${template}' AND Output like '%${custom}%' AND Result = '${testresult}' AND TestPassId = '${testPassId}';`).then(count => {
+        db.sequelize.query(`select count(*) from Result WHERE Language LIKE '${language}' AND Template LIKE '${template}' AND Output like '%${custom}%' AND Result = '${testresult}' AND TestPassId = '${testPassId}';`).then(count => {
 
           count = count[0][0]['count(*)'];
 
