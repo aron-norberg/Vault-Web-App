@@ -72,7 +72,7 @@ exports.getExport = function(req, res) {
 
       res.render('export', {
         title: 'Export Results',
-        user: req.user.firstname,
+        user: req.user,
         dates: dates,
         dateIds: datesIds,
         statusId: statusId,

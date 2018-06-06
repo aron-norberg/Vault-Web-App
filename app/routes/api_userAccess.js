@@ -24,11 +24,11 @@ exports.updateUser = function(req, res) {
 
       if (User) {
         console.log('\n' + "Users role successfully updated!" + '\n');
-        res.send(userName.firstname + ' ' + userName.lastname)
+        res.send(userName.firstname + ' ' + userName.lastname);
       }
       else {
         console.log('\n' + "Something went wrong, please try again" + '\n');
-        res.send(Id)
+        res.send(Id);
 
       } // end if/else
 
@@ -60,12 +60,12 @@ exports.removeUser = function(req, res) {
 
       if (User >= 1) {
         console.log('\n' + "User has been removed successfully!" + '\n');
-        res.send(userName.firstname + ' ' + userName.lastname)
+        res.send(userName.firstname + ' ' + userName.lastname);
 
       }
       else {
         console.log('\n' + "Something went wrong, please try again" + '\n');
-        res.send(Id)
+        res.send(Id);
 
       } // end if/else
 

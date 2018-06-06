@@ -152,8 +152,9 @@ module.exports = function() {
   app.get('/signup', authenticate.signup);
 
   app.post('/signup', passport.authenticate('local-signup', {
-    successRedirect: '/login',
-    failureRedirect: '/dashboard'
+    successRedirect: '/signup',
+    failureRedirect: '/login',
+    session: false
   }));
 
   // User Access page

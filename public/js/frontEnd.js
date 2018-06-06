@@ -11,6 +11,7 @@
  * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
  * Date: May 2018
 ************************/
+
 function dashboardPage() {
   var dashboardTitle = document.getElementById('h2Title').innerHTML;
 
@@ -31,6 +32,7 @@ function dashboardPage() {
  * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
  * Date: May 2018
 ************************/
+
 function deleteTestResults(Id) {
   
   var delConfirm = confirm("Are you sure you want to delete test result ID: " + Id + "?");
@@ -66,12 +68,13 @@ function deleteTestResults(Id) {
 } // end deleteTestResults(Id)
 
 
-  /************************
-   * Function: addUnreliableToTestResult()
-   * Purpose: Add a 0 value to reliable and Notes to the testPass table in the database.
-   * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
-   * Date: May 2018
-  ************************/
+/************************
+ * Function: addUnreliableToTestResult()
+ * Purpose: Add a 0 value to reliable and Notes to the testPass table in the database.
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+************************/
+
 function addUnreliableToTestResult() {
 
   var Id = document.getElementById('idTestPass').innerHTML;
@@ -116,6 +119,7 @@ function addUnreliableToTestResult() {
 /***********************************************************************
  ***  EXPORT RESULTS SCRIPTS - BEGIN
 ***********************************************************************/
+
 function exportSelections() { //this function is triggered on the "Export Data" button.
 
   let template = '';
@@ -1120,6 +1124,7 @@ function createTc() { //unhide the 'hiddenRow' section and put into it the basic
  * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
  * Date: May 2018
  ************************/
+
 function detectClassSwitch() {
 
   var count = 0;
@@ -1148,12 +1153,14 @@ function detectClassSwitch() {
 
 } // end detectClassSwitch()
 
+
 /************************
  * Function: deleteTc()
  * Purpose: Deletes any test case thats selected from the TestCase table found in the test DB.  
  * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
  * Date: May 2018
  ************************/
+
 function deleteTc() {
 
   var select = document.getElementById("tcSelection").selectedIndex;
@@ -1187,6 +1194,7 @@ function deleteTc() {
   } // end if/else
 
 } // end deleteTc()
+
 
 /************************
  * Function: cleanGherkin()
@@ -1298,7 +1306,6 @@ function exportGherkin() {
 };
 
 
-
 /************************
  * Function: updateUser()
  * Purpose: Updates the user's roles in database - Basic = 1 / Admin = 2.
@@ -1313,47 +1320,62 @@ function updateUser() {
   var usersRole = 0;
 
   for (var i = 0; i < usersRadId.length; i++ ) {
+
     if (usersRadId[i].checked === true) {
       //Id += usersRadId[i].value; //used for checkboxes
       usersId = usersRadId[i].value; //used for radio buttons
     } // end if
   } // end for()
 
-  for (var j = 0; j < usersRoles.length; j++) {
-    if (usersRoles[j].checked === true) {
-      //Id += usersRadId[i].value; //used for checkboxes
-      usersRole = usersRoles[j].value; //used for radio buttons
+  if (usersId != 0) {
+
+    for (var j = 0; j < usersRoles.length; j++) {
+      if (usersRoles[j].checked === true) {
+        //Id += usersRadId[i].value; //used for checkboxes
+        usersRole = usersRoles[j].value; //used for radio buttons
+      } // end if
+    } // end for()
+
+
+    if ( (usersRole == 1) || (usersRole == 2) ) {
+
+      $.ajax({
+        url: "/updateUser",
+        type: "POST",
+        dataType: "text",
+        data: {
+          Id: usersId,
+          role: usersRole
+        },
+        success : function(userName) {
+          //console.log('success');
+          if (usersRole == 1) {
+            var updatedRole = 'Basic';
+          }
+          else if (usersRole == 2) {
+            var updatedRole = 'Admin';
+          }
+  
+          document.getElementById('updateConfirm').innerHTML = userName + ' has been updated to ' + updatedRole + ' role!';
+          document.getElementById('updateConfirm').style.fontSize = "1.3em";
+          document.getElementById('updateConfirm').style.fontWeight = "bold";
+          document.getElementById('updateConfirm').style.color = "red";
+  
+        },
+        error : function() {
+          console.log('error');
+        }
+  
+      }); // end .ajax()
     }
+    else {
+      alert("Please select a user's access: Basic or Admin");
+    } // end nested if/else
+
   }
-
-  $.ajax({
-    url: "/updateUser",
-    type: "POST",
-    dataType: "text",
-    data: {
-      Id: usersId,
-      role: usersRole
-    },
-    success : function(userName) {
-      //console.log('success');
-      if (usersRole == 1) {
-        var updatedRole = 'Basic';
-      }
-      else if (usersRole == 2) {
-        var updatedRole = 'Admin';
-      }
-
-      document.getElementById('updateConfirm').innerHTML = userName + ' has been updated to ' + updatedRole + ' role!';
-      document.getElementById('updateConfirm').style.fontSize = "1.3em";
-      document.getElementById('updateConfirm').style.fontWeight = "bold";
-      document.getElementById('updateConfirm').style.color = "red";
-
-    },
-    error : function() {
-      console.log('error');
-    }
-
-  }); // end .ajax()
+  else {
+    alert("Please select a user!");
+  } // end if/else
 
 } // end updateUser()
 
@@ -1381,36 +1403,42 @@ function removeUser() {
     } // end if
   } // end for()
 
-  console.log(usersId + ' - ' +userName);
+  
+  if (usersId != 0) {
 
-  var delConfirm = confirm("Are you sure you want to delete user: " + userName + "?");
+    var delConfirm = confirm("Are you sure you want to delete user: " + userName + "?");
 
-  if (delConfirm == true) {
+    if (delConfirm == true) {
 
-    $.ajax({
-      url: "/removeUser",
-      type: "POST",
-      dataType: "text",
-      data: {
-        Id: usersId
-      },
-      success : function(userName) {
-        //console.log('success');
-        document.getElementById('removeConfirm').innerHTML = userName + ' has been removed!';
-        document.getElementById('removeConfirm').style.fontSize = "1.3em";
-        document.getElementById('removeConfirm').style.fontWeight = "bold";
-        document.getElementById('removeConfirm').style.color = "red";
+      $.ajax({
+        url: "/removeUser",
+        type: "POST",
+        dataType: "text",
+        data: {
+          Id: usersId
+        },
+        success : function(userName) {
+          //console.log('success');
+          document.getElementById('removeConfirm').innerHTML = userName + ' has been removed!';
+          document.getElementById('removeConfirm').style.fontSize = "1.3em";
+          document.getElementById('removeConfirm').style.fontWeight = "bold";
+          document.getElementById('removeConfirm').style.color = "red";
 
-      },
-      error : function() {
-        console.log('error');
-      }
+        },
+        error : function() {
+          console.log('error');
+        }
 
-    }); // end .ajax()
+      }); // end .ajax()
+
+    }
+    else {
+      //alert('Delete canceled!');
+    } // end nested if/else
 
   }
   else {
-    //alert('Delete canceled!');
+    alert("Please select a user!");
   
   } // end if/else
 
