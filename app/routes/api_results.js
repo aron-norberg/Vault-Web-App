@@ -1,3 +1,4 @@
+// Invoke 'strict' JavaScript mode
 'use strict';
 
 const db = require('../../config/sequelize');
@@ -665,6 +666,7 @@ exports.getResultByIdAndLanguage = function(req, res) {
         });
       },
       users: function(cb) {
+        // Also populates the Owner field located on results.ejs page.
         db.sequelize.query(`select distinct firstname from User`).then(users => {
 
           users = users[0];

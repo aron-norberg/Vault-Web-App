@@ -1,3 +1,4 @@
+// Invoke 'strict' JavaScript mode
 'use strict';
 
 const db = require('../../config/sequelize');
@@ -6,7 +7,7 @@ const Sequelize = require('sequelize');
 
 exports.signup = function(req, res) {
 
-  db.sequelize.query(`SELECT * FROM User;`).then(function(id) {
+  db.sequelize.query(`SELECT * FROM User WHERE firstname != 'Resolved' AND lastname != 'Resolved';`).then(function(id) {
 
     let users = id[0];
     //console.log(users);
