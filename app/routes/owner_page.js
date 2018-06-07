@@ -4,29 +4,41 @@ const db = require('../../config/sequelize');
 const Sequelize = require('sequelize');
 
 exports.ownership_display = function(req, res) {
+    
     let firstName = req.user.firstname;
+    let selectedUser = req.query.userName;
+    let phrase = "";
+    let displayName = "";
 
-    db.sequelize.query('select * from Result where Owner is not NULL;').then(results => {
-        db.sequelize.query('select firstname, lastname, id from User;').then(theNames => {
+    if(selectedUser == null){
+        phrase = " Owner = '" +firstName +"';";
+        displayName = firstName;
+    }
+    else{
+        phrase = " Owner = '" + selectedUser + "';";
+        displayName = selectedUser;
+    }
+
+
+    db.sequelize.query('select * from Result where' + phrase).then(results => {
+        db.sequelize.query('select * from User;').then(users => {
 
             results = results[0];
-            theNames = theNames[0];
-           // console.log(theNames[1].firstname);
-        
+            users = users[0];
             res.render('owner_page', {
-                title: 'Ownership Documentation ',
+                title: 'Ownership Notes ',
                 results: results,
                 user: req.user,
-                theNames: theNames
+                users: users,
+                displayName: displayName
             });
-
             return null;
     
         }).catch(function(err) {
         console.log('error: ' + err);
         return err;
         })
-                
+              
         return null;
         
     }).catch(function(err) {

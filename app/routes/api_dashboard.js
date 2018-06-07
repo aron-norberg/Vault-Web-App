@@ -280,9 +280,9 @@ exports.getResultMetaByCustom = function(req, res) {
 
     /************************
    * Function: getResultsTotal()
-   * Purpose:                                                                  <-------------------------------- Do we need this function? ... yes, yes we do...it does sometbing unique and beautiful.
-   * Parameters:                                                               <--------------------------------app.get('/dashboard/query/:custom', isLoggedIn, api_dashboard.getResultMetaByCustom);
-   * Author: James Sandoval
+   * Purpose:                                                                 
+   * Parameters:                                                             
+   * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
    * Date: May 2018
    ************************/
 
