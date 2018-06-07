@@ -1,6 +1,10 @@
 // Invoke 'strict' JavaScript mode
 'use strict';
 
+/* We are not using Controllers in the Vault app - instead of using Controllers we 
+condensed the code and have Route informtion in the express.js file and Controller
+code in the Routes file. */
+
 /************************
  * Function: 
  * Purpose: This page loads module dependencies, links URL addresses to file locations, and checks if the user is logged in before allowing them to route to a page
