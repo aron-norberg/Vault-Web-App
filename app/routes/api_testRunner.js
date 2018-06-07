@@ -544,7 +544,7 @@ exports.getOverview = function(req, res) {
         checkTestProcessWithSystemPS(testPassTableResults).then(statusResults => {
 
           for (var i = 0; i < statusResults.length; i++) {
-            //console.log(statusResults[i]);
+            console.log(statusResults[i]);
           }
 
           // { id: 65, status: 'success' }
