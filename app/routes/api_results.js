@@ -191,6 +191,12 @@ function renderPage(renderPageData, req, res) {
   let total = renderPageData.results.count;
 
 
+  //removes any quotes or special characters from the 'custom' string -example: Are%all%the%images%filled%%%Also%%%%There%are%no%%Image%not%found%%images
+  if (typeof custom != "undefined"){
+    custom = custom.replace(/[^a-zA-Z0-9%]/g, "%");
+    
+  }
+
   // console.log(users + "users");
   //console.log(testPassData + "testPassData");
   //console.log(length + "length");  
@@ -1220,7 +1226,7 @@ exports.getResultByIdLanguageCustomTestResult = function(req, res) {
         });
       },
       count: function(cb) {
-        db.sequelize.query(`select count(*) from Result WHERE Language = '${language}' AND Template = '${template}' AND Output like '%${custom}%' AND Result = '${testresult}' AND TestPassId = '${testPassId}';`).then(count => {
+        db.sequelize.query(`select count(*) from Result WHERE Language LIKE '${language}' AND Template LIKE '${template}' AND Output like '%${custom}%' AND Result = '${testresult}' AND TestPassId = '${testPassId}';`).then(count => {
 
           count = count[0][0]['count(*)'];
 

@@ -43,6 +43,7 @@ const api_testRunner = require('../app/routes/api_testRunner');
 const api_emailer = require('../app/routes/api_emailer');
 const api_documents = require('../app/routes/api_documents');
 const api_userAccess = require('../app/routes/api_userAccess');
+const owner_page = require('../app/routes/owner_page');
 
 // const api_login = require('../app/routes/api_login');
 const test_case_editor = require('../app/routes/test_case_editor');
@@ -241,6 +242,10 @@ module.exports = function() {
   app.get('/export', isLoggedIn, api_export.getExportFromResults, api_export.export_to_excel);
   app.post('/getTemplatesAndLangFromTestPass', isLoggedIn, api_export.getLangsAndTemps);
 
+
+  // Ownership page
+  app.get('/owner_page', isLoggedIn, owner_page.ownership_display);
+  
   // Test Information Routes
   app.get('/files', isLoggedIn, api_file_data.getAvailableTests);
 

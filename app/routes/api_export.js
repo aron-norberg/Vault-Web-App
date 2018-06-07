@@ -111,7 +111,7 @@ exports.getExport = function(req, res) {
 
 /************************
  * Function: getExportFromResults()
- * Purpose: get the test results from the Results table, that meet the specific user requests from the Export Results page (export.ejs)
+ * Purpose: get the test results from the Results table that meet the specific user requests from the Export Results page (export.ejs)
  * Parameters: language, feature, testresult, testpassid, query = specify the results being requested
  * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
  * Date: May 2018
@@ -181,7 +181,11 @@ exports.getExportFromResults = function(req, res, next) {
   //---------------------------------------------------------end of multiple choice query builder ------------------>
   // if multiple selections were made for either language or template, the first 'if' statement below will run
 
+  console.log("the query starts as :"+query);
   query = query.replace(/ /g, "%");
+  console.log("then query :"+query);
+  query = query.split(" ").join("%");
+  console.log("then query :"+query);
 
   ///results/locale/:locale'
   if (langArray.length > 0 || fArray.length > 0) {
