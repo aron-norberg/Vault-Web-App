@@ -352,8 +352,8 @@ function displayInfo(data, id) {
 
 
 /************************
- * Function: getSelectValsel
- * Purpose: 
+ * Function: getSelectVal(sel)
+ * Purpose: Adds the seleceted name from dropdown list to the database
  * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
  * Date: March 2018
 ************************/
@@ -381,6 +381,25 @@ function getSelectVal(sel) {
   }); // end .ajax()
 
 } // end getSelectVal()
+
+
+/************************
+ * Function: resolvedInNotes()
+ * Purpose: Finds all notes on the results page with the text 'RESOLVED' and changes the font color.
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: June 2018
+************************/
+
+function resolvedInNotes() {
+  //console.log('Hello Waldo!');
+  
+  $(".notesMsg").each(function() {
+
+    $('.notesMsg:contains("RESOLVED")').css( {"color": "#28A745", "font-weight": "bold"} );
+
+  }); // end $(".notesMsg").each(function()
+
+} // end resolveTestCase()
 
 
 /***********************************************************************
