@@ -445,8 +445,24 @@ function getTotalNumberOfTestCases(testParameterObject) {
 
           cb(null, allDistinctLanguages);
         });
+      },
+      allTestCases: (cb) => {
+        db.sequelize.query(`SELECT TestCaseId FROM Template where Id = '${testParameterObject.features}'`).then(allTestCases => {
+          allTestCases = allTestCases[0];
+
+          cb(null, allTestCases);
+        });
       }
     }, (err, results) => {
+
+      console.log(results.allTestCases[0].TestCaseId);
+
+    // if test cases == all, set test cases to new value;
+
+      if(testParameterObject.TestCaseSelections == "all"){
+        testParameterObject.TestCaseSelections = results.allTestCases[0].TestCaseId.split(',');
+
+      }
 
       if (testParameterObject.languages[0] == "all") {
         for (let i = 0; i < results.allDistinctLanguages.length; i++) {
@@ -476,14 +492,10 @@ function getTotalNumberOfTestCases(testParameterObject) {
         //console.log(features[i])
       }
 
-      finalTestCaseCount(languages, features, limit).then(count => {
+      finalTestCaseCount(testParameterObject, languages, features, limit).then(count => {
 
         // multiply by the number of test cases
-
-        count = count * testParameterObject.TestCaseSelections.length;
-
         console.log("The final count is " + count);
-
         resolve(count)
 
       }).catch((err) => {
@@ -491,13 +503,20 @@ function getTotalNumberOfTestCases(testParameterObject) {
         return err;
 
       })
-
     });
-
   });
 }
 
-function finalTestCaseCount(languages, features, limit) {
+/************************
+ * Function: getfinalTestCaseCount
+ * Purpose: obtains a count from urls by feature and language and limit
+ * This limits f4 to 100 if limit is > 100
+ * Returns: a Promise for the number of urls available given the selection.
+ * Author: James Sandoval
+ * Date: June 2018
+ ************************/
+
+function finalTestCaseCount(testParameterObject, languages, features, limit) {
   return new Promise((resolve, reject) => {
     let limitStore = 0;
     let count = 0;
@@ -514,7 +533,7 @@ function finalTestCaseCount(languages, features, limit) {
           limitStore = limit;
           limit = 100;
 
-        } 
+        }
 
         let query = `select count(*) from (select Url from Urls where language like '${language}' and TemplateId like '${feature}' limit ${limit}) As a;`;
 
@@ -524,11 +543,11 @@ function finalTestCaseCount(languages, features, limit) {
         db.sequelize.query(query).then(mainCount => {
 
           count = count + mainCount[0][0]['count(*)'];
-
+          count = count * testParameterObject.TestCaseSelections.length;
 
           // if all items are complete, resolve the promise with the final count
-          if(key1, key2 == 0){
-            
+          if (key1, key2 == 0) {
+
             resolve(count);
           }
 
@@ -557,7 +576,7 @@ function finalTestCaseCount(languages, features, limit) {
         console.log("error from async each language");
         reject(err2);
 
-      } 
+      }
 
       // This should be the completion of the loop
 
@@ -565,4 +584,3 @@ function finalTestCaseCount(languages, features, limit) {
 
   });
 }
-
