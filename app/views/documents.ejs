@@ -22,7 +22,7 @@
                         <li><a href="#tcs">About Test Cases</a></li>
                         <li><a href="#links">Useful Links</a></li>
                         <li><a href="#aboutUrls">About URLs</a></li>
-                        <li><a href="#developers">Set-ups for Developers</a></li>
+                        <li><a href="#developers">For Developers</a></li>
                 </ul>
                 <li><a href="#database">Database Information</a></li>
                 <ul>
@@ -152,8 +152,8 @@
                         <li>(F2) Product Table of Contents</li>
                         <li>(F3) Product Sub-Category</li>
                         <li>(F4) Product Display</li>
-                        <li>(F5) HTML Page</li>
-                        <li>(F6)</li>
+                        <li>(F5) HTML Page (pages without a template)</li>
+                        <li>(F6) Awards (for future development)</li>
                         <li>(F7) New Fluke Products</li>
                         <li>(F8) Promotions and Contests TOC</li>
                         <li>(F9) Article Table of Contents</li>
@@ -165,7 +165,7 @@
                         <li>(F15) Tradeshows and Seminars</li>
                         <li>(F16) Training Library</li>
                         <li>(F17) Webinars</li>
-                        <li>(F18)</li>
+                        <li>(F18) Instrument Security (for future development)</li>
                         <li>(F19) Manuals</li>
                         <li>(F20) Press Releases</li>
                         <li>(F21) Safety Notices</li>
@@ -181,14 +181,14 @@
                 (a human readable language) and <a target="_blank" href="http://php.net/manual/en/intro-whatis.php">PHP</a>. Each test case starts with a <a target="_blank" href="http://docs.behat.org/en/v2.5/guides/1.gherkin.html#scenarios">Scenario</a>, which is often
                 copied directly from a website page requirements list. An example is "Scenario: Does page render with URL provided?" The Scenario is a note on a single line
                 within the code and changing the Scenario does not affect how the code is run or the functions used for that test case. Following the Scenario is one or more lines of Gherkin
-                which begin with key words <a target="_blank" href="http://docs.behat.org/en/v2.5/guides/1.gherkin.html#whens">When, Then, or Given</a>.  These key words do not matter to the code and are meant to add to the Gherkin's readability.
+                which begin with key words <a target="_blank" href="http://docs.behat.org/en/v2.5/guides/1.gherkin.html#whens">When, Then, or Given</a>.  These key words are interchangeable and are meant to add to the Gherkin's readability.
                 Once Gherkin is written, it is linked to PHP in the background (by a developer), with each line of Gherkin calling a specific function.  When Gherkin is changed, (other than variables which are in quotes) the related PHP function must 
                 be updated by a developer for the Gherkin to continue to call the correct function. In a Test Case where several lines of Gherkin are used,
                 if any single line of Gherkin fails during testing, subsequent lines of Gherkin within that Test Case will be skipped.
         </p>
         <p>If the user wishes to change the Gherkin used within a Test Case, it is recommended that the user review the Gherkin that has already been created to see if the needed
                 functionality already exists.  A list
-                is provided <a href="#gherkin">below</a>. Reusing Gherkin that has already been created means that no additional code will be needed in order to run the test case. Changing Gherkin in any way, including just adding a space or comma,
+                is provided <a href="#gherkin">below</a>. Reusing Gherkin that has already been created means that no additional code will be needed in order to run the new test case. Adding or changing Gherkin in any way, including just adding a space or comma,
                 will cause the system to treat it as new (unknown) Gherkin.  Newly created Gherkin will "fail" during test runs until PHP has been written or updated to support it.
         </p>
         <p>An example Test Case found in the Vault database (with only one line of Gherkin):</p>
@@ -214,6 +214,10 @@
                 assertLessThanOrEqual($nums, count($elements));
         }
         </code></pre>
+        <p>There may be several versions of Gherkin that link to the same PHP code. Any additional versions would need to be noted on the PHP side with additional "@" lines.
+                For instance, you could add "@Then verify we see no greater than :num :elements" under "@Then check that there are no more than :nums :elements" and the same PHP 
+                would be called by either Gherkin line.
+        </p>
         <br />
         <div class="anchor" id="aboutUrls"></div>
         <h4>About URLs</h4>
@@ -238,16 +242,21 @@
                  crawl is utilized to look at the body tags for any new website pages and determine what template that URL links to. Knowing the template then 
                  allows us to determine what test cases should be run on that page. </p>
                  <p>For additional information about the URLs being tested, please speak with your QA test developer.</p>
-                 <br />
-                 <br />
-
         </p>
+        <p><b>How URLs are harvested:</b></p>
+        <p><i>more to come...</i></p>
+
+        <br /><br />
 
         <div class="anchor" id="developers"></div>
-        <h4>Set-ups for Developers</h4>
+        <h4>For Developers</h4>
         <p>Package Manager</p>
         <ul>
                 <li>NPM (npm is a package manager for the JavaScript programming language)</li>
+        </ul>
+        <p>Repositories</p>
+        <ul>
+                <li></li>
         </ul>
         <p>Languages used in the Vault project:</p>
         <ul>

@@ -6,8 +6,8 @@
       <br /><br />
       <h1>User Access Control</h1>
       
-      <!-- DO NOT DELETE: Hidden active user contaniner used to block update and remove user -->
-      <div style="display: block;" id="activeUser"><%= activeUser %></div>
+      <!-- DO NOT DELETE: Hidden active user contaniner used to troubleshoot user access page -->
+      <div style="display: none;" id="activeUser"><%= activeUser %></div>
       
     </div><!-- end .col-sm-12 -->
   </div><!-- end .row -->
@@ -57,15 +57,15 @@
               <div class="tab-pane fade" id="updateUser" role="tabpanel" aria-labelledby="updateUser-tab">
                 <div id="updateConfirm"></div><!-- Update user roles confirmation Msg. -->
                 <table class="table table-striped updateUser">
-                  <thead>
-                    <tr>
-                      <th scope="col">Users</th>
+                  <thead class="updateUser">
+                    <tr class="updateUser">
+                      <th class="updateUser" scope="col">Users:</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody class="updateUser">
                     <% for(var i=0; i < users.length; i++) { %>
-                    <tr>
-                      <td>
+                    <tr class="updateUser">
+                      <td class="updateUser">
                         <input type="radio" name="updateUserRad" value="<%= users[i].id %>" /> <%= users[i].firstname %> <%= users[i].lastname %>
                       </td>
                     <% }%><!-- end for() -->
@@ -74,7 +74,7 @@
                 </table><!-- end .table -->
 
                 <div class="roles_title">
-                  <span style="font-weight: bold;">Roles</span><br />
+                  <div style="font-weight: bold;">User Access:</div>
                   <input type="radio" name="updateUserRoles" value="1" /> Basic<br />
                   <input type="radio" name="updateUserRoles" value="2" /> Admin
                 </div>
@@ -88,15 +88,15 @@
               <div class="tab-pane fade" id="removeUser" role="tabpanel" aria-labelledby="removeUser-tab">
                   <div id="removeConfirm"></div><!-- Remove user confirmation Msg. -->
                 <table class="table table-striped updateUser">
-                    <thead>
-                      <tr>
-                        <th scope="col">Users</th>
+                    <thead class="updateUser">
+                      <tr class="updateUser">
+                        <th class="updateUser" scope="col">Users:</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="updateUser">
                     <% for(var i=0; i < users.length; i++) { %>
-                      <tr>
-                        <td>
+                      <tr class="updateUser">
+                        <td class="updateUser">
                           <input type="radio" name="removeUserRad" value="<%= users[i].id %> <%= users[i].firstname %> <%= users[i].lastname %>" /> <%= users[i].firstname %> <%= users[i].lastname %>
                         </td>
                       </tr>

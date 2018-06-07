@@ -1,3 +1,4 @@
+// Invoke 'strict' JavaScript mode
 'use strict';
 
 const db = require('../../config/sequelize');
@@ -191,6 +192,12 @@ function renderPage(renderPageData, req, res) {
   let testPassId = renderPageData.testPassId;
   let total = renderPageData.results.count;
 
+
+  //removes any quotes or special characters from the 'custom' string -example: Are%all%the%images%filled%%%Also%%%%There%are%no%%Image%not%found%%images
+  if (typeof custom != "undefined"){
+    custom = custom.replace(/[^a-zA-Z0-9%]/g, "%");
+    
+  }
 
   // console.log(users + "users");
   //console.log(testPassData + "testPassData");
@@ -667,6 +674,7 @@ exports.getResultByIdAndLanguage = function(req, res) {
         });
       },
       users: function(cb) {
+        // Also populates the Owner field located on results.ejs page.
         db.sequelize.query(`select distinct firstname from User`).then(users => {
 
           users = users[0];
@@ -1220,7 +1228,7 @@ exports.getResultByIdLanguageCustomTestResult = function(req, res) {
         });
       },
       count: function(cb) {
-        db.sequelize.query(`select count(*) from Result WHERE Language = '${language}' AND Template = '${template}' AND Output like '%${custom}%' AND Result = '${testresult}' AND TestPassId = '${testPassId}';`).then(count => {
+        db.sequelize.query(`select count(*) from Result WHERE Language LIKE '${language}' AND Template LIKE '${template}' AND Output like '%${custom}%' AND Result = '${testresult}' AND TestPassId = '${testPassId}';`).then(count => {
 
           count = count[0][0]['count(*)'];
 

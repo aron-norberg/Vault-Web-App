@@ -584,7 +584,8 @@ exports.getOverview = function(req, res) {
             testPass: testPassTableResults,
             currentUrl: req.url,
             tcs: theTCs,
-            urls: theURLs
+            urls: theURLs,
+            user: req.user
           });
         });
       });
