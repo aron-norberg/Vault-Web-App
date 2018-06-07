@@ -703,10 +703,8 @@ exports.getLogFile = function(req, res) {
   //behat_projects/master_tests/logs'
 
   let filename = "test-pass-id-" + req.body.id + ".txt";
-
   let filepath = logFilePath + "/" + filename;
 
-  //res.setHeader(`Content-disposition', 'attachment', filename=${filename}`);
   res.sendFile(filepath);
 
 }

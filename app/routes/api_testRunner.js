@@ -385,7 +385,7 @@ function getTestProcessesFromDB() {
     async.parallel({
 
       statusResults: function(cb) {
-        db.sequelize.query(`select * from Status where EndTime like '1970-01-02 00:00:00' and EndTime like '${cutOffTime}'`).then(statusResults => {
+        db.sequelize.query(`select * from Status where EndTime like '1970-01-02 00:00:00'`).then(statusResults => {
 
           statusResults = statusResults[0];
 

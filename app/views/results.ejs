@@ -191,7 +191,7 @@
 
           <td class="Notes">
           <% if (results[i].Notes){ %>
-            <div class="notesMsg"><%= results[i].Notes %></div>
+            <div class="notesMsg" id="notesMsg"><%= results[i].Notes %></div>
             <!--textarea name="note" rows="3" cols="50"><%= results[i].Notes %></textarea--> 
           <%} %>
           <button type="button" class="btn btn-primary editBtn" data-toggle="modal" data-target=".bd-example-modal-lg<%= i %>" data-whatever="<%= i %>">Edit</button>
@@ -213,6 +213,7 @@
                       <p>Scenario: <%= r %></p>
                       <p>Message: <%=mystring%></p>
                       <p>URL: <%= results[i].URLs %></p>
+                      <p>Owner: <%= results[i].Owner %></p>
                       <% if (results[i].Notes){ %>
                         <div class="form-group">
                           <label for="usr">Add a Note:</label>
@@ -228,7 +229,8 @@
 
                         <div>
                           <label for="resolveTest">
-                            <input type="checkbox" id="resolveTest" value="resolved" onclick="resolveTestCase();" /> Resolve test case ID: <span id="idTestCase"><%= results[i].TestCaseId %></span>
+                            <!--input type="checkbox" id="resolveTest" value="resolved" onclick="resolveTestCase();" /> Resolve test case ID: <span id="idTestCase"><%= results[i].TestCaseId %></span-->
+                            <input type="checkbox" name="resolved" id="resolveTest" value="RESOLVED" /> Resolve test case ID: <span id="idTestCase"><%= results[i].TestCaseId %></span>
                             </label>
                         </div>
 
@@ -252,18 +254,7 @@
 
 
 
-      <script>
-
-      function resolveTestCase() {
-        var testCaseResolved = document.getElementById('resolveTest').value;
-        var testCaseId = document.getElementById('idTestCase').innerHTML;
-
-        console.log('Test case id: ' + testCaseId + ' has been marked ' + testCaseResolved);
-        alert('Resolve test case feature is coming soon to a script near you!');
-
-      } // end resolveTestCase()
-
-      </script>
+      
 
 
 
@@ -329,5 +320,21 @@
 
 </div><!-- end .container -->
 
+<script>document.addEventListener("DOMContentLoaded", function() { resolvedInNotes(); });</script>
 
+<script>
+/*function resolvedInNotes() {
+
+  var searchValue = "RESOLVED";
+
+  $("#notesMsg").each(function() {
+    if ($(this).html().indexOf(searchValue) > -1) {
+      $("#notesMsg").css( {"color": "#28A745", "font-weight": "bold"} );
+    }
+
+  });
+
+} // end resolveTestCase()*/
+  </script>
+  
 <%- include('footer') %>
