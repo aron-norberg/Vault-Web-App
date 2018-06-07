@@ -389,6 +389,8 @@ function getTestProcessesFromDB() {
 
           statusResults = statusResults[0];
 
+
+
           // Convert Result back to string
           for (let i = statusResults.length - 1; i >= 0; i--) {
             statusResults[i].RunDate = dateFormat(statusResults[i].RunDate, "mm-dd-yy h:MM:ss TT"); // + " PST";
@@ -403,6 +405,7 @@ function getTestProcessesFromDB() {
         db.sequelize.query(`select * from TestPass where Note like '%PID%';`).then(testPassData => {
 
           testPassData = testPassData[0];
+
 
           for (let i = testPassData.length - 1; i >= 0; i--) {
 
@@ -449,6 +452,9 @@ function checkTestProcessWithSystemPS(testPassTableResults) {
       // Modify to get correct process and count
 
       let pid = item.Note.replace(/PID: /, '');
+      pid = pid.substring(0, pid.indexOf(':'));
+
+      console.log("The pid is " + pid);
 
       if (!pid) {
 
