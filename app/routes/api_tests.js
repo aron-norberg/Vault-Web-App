@@ -71,8 +71,6 @@ function broadcastTestProgress(req, testId, count, ppid) {
         // divide resultCount and count to get the percentage
         let percentage = ((resultCount / count) * 100).toFixed(2);
 
-
-
         let countOutput = `Test Id: ${testId} - percentage: ${percentage} %`;
 
         console.log(countOutput);
@@ -405,104 +403,184 @@ exports.stopTest = function(req, res) {
 
 /************************
  * Function: getTotalNumberOfTestCases()
- * Purpose: 
- * Parameters:
- * Author: James Sandoval, Aron T Norberg
- * Date: May 2018
+ * Purpose: Obtains the number of test cases that should be run in order to 
+ * provide a basis for test pass progess/validation
+ * Parameters: testParameterObject - which is the input object that contains
+ * all details for how a specific test pass is composed
+ * Returns: The Test Pass Count
+ * Author: James Sandoval
+ * Date: June 2018
  ************************/
+
 function getTotalNumberOfTestCases(testParameterObject) {
-
   return new Promise((resolve, reject) => {
-    let count = 0;
+
     let finalCount = 0;
-    let limit = 0;
+    let templateCount = 1;
+    let features = [];
+    let languages = [];
+    let limitStore = 0;
+    let limit = testParameterObject.Urls;
 
-    async function getCount(testParameterObject) {
+    // If limit is all, set it to a large number, 1 mil should be sufficient
+    // as this searches for urls per specific lang and locale
+    // An example is f4 and en-us, which should net ~ 1100 urls.
 
-      // map array to promises 
-      const promises = testParameterObject.languages.map((languageSelection) => {
-        // evaulate if features is f4, if so, limit to 100
-        if (testParameterObject.features == "F4" && testParameterObject.Urls == "all" || (testParameterObject.features == "F4" && testParameterObject.Urls > 100)) {
+    if (limit == "all") {
 
-          limit = 100;
-
-          // convert string to large number if all
-        } else if (testParameterObject.Urls == "all") {
-          // 10 million/ should never come close to or exceed this value
-          limit = 10000000;
-        }
-
-        // evaulate if language is all
-        if (languageSelection == "all") {
-          languageSelection = "%";
-        }
-        // evaulate if feature is all
-
-        if (testParameterObject.features == "all") {
-          testParameterObject.features = "%";
-        }
-
-        return db.sequelize.query(`select count(*) from (select Url from Urls where language like '${languageSelection}' and TemplateId like '${testParameterObject.features}' limit 10000000) As a;`).then(count => {
-          count = count[0][0]['count(*)'];
-          return count
-
-        }).catch((err) => {
-          console.log("error querying test case count");
-          console.log('error: ' + err);
-        })
-      });
-
-      await Promise.all(promises).then(count => {
-        // Count is an array of results
-        // sum up all results to obtain answers
-        for (let i = 0; i < count.length; i++) {
-          finalCount += count[i];
-        }
-
-        // if test case selections is "all", query db for correct test cases
-        if (testParameterObject.TestCaseSelections[0] == "all") {
-
-          db.sequelize.query(`select TestCaseId from Template where Id = '${testParameterObject.features}'`).then(testCaseCount => {
-
-            testCaseCount = testCaseCount[0][0].TestCaseId.split(',').length;
-
-            finalCount = finalCount * testCaseCount;
-
-            console.log("The final count from inside the sequelize request " + finalCount);
-            if (finalCount !== 'undefined') {
-              resolve(finalCount)
-
-            } else {
-              reject(finalCount);
-            }
-
-            return null;
-
-          }).catch((err) => {
-            console.log("error querying test case count from template id.");
-            console.log('error: ' + err);
-            return err;
-
-          })
-
-          // process without querying the db.
-        } else {
-
-          // multiple final count by test Cases 
-          finalCount = finalCount * testParameterObject.TestCaseSelections.length;
-
-          if (finalCount !== 'undefined') {
-            
-            resolve(finalCount)
-
-          } else {
-            reject(finalCount);
-          }
-        }
-      })
+      limit = 1000000;
     }
 
-    getCount(testParameterObject);
+    async.parallel({
+      allDistinctTemplates: (cb) => {
+        db.sequelize.query(`SELECT DISTINCT TemplateId FROM Urls;`).then(allDistinctTemplates => {
+          allDistinctTemplates = allDistinctTemplates[0];
+
+          cb(null, allDistinctTemplates);
+        });
+      },
+      allDistinctLanguages: (cb) => {
+        db.sequelize.query('SELECT DISTINCT Language FROM Urls;').then(allDistinctLanguages => {
+          allDistinctLanguages = allDistinctLanguages[0];
+
+          cb(null, allDistinctLanguages);
+        });
+      },
+      allTestCases: (cb) => {
+        db.sequelize.query(`SELECT TestCaseId FROM Template where Id = '${testParameterObject.features}'`).then(allTestCases => {
+          allTestCases = allTestCases[0];
+
+          cb(null, allTestCases);
+        });
+      }
+    }, (err, results) => {
+
+      console.log(results.allTestCases[0].TestCaseId);
+
+    // if test cases == all, set test cases to new value;
+
+      if(testParameterObject.TestCaseSelections == "all"){
+        testParameterObject.TestCaseSelections = results.allTestCases[0].TestCaseId.split(',');
+
+      }
+
+      if (testParameterObject.languages[0] == "all") {
+        for (let i = 0; i < results.allDistinctLanguages.length; i++) {
+          languages.push(results.allDistinctLanguages[i].Language)
+        }
+
+      } else {
+        languages = testParameterObject.languages;
+      }
+
+      if (testParameterObject.features == "all") {
+        for (let i = 0; i < results.allDistinctTemplates.length; i++) {
+          features.push(results.allDistinctTemplates[i].TemplateId)
+        }
+
+      } else {
+        features.push(testParameterObject.features);
+      }
+
+      //console.log("loop after insert goes here: ");
+
+      for (let i = 0; i < languages.length; i++) {
+        //console.log(languages[i])
+      }
+
+      for (let i = 0; i < features.length; i++) {
+        //console.log(features[i])
+      }
+
+      finalTestCaseCount(testParameterObject, languages, features, limit).then(count => {
+
+        // multiply by the number of test cases
+        console.log("The final count is " + count);
+        resolve(count)
+
+      }).catch((err) => {
+        console.log('error: ' + err);
+        return err;
+
+      })
+    });
+  });
+}
+
+/************************
+ * Function: getfinalTestCaseCount
+ * Purpose: obtains a count from urls by feature and language and limit
+ * This limits f4 to 100 if limit is > 100
+ * Returns: a Promise for the number of urls available given the selection.
+ * Author: James Sandoval
+ * Date: June 2018
+ ************************/
+
+function finalTestCaseCount(testParameterObject, languages, features, limit) {
+  return new Promise((resolve, reject) => {
+    let limitStore = 0;
+    let count = 0;
+
+    async.forEachOf(languages, (language, key1, callbackLanguage) => {
+      // process language here
+      async.forEachOf(features, (feature, key2, callbackFeature) => {
+
+        //console.log(language);
+        //console.log(feature);
+
+        if (feature.toUpperCase() == "F4" && limit > 100) {
+
+          limitStore = limit;
+          limit = 100;
+
+        }
+
+        let query = `select count(*) from (select Url from Urls where language like '${language}' and TemplateId like '${feature}' limit ${limit}) As a;`;
+
+        // restore the correct value to limit after limiting f4 selection
+        limit = limitStore;
+
+        db.sequelize.query(query).then(mainCount => {
+
+          count = count + mainCount[0][0]['count(*)'];
+          count = count * testParameterObject.TestCaseSelections.length;
+
+          // if all items are complete, resolve the promise with the final count
+          if (key1, key2 == 0) {
+
+            resolve(count);
+          }
+
+        }).catch((err) => {
+          console.log('error: ' + err);
+          return err;
+
+        })
+
+        callbackFeature();
+
+      }, (err1) => {
+
+        if (err1) {
+          console.log("error from async each feature");
+          reject(err1)
+        }
+
+      });
+      callbackLanguage();
+
+    }, (err2) => {
+
+      if (err2) {
+
+        console.log("error from async each language");
+        reject(err2);
+
+      }
+
+      // This should be the completion of the loop
+
+    });
 
   });
 }

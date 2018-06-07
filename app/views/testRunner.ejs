@@ -485,7 +485,7 @@
                       <td>
                         <%= liveStatus[i].runDate %>
                       </td>
-                      <td id=<%= liveStatus[i].id %><%= liveStatus[i].status %></td>
+                      <td id="<%= liveStatus[i].id %>-progress"></td>
                       </td>
                       <td>
 
@@ -555,7 +555,7 @@
 
       let $oldRow = $(`#${id}`);
 
-      $oldRow.addClass("table-success");
+      //$oldRow.addClass("table-success");
 
       $(`#${id} td:nth-child(3)`).text("Complete");
 
@@ -565,7 +565,6 @@
         $($oldRow).empty().remove(); // removes the row and the contents within row
         // Ten Minutes
       }, 600000)
-
     }
 
   });

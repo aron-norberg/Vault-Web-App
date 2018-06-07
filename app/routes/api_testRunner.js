@@ -385,9 +385,11 @@ function getTestProcessesFromDB() {
     async.parallel({
 
       statusResults: function(cb) {
-        db.sequelize.query(`select * from Status where EndTime like '1970-01-02 00:00:00' and EndTime like '${cutOffTime}'`).then(statusResults => {
+        db.sequelize.query(`select * from Status where EndTime like '1970-01-02 00:00:00'`).then(statusResults => {
 
           statusResults = statusResults[0];
+
+
 
           // Convert Result back to string
           for (let i = statusResults.length - 1; i >= 0; i--) {
@@ -403,6 +405,7 @@ function getTestProcessesFromDB() {
         db.sequelize.query(`select * from TestPass where Note like '%PID%';`).then(testPassData => {
 
           testPassData = testPassData[0];
+
 
           for (let i = testPassData.length - 1; i >= 0; i--) {
 
@@ -449,6 +452,9 @@ function checkTestProcessWithSystemPS(testPassTableResults) {
       // Modify to get correct process and count
 
       let pid = item.Note.replace(/PID: /, '');
+      pid = pid.substring(0, pid.indexOf(':'));
+
+      console.log("The pid is " + pid);
 
       if (!pid) {
 
@@ -538,7 +544,7 @@ exports.getOverview = function(req, res) {
         checkTestProcessWithSystemPS(testPassTableResults).then(statusResults => {
 
           for (var i = 0; i < statusResults.length; i++) {
-            //console.log(statusResults[i]);
+            console.log(statusResults[i]);
           }
 
           // { id: 65, status: 'success' }

@@ -1,6 +1,12 @@
+/* We are not using Controllers in the Vault app - instead of using Controllers we 
+condensed the code and have Route informtion in the express.js and Controller
+code in the Routes file. */
+
+
+
 // Invoke 'strict' JavaScript mode
 
-'use strict';
+/*'use strict';
 var db = require('../../config/sequelize');
 var Sequelize = require('sequelize');
 const Op = Sequelize.Op;
@@ -8,9 +14,9 @@ const Op = Sequelize.Op;
 
 var length = 0;
 
-/**
- * List of Articles
- */
+
+//List of Articles
+ 
 
 exports.render = function(req, res) {
 	db.results.findAll().then(results => {
@@ -32,4 +38,4 @@ exports.render = function(req, res) {
         });
     });
 }
-
+*/
