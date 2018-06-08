@@ -1,5 +1,6 @@
 'use strict';
 
+var mysql = require('mysql');
 const db = require('../../config/sequelize');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
@@ -598,3 +599,49 @@ exports.getOverview = function(req, res) {
     });
   })
 };
+
+
+// used for getting the schedule selected from the Test-runner page and adding the selection to the database
+exports.addToSchedule = function(req, res) {
+
+ // Gets the value from url string using get
+//  let languages = req.query.languages;
+//  let Template = req.query.template;
+//  let TestCaseIds = req.query.TestCases;
+//  let URLsCount = req.query.URLs;
+//  let Domain = req.query.Domain;
+//  let Description = req.query.Description;
+ let day = req.query.day;
+//  let Schedule = "0 0 0-0 ? * " + day + " *";
+//  let phrase = "'"+languages + "','" +Template + "','" +TestCaseIds+ "','" +URLsCount+ "','" +Domain+ "','" +Description+ "','" +Schedule;
+
+
+ // used to escape single quotes and apostrophe's
+//  notes = notes.replace(/'/g, '"');
+
+ var db = mysql.createConnection({
+   host: "localhost",
+   port: "3306",
+   dialect: 'mysql',
+   user: "flukeqa",
+   password: "H0lidayApples",
+   database: "test"
+ });
+
+
+ // Add day to TestSchedule table in database
+ db.connect(function(err) {
+   if (err) throw err;
+
+   db.query("INSERT INTO TestSchedule(Schedule) VALUES ("+ day + ");", function (err, row){
+  //  db.query("INSERT INTO TestSchedule (Languages, Template, TestCaseIds, URLsCount, Domain, Description, Schedule) VALUES ("+phrase+");", function (err, row) {
+     if (err) throw err;
+
+    }); // end db.query("SELECT Notes FROM result WHERE Id = '"+id+"'", function (err, row)
+
+  }); // end db.connect(function(err)
+  console.log("sent information to the TestSchedule table");
+
+   res.redirect('back'); // used to redirect page back on submit
+
+}

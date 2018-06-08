@@ -412,7 +412,41 @@
         <button class="button" style="display:none;" type="button" class="btn btn-lg btn-warning" onclick="">save</button>
         <button type="button" class="btn btn-md btn-primary width-set" onclick="runit()">run</button>
         <br><br>
-        <button type="button" class="btn btn-md btn-success width-set" onclick="runit()">schedule</button>
+        <button type="button" data-toggle="modal" data-target="#scheduleModal" class="btn btn-md btn-success width-set" onclick="runit()">schedule</button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="scheduleModal" tabindex="-1" role="dialog" aria-labelledby="ScheduleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="ScheduleModalLabel">Test Scheduler</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+               <form action="" method="GET">
+                 <div>
+                   <h5>Weekly tests:</h5>
+                   <input type="radio" value="Mondays" name="day">Every Monday<br />
+                   <input type="radio" value="Tuesdays" name="day">Every Tuesday<br />
+                   <input type="radio" value="Wednesdays" name="day">Every Wednesday<br />
+                   <input type="radio" value="Thursdays" name="day">Every Thursday<br />
+                   <input type="radio" value="Fridays" name="day">Every Friday<br />
+                   <input type="radio" value="Saturdays" name="day">Every Saturday<br />
+                   <input type="radio" value="Sundays" name="day">Every Sunday<br />
+                 </div>
+               </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
         <br />
       </div>
       <div class="col-lg-6 option-box">
