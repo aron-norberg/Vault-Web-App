@@ -252,12 +252,7 @@
         </tr>
       </table>
 
-
-
       
-
-
-
       <!-- DO NOT DELETE: hidden fields used to pass values on submit via GET -->
       <input type="hidden" name="Id" value="<%= results[i].Id %>" />
       <input type="hidden" name="RunDate" value="<%= results[i].RunDate %>" />
@@ -322,19 +317,4 @@
 
 <script>document.addEventListener("DOMContentLoaded", function() { resolvedInNotes(); });</script>
 
-<script>
-/*function resolvedInNotes() {
-
-  var searchValue = "RESOLVED";
-
-  $("#notesMsg").each(function() {
-    if ($(this).html().indexOf(searchValue) > -1) {
-      $("#notesMsg").css( {"color": "#28A745", "font-weight": "bold"} );
-    }
-
-  });
-
-} // end resolveTestCase()*/
-  </script>
-  
 <%- include('footer') %>
