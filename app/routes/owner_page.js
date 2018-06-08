@@ -18,7 +18,7 @@ exports.ownership_display = function(req, res) {
         phrase = " Owner = '" + selectedUser + "';";
         displayName = selectedUser;
     }
-
+    console.log(req.user);
 
     db.sequelize.query('select * from Result where' + phrase).then(results => {
         db.sequelize.query('select * from User;').then(users => {
