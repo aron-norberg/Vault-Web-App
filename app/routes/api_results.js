@@ -229,27 +229,42 @@ function renderPage(renderPageData, req, res) {
 
   // Pagination Logic Part II Ends Here
 
-  res.render('results', {
-    title: 'Test Results:',
-    start: start,
-    end: end,
-    page: page,
-    pages: pages,
-    results: results,
-    template: template,
-    language: language,
-    total: total,
-    currentUrl: reqUrl,
-    basePath: basePath,
-    pfsUrl: pfsUrl,
-    testresult: testresult,
-    custom: custom,
-    user: reqUserfirstname,
-    users: users,
-    testPassData: testPassData,
-    testPassId: testPassId
 
-  });
+  db.sequelize.query(`SELECT * FROM User;`).then(function(id) {
+    
+    let users = id[0];
+
+    res.render('results', {
+      title: 'Test Results:',
+      start: start,
+      end: end,
+      page: page,
+      pages: pages,
+      results: results,
+      template: template,
+      language: language,
+      total: total,
+      currentUrl: reqUrl,
+      basePath: basePath,
+      pfsUrl: pfsUrl,
+      testresult: testresult,
+      custom: custom,
+      user: reqUserfirstname,
+      testPassData: testPassData,
+      testPassId: testPassId,
+
+      users: users,
+      id: req.user.id,
+      firstname: req.user.firstname,
+      lastname: req.user.lastname,
+      role: req.user.role,
+      activeUser: req.user.firstname,
+      user: req.user
+
+    });
+
+}); // end db.sequelize.query("SELECT * FROM user;")
+
 }
 
 /************************
