@@ -717,9 +717,9 @@ function showURLChoice() {
 
 // Send a json object to server to run a test 
 // with given parameters
+function getTestParameters(){
 
-
-function runit() {
+  
   let noticeBox = document.getElementById("notice");
   let descriptionBox = document.getElementById("description");
   let urlParagraph = document.getElementById("selectedURLs");
@@ -808,6 +808,15 @@ function runit() {
 
   let testParamsJSON = JSON.stringify(testParameters);
 
+  return(testParamsJSON);
+
+}
+
+
+
+function runit() {
+
+  let testParamsJSON= getTestParameters();
   console.log(testParamsJSON);
 
   $.ajax({
@@ -832,6 +841,52 @@ function runit() {
   })
 }
 
+function scheduleIt() {
+
+  let testParamsJSON= getTestParameters();
+  // testParamsJSON = JSON.parse(testParamsJSON);
+  // console.log(testParamsJSON.languages);
+
+  var dayOptions = document.getElementsByName('day');
+  var day = "";
+  var timeOptions = document.getElementsByName('time');
+  var time = "";
+
+  for (var i =0; i<dayOptions.length; i++){
+    if (dayOptions[i].checked){
+      day=dayOptions[i].value;
+      break;
+    }
+  }
+  for (var s =0; s<timeOptions.length; s++){
+    if (timeOptions[s].checked){
+      time=timeOptions[s].value;
+      break;
+    }
+  }
+  testParamsJSON = JSON.parse(testParamsJSON);
+  testParamsJSON.day=day;
+  testParamsJSON.time=time;
+  testParamsJSON = JSON.stringify(testParamsJSON);
+
+  $.ajax({
+    url: '/add-to-schedule',
+    type: 'POST',
+    data: testParamsJSON,
+    contentType: "application/json",
+
+    error: function(data) {
+      console.log(data + "Gherkin data has failed at ajax request response.");
+    },
+
+    success: function(data) {                              
+      alert("Your test has been scheduled.");
+      console.log("post request successful");
+      // data = JSON.parse(data);
+    }
+
+  })
+}
 
 // Get a timestamp
 function getTimeStamp() {
