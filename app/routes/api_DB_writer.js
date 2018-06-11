@@ -30,7 +30,6 @@ exports.addNotesToResultTable_DB = function(req, res) {
   let firstname = req.user.firstname;
   let lastname = req.user.lastname;
 
-
   // used to escape single quotes and apostrophe's
   notes = notes.replace(/'/g, '"');
 
