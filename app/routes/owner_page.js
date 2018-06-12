@@ -19,7 +19,6 @@ exports.ownership_display = function(req, res) {
         displayName = selectedUser;
     }
 
-
     db.sequelize.query('select * from Result where' + phrase).then(results => {
         db.sequelize.query('select * from User;').then(users => {
 

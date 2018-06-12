@@ -27,6 +27,8 @@ exports.addNotesToResultTable_DB = function(req, res) {
   let notes = req.query.message;
   let owner = req.query.users;
   let resolveCkBox = req.query.resolved;
+  let firstname = req.user.firstname;
+  let lastname = req.user.lastname;
 
   // used to escape single quotes and apostrophe's
   notes = notes.replace(/'/g, '"');
@@ -62,12 +64,13 @@ exports.addNotesToResultTable_DB = function(req, res) {
       //console.log(row);
 
       if (row[0].Notes) {
-        var sql = "UPDATE Result SET Notes = CONCAT(Notes, '\n\n', '"+notes+"', ' - ', '"+owner+"') WHERE Id = '"+id+"'";
+        var sql = "UPDATE Result SET Notes = CONCAT(Notes, '\n\n', '"+notes+"', ' - ', '"+firstname+"',' ', '"+lastname+"') WHERE Id = '"+id+"'";
+
 
         if (resolveCkBox == 'RESOLVED') {
-          //var sql = "UPDATE Result SET Notes = CONCAT(Notes, '\n\n', '"+notes+"', '\n', '"+resolveCkBox+"', '-', CURRENT_TIMESTAMP(), '\n', '"+owner+"') WHERE Id = '"+id+"'";
-          //var sql = "UPDATE Result SET Notes = CONCAT(Notes, '\n\n', '"+notes+"', '\n', '"+resolveCkBox+"', '-', CURRENT_DATE(), '\n', '"+owner+"') WHERE Id = '"+id+"'";
-          var sql = "UPDATE Result SET Notes = CONCAT('"+resolveCkBox+"', '\n\n', Notes, '\n\n', '"+notes+"', ' - ' '"+owner+"', '\n', CURRENT_DATE()) WHERE Id = '"+id+"'";
+          //var sql = "UPDATE Result SET Notes = CONCAT(Notes, '\n\n', '"+notes+"', '\n', '"+resolveCkBox+"', '-', CURRENT_TIMESTAMP(), '\n', '"+activeUser+"') WHERE Id = '"+id+"'";
+          //var sql = "UPDATE Result SET Notes = CONCAT(Notes, '\n\n', '"+notes+"', '\n', '"+resolveCkBox+"', '-', CURRENT_DATE(), '\n', '"+activeUser+"') WHERE Id = '"+id+"'";
+          var sql = "UPDATE Result SET Notes = CONCAT('"+resolveCkBox+"', '\n\n', Notes, '\n\n', '"+notes+"', ' - ' '"+firstname+"',' ', '"+lastname+"', '\n', CURRENT_DATE()) WHERE Id = '"+id+"'";
 
           var testResultId = id;
           changeOwner(testResultId);
@@ -76,7 +79,7 @@ exports.addNotesToResultTable_DB = function(req, res) {
 
       }
       else {
-        var sql = "UPDATE Result SET Notes = CONCAT('"+notes+"', ' - ', '"+owner+"') WHERE Id = '"+id+"'";
+        var sql = "UPDATE Result SET Notes = CONCAT('"+notes+"', ' - ', '"+firstname+"',' ', '"+lastname+"') WHERE Id = '"+id+"'";
         
       } //end if/else
 

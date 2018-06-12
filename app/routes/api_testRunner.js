@@ -1,5 +1,6 @@
 'use strict';
 
+var mysql = require('mysql');
 const db = require('../../config/sequelize');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
@@ -596,3 +597,46 @@ exports.getOverview = function(req, res) {
     });
   })
 };
+
+/************************
+ * Function: addToSchedule()
+ * Purpose: used for getting the schedule selected from the Test-runner page and adding the selection to the database
+ * Parameters: testParamsJSON = the selections made on the Run Tests page, day = the day chosen on the Test Scheduler modal
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: June 2018
+ ************************/
+exports.addToSchedule = function(req, res) {
+
+  let jsonTestparams = JSON.stringify(req.body);
+  let testParams = JSON.parse(jsonTestparams);
+  let schedule = "";
+
+  //  testParameters = 
+  //   "languages": langs,
+  //   "features": template,
+  //   "TestCaseSelections": tcs,
+  //   "Urls": urlChoices,
+  //   "domain": domain,
+  //   "description": description
+
+  if (isNaN(testParams.day)){
+    schedule = "0 0 " +testParams.time + " ? * " + testParams.day +" *";
+  }
+  else {
+    schedule = "0 0 " +testParams.time + " " + testParams.day +" * ? *";
+  }  
+
+  db.sequelize.query("INSERT INTO TestSchedule (Languages, Template, TestCaseIds, URLsCount, Domain, Description, Schedule) VALUES ('"+testParams.languages+"','"+ testParams.features + "','"+testParams.TestCaseSelections + "','"+testParams.Urls + "','"+testParams.domain + "','"+ testParams.description+ "','"+schedule + "');", function (err, row) {
+     if (err) throw err;
+
+  }).catch(function(err) {
+    console.log('error: ' + err);
+    return err;
+  })
+
+  console.log("sent information to the TestSchedule table");
+
+  res.send("success"); // used to redirect page back on submit
+
+}
+

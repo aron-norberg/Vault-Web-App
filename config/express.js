@@ -282,6 +282,9 @@ module.exports = function() {
   // Delete Test Cases
   app.post('/delete-test-case', isLoggedIn, test_case_editor.deleteTestCases);
 
+  // Add to the Schedule table
+  app.post('/add-to-schedule', isLoggedIn, api_testRunner.addToSchedule);
+
   // Language Detection Route
   app.post('/detect', language.postLanguage);
 
