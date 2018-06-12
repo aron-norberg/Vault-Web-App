@@ -28,10 +28,12 @@
                 <ul>
                         <li><a href="#testcase">The Test Case table</a></li>
                         <li><a href="#template">The Template table</a></li>
-                        <li><a href="#urls">The URLs table</a></li>       
+                        <li><a href="#urls">The URLs table</a></li>  
+                        <li><a href="#QAurls">The QA Functional URLs table</a></li>     
                         <li><a href="#testpass">The Test Pass table</a></li> 
                         <li><a href="#status">The Status table</a></li>   
                         <li><a href="#result">The Result table</a></li> 
+                        <li><a href="#testSchedule">the Test Schedule table</a></li>
                         <li><a href="#user">The User table</a></li>           
                 </ul>
                 <li><a href="#gherkin">Current Gherkin Definition List</a></li>
@@ -314,7 +316,7 @@
         <div class="anchor" id="database"></div>
         <h2>Database Information</h2>
         <p>Developers will have two databases that need to mirror each other, the database on the
-                EC2 instance (http://ec2-35-168-52-214.compute-1.amazonaws.com/) and the database(s) used on local machines. 
+                EC2 instance (http://ec2-35-168-52-214.compute-1.amazonaws.com/) and the database used on their local machine. 
         </p>
         <p>The database has 7 tables as seen below. These tables are used by the Vault application for running tests.</p>
         <p>When a user selects what Language and Template to test, they are narrowing down what URLs are to be tested. Selecting the domain also determines URL options. The
@@ -357,6 +359,15 @@
         <span class="font-weight-bold">Url</span> - the URL address<br />
         <span class="font-weight-bold">Rank</span> - intended for prioritizing URLs so that highly trafficked pages could be tested more often. Currently not used.<br />
         &emsp; F4, the template for which we have the most URLs, is set up to test 100 random F4 URLs when "all" F4 URLs are selected for testing <br />
+        </p>
+        <div class="anchor" id="QAurls"></div>
+        <h4>QaFunctionalUrls</h4>
+        <p>[a page address we test]<br />These are QA owned pages that are set up for functional tests to run against<br />
+        <span class="font-weight-bold">Id</span> - numerical key<br />
+        <span class="font-weight-bold">Template</span> - the ID of the page template that the URL links to, followed by a letter "a", "b" etc.<br />
+        &emsp; Since some tests are scenario based, more than one version of a template page may be needed for testing    <br />
+        <span class="font-weight-bold">Url</span> - the URL address<br />
+        <span class="font-weight-bold">TestCaseId</span> - a list of test case ids that are set up to run on the URL <br />
         </p>
         <br />
         <div class="anchor" id="testpass"></div>
@@ -406,6 +417,24 @@
         <span class="font-weight-bold">Notes</span> - whena  user claims ownership, they can add a note on what action they are taking for that test result<br />
         </p>
         <br />
+        <div class="anchor" id="testSchedule"></div>
+        <h4>TestSchedule</h4>
+        <p>[the test parameters and when they are scheduled to run] <br />
+        <span class="font-weight-bold">Id</span> - the ID of the test scheduled<br />
+        <span class="font-weight-bold">Languages</span> - a list of languages that are selected for testing<br />
+        <span class="font-weight-bold">Template</span> - a list of templates selected for testing<br />
+        <span class="font-weight-bold">TestCaseIds</span> - a list of test cases selected for testing.  <br />
+        &emsp; Note: it should be discouraged for a user to select all test cases to be run against all templates and all languages<br />
+        &emsp; Since test cases are designed for specific page requirements, running all test cases on all pages is not helpful<br />
+        <span class="font-weight-bold">Domain</span> - the domain selected by the user for testing  <br />
+        <span class="font-weight-bold">URLsCount</span> - the number of URLs to be tested <br />
+        &emsp; Note: When possible, selecting a smaller count of URLs is recommended<br />
+        <span class="font-weight-bold">Description</span> - the user's entered description for the test  <br />
+        <span class="font-weight-bold">Schedule</span> - a <a href="https://www.freeformatter.com/cron-expression-generator-quartz.html">cron expression</a> created from the user's day and time selections  <br />
+        &emsp; NOTE: users may only select the hour, and the day of the week OR the day of the month<br />
+        <span class="font-weight-bold">SpecifiedURLs</span> - (in development) applies to functional testing, allowing for QA owned URLs to be specified for scheduled test  <br />
+        </p>
+        <br />
         <div class="anchor" id="user"></div>
         <h4>User</h4>
         <p>[person who has access to the Vault application]<br />
@@ -420,6 +449,7 @@
         &emsp; NOTE: an administrator has access to additional features such as:<br />
         &emsp; &emsp; - Delete an entire test pass from the Dashboard page<br />
         &emsp; &emsp; - Delete a test case from the Test Case Editor page<br />
+        &emsp; &emsp; - Edit which functional tests are run against QA Functional URLs<br />
         &emsp; &emsp; - Mark a test pass as unreliable and add a note about it<br />
         </p>
         <br />    
