@@ -389,8 +389,6 @@ function getTestProcessesFromDB() {
 
           statusResults = statusResults[0];
 
-
-
           // Convert Result back to string
           for (let i = statusResults.length - 1; i >= 0; i--) {
             statusResults[i].RunDate = dateFormat(statusResults[i].RunDate, "mm-dd-yy h:MM:ss TT"); // + " PST";
@@ -544,7 +542,7 @@ exports.getOverview = function(req, res) {
         checkTestProcessWithSystemPS(testPassTableResults).then(statusResults => {
 
           for (var i = 0; i < statusResults.length; i++) {
-            console.log(statusResults[i]);
+            //console.log(statusResults[i]);
           }
 
           // { id: 65, status: 'success' }
