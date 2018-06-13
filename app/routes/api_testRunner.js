@@ -20,7 +20,6 @@ const path = require('path');
 let rootPath = path.normalize(__dirname + '../../../');
 rootPath = rootPath + 'temp_directory';
 
-
 /************************
  * Function: getTestCases()
  * Purpose: Gets a list of test cases run against the selected template page
@@ -31,9 +30,20 @@ rootPath = rootPath + 'temp_directory';
 
 exports.getTestCases = function(req, res) {
 
-  // let jsonObject = JSON.stringify(req.body);
-  let template = (req.body[0].theTemplate);
-  //console.log("hello i have a template " + template);  // f8
+  let template = "";
+
+  if (req.body.feature === undefined) {
+
+    template = req.body[0].theTemplate;
+
+  } else {
+
+    template = req.body.feature;
+  }
+
+  //console.log(template)
+
+  //console.log("the template is " + template);
 
   if (template != "all") {
 
@@ -101,6 +111,12 @@ function getTestCasesAndUrlsFromDB() { //this is not in use currently with URLs 
         db.sequelize.query(`select * from Urls limit 1;`).then(allUrls => {
           let Urls = allUrls[0];
           cb(null, Urls);
+        });
+      },
+      allUniqueFeatures: function(cb) {
+        db.sequelize.query(`select * from Template;`).then(allUniqueFeatures => {
+          let features = allUniqueFeatures[0];
+          cb(null, features);
         });
       }
     }, (err, results) => {
@@ -531,6 +547,7 @@ exports.getOverview = function(req, res) {
 
         let theTCs = tcsAndUrls.testCases;
         let theURLs = tcsAndUrls.allTheUrls;
+        let features = tcsAndUrls.allUniqueFeatures;
 
         for (var i = 1; i < theTCs.length; i++) {
           theTCs[i].HashValue = JSON.stringify(theTCs[i].HashValue);
@@ -542,8 +559,9 @@ exports.getOverview = function(req, res) {
 
         checkTestProcessWithSystemPS(testPassTableResults).then(statusResults => {
 
-          for (var i = 0; i < statusResults.length; i++) {
-            //console.log(statusResults[i]);
+          //console.log("This should be featurs:" + features);
+          for (var i = 0; i < features.length; i++) {
+            //console.log(features[i].Id);
           }
 
           // { id: 65, status: 'success' }
@@ -590,6 +608,7 @@ exports.getOverview = function(req, res) {
             currentUrl: req.url,
             tcs: theTCs,
             urls: theURLs,
+            features: features,
             user: req.user
           });
         });
@@ -619,15 +638,14 @@ exports.addToSchedule = function(req, res) {
   //   "domain": domain,
   //   "description": description
 
-  if (isNaN(testParams.day)){
-    schedule = "0 0 " +testParams.time + " ? * " + testParams.day +" *";
+  if (isNaN(testParams.day)) {
+    schedule = "0 0 " + testParams.time + " ? * " + testParams.day + " *";
+  } else {
+    schedule = "0 0 " + testParams.time + " " + testParams.day + " * ? *";
   }
-  else {
-    schedule = "0 0 " +testParams.time + " " + testParams.day +" * ? *";
-  }  
 
-  db.sequelize.query("INSERT INTO TestSchedule (Languages, Template, TestCaseIds, URLsCount, Domain, Description, Schedule) VALUES ('"+testParams.languages+"','"+ testParams.features + "','"+testParams.TestCaseSelections + "','"+testParams.Urls + "','"+testParams.domain + "','"+ testParams.description+ "','"+schedule + "');", function (err, row) {
-     if (err) throw err;
+  db.sequelize.query("INSERT INTO TestSchedule (Languages, Template, TestCaseIds, URLsCount, Domain, Description, Schedule) VALUES ('" + testParams.languages + "','" + testParams.features + "','" + testParams.TestCaseSelections + "','" + testParams.Urls + "','" + testParams.domain + "','" + testParams.description + "','" + schedule + "');", function(err, row) {
+    if (err) throw err;
 
   }).catch(function(err) {
     console.log('error: ' + err);
@@ -640,3 +658,20 @@ exports.addToSchedule = function(req, res) {
 
 }
 
+exports.addNewFunctionalTest = function(req, res) {
+
+  console.log("this is the add new functional Test: \n");
+  console.log(req.body.newFeature)
+  console.log(req.body.newUrl)
+  console.log(req.body.testCases)
+
+
+  db.sequelize.query("INSERT INTO TestSchedule (Languages, Template, TestCaseIds, URLsCount, Domain, Description, Schedule) VALUES ('" + testParams.languages + "','" + testParams.features + "','" + testParams.TestCaseSelections + "','" + testParams.Urls + "','" + testParams.domain + "','" + testParams.description + "','" + schedule + "');", function(err, row) {
+    if (err) throw err;
+
+  }).catch(function(err) {
+    console.log('error: ' + err);
+    return err;
+  })
+
+}

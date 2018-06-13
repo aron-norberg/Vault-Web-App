@@ -285,6 +285,9 @@ module.exports = function() {
   // Add to the Schedule table
   app.post('/add-to-schedule', isLoggedIn, api_testRunner.addToSchedule);
 
+  // Add New Functional Test
+  app.post('/add-new-functional-test', isLoggedIn, api_testRunner.addNewFunctionalTest);
+
   // Language Detection Route
   app.post('/detect', language.postLanguage);
 
