@@ -738,13 +738,15 @@ function getTestParameters() {
 
   // Parse Test Case Data
   tcs = document.getElementById('chosenTestCases').innerHTML.split("\n");
+  console.log("tcs is "+ tcs);
 
   // Validate if all 
   let tcsCheckIfAll = tcs;
   tcsCheckIfAll = tcs[1];
   tcsCheckIfAll = tcsCheckIfAll.split(";").pop();
+  console.log("tcsCheckIfAll is "+ tcsCheckIfAll);
 
-  if (tcsCheckIfAll.includes("all")) {
+  if (tcsCheckIfAll == "all") {
 
     tcs[0] = "all";
     tcs.length = 1;
