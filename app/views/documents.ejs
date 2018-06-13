@@ -23,6 +23,10 @@
                         <li><a href="#links">Useful Links</a></li>
                         <li><a href="#aboutUrls">About URLs</a></li>
                         <li><a href="#developers">For Developers</a></li>
+                        <ul>
+                                <li><a href="#gettingUrls">Obtaining URL lists</a></li>
+                                <li><a href="#fileMap">Vault File Map</a></li>
+                        </ul>
                 </ul>
                 <li><a href="#database">Database Information</a></li>
                 <ul>
@@ -300,7 +304,43 @@
                 <li><i>more to come...</i></li>
         </ul>
 
+        <div class="anchor" id="gettingUrls"></div>
+        <h5>Obtaining URLs</h5>
+        <p>GIT Repository with Python code: <a href="https://github.com/fluke-corporation/MiliCrawl">MiliCrawl</a><br /></p>
+        <p>Step 1: Querying the SOLR database and obtaining a list of published URLs, the page template is determined (where possible) according 
+                to the URL structure. Information is then pushed to a <a href="https://redis.io/">Redis</a> datastore.<br />
+        &emsp;  solr_url_harvester-step-1.py </p>
+        <p>Step 2: Crawling the website for all pages that we have not yet identified the template type of, the HTML body tag is reviewed for the "template-f(X)" class information.<br />
+        &emsp;  url_concurrent_scrape_V2-step-2.py </p> 
+        <p>Step 3: Redis information is pushed to the SQL database for testing.<br />
+        &emsp; redis-to-mysql-step-3.py</p>    
+        <br /><br /> 
 
+        <div class="anchor" id="fileMap"></div>
+        <h5>Vault File Map</h5>  
+        <p>> Vault-Web-App</p>
+        <p> &emsp; > app</p>  
+        <p> &emsp;&emsp; > controllers - We are not using Controllers in the Vault app - instead of using Controllers we 
+                        condensed the code and have Route information in the express.js and Controller
+                        code in the Routes files.</p>
+        <p> &emsp;&emsp; > db</p>
+        <p> &emsp;&emsp; > models - contains code that specifies the layout of our database (a file for each table) using <a href="http://docs.sequelizejs.com/">Sequelize</a></p>
+        <p> &emsp;&emsp; > routes - contains the backend Javascript for each Vault web page (where queries to the database are made, etc).</p>
+        <p> &emsp;&emsp; > views - contains the HTML for each web page, including separate files for the header and footer.</p>
+
+        <br />
+        <p> &emsp; > behat_projects</p>  
+        <p> &emsp; &emsp; > master_tests</p> 
+        <p> &emsp; &emsp; > archive - contains files that have been replaced with start.pl (perl script), files that were used prior to <a href="https://www.docker.com/what-docker">dockerizing</a> our Behat testing. These files were used to run PHP tests locally while they were in development</p>  
+        <p> &emsp; &emsp; > base-features - contains files that were our source Gherkin code (which is now stored in the Vault Database).  addTestCasestoDb.py was used to populate the database from these files.</p> 
+        <p> &emsp; &emsp; > ec2_master_config - backup of ec2 file setups (*can delete) </p> 
+        <p> &emsp; &emsp; > features </p> 
+        <p> &emsp; &emsp; &emsp; > 20150518142842 - dated files can be ignored as they are created during testing and are later deleted</p> 
+        <p> &emsp; &emsp; &emsp; > bootstrap </p> 
+        <p> &emsp; &emsp; &emsp; &emsp; > dbConn.php - Database Configuration file </p> 
+        <p> &emsp; &emsp; &emsp; &emsp; > <b>FeatureContext.php</b> - contains all the PHP functions that are called by our tailored Gherkin (sectioned by template)</p> 
+        <p> &emsp; &emsp; > inputFiles </p>
+        <p> &emsp; &emsp; &emsp; > inputFiles - contains files full of URL lists. </p>
 
         <br /><br />
         <div class="anchor" id="links"></div>
@@ -310,6 +350,7 @@
         <p><a target="_blank" href="https://github.com/cucumber/cucumber/wiki/Gherkin">About Gherkin</a></p>
         <p><a target="_blank" href="https://github.com/fluke-corporation/Vault-Web-App">Vault git-hub repository (application code)</a></p>
         <p><a target="_blank" href="https://github.com/fluke-corporation/behat_projects">behat_project git-hub repository (test case code)</a></p>
+        <p><a target-"_blank" href="https://github.com/fluke-corporation/MiliCrawl">Web crawl git-hub repository (populate the sql database with URLs and the associated template)</a></p>
         <br /><br />
        
 

@@ -1,3 +1,4 @@
+// Example of database query - not currently in use
 // Result Queries
 
 const db = require('../../config/sequelize');
