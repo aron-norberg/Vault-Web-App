@@ -29,7 +29,10 @@
                 <%= status[i].EndTime %>
               </td>
               <td>
-                <%= testPass[i].Description %>
+                <% for (var x=0; x < testPass.length; x++){ 
+                  if (testPass[x].TestPassId == status[i].TestPassId) { %>
+                  <%= testPass[x].Description %>
+                  <% }} %>
               </td>
               <td>
                 <a href="/dashboard?testpassid=<%= status[i].TestPassId %>"><span class="btn btn-sm btn-primary">View Results</span></a>

@@ -392,13 +392,110 @@
                                 <input id="" class=" double" onclick="" type="checkbox" />&nbsp;<%= urls[x].UrlId %> | <%= urls[x].Url %>
                             </li>
                         <% } %> -->
-                        </ul>
-                      </div>
-                      <div class="modal-footer">
-                        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
-                        <button type="button" onclick="showURLChoice()" class="btn btn-primary" data-dismiss="modal">Save selections</button>
-                      </div>
-                    </div>
+                </ul>
+              </div>
+              <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                <button type="button" onclick="showURLChoice()" class="btn btn-primary" data-dismiss="modal">Save selections</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div style="display:none;">
+          <label for="name">Name: </label>
+          <textarea style="margin-left:5px;" id="name" rows="1" cols="38" placeholder="Enter new test name here"></textarea>
+        </div>
+        <button class="button" style="display:none;" type="button" class="btn btn-lg btn-warning" onclick="">save</button>
+        <button type="button" class="btn btn-md btn-primary width-set" onclick="runit()">run</button>
+        <br><br>
+        <button type="button" data-toggle="modal" data-target="#scheduleModal" class="btn btn-md btn-success width-set">schedule</button>
+
+        <!-- Modal -->
+        <!-- <form action="/add-to-schedule" method="GET"> -->
+          <div class="modal fade" id="scheduleModal" tabindex="-1" role="dialog" aria-labelledby="ScheduleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="ScheduleModalLabel">Test Scheduler</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                
+                  <div>
+                    <h4>Select the hour and either the day of the week OR the day of the month:</h4>
+                    <h5>Hour of Test:</h5>
+                    <li class="width-set columnized" ><input type="radio" value="0" name="time">midnight</li>
+                    <li class="width-set columnized" ><input type="radio" value="1" name="time">1 a.m.</li>
+                    <li class="width-set columnized" ><input type="radio" value="2" name="time">2 a.m.</li>
+                    <li class="width-set columnized" ><input type="radio" value="3" name="time">3 a.m.</li>
+                    <li class="width-set columnized" ><input type="radio" value="4" name="time">4 a.m.</li>
+                    <li class="width-set columnized" ><input type="radio" value="5" name="time">5 a.m.</li>
+                    <li class="width-set columnized" ><input type="radio" value="6" name="time">6 a.m.</li>
+                    <li class="width-set columnized" ><input type="radio" value="7" name="time">7 a.m.</li>
+                    <li class="width-set columnized" ><input type="radio" value="8" name="time">8 a.m.</li>
+                    <li class="width-set columnized" ><input type="radio" value="9" name="time">9 a.m.</li>
+                    <li class="width-set columnized" ><input type="radio" value="10" name="time">10 a.m.</li>
+                    <li class="width-set columnized" ><input type="radio" value="11" name="time">11 a.m.</li>
+                    <li class="width-set columnized" ><input type="radio" value="12" name="time">noon</li>
+                    <li class="width-set columnized" ><input type="radio" value="13" name="time">1 p.m.</li>
+                    <li class="width-set columnized" ><input type="radio" value="14" name="time">2 p.m.</li>
+                    <li class="width-set columnized" ><input type="radio" value="15" name="time">3 p.m.</li>
+                    <li class="width-set columnized" ><input type="radio" value="16" name="time">4 p.m.</li>
+                    <li class="width-set columnized" ><input type="radio" value="17" name="time">5 p.m.</li>
+                    <li class="width-set columnized" ><input type="radio" value="18" name="time">6 p.m.</li>
+                    <li class="width-set columnized" ><input type="radio" value="19" name="time">7 p.m.</li>
+                    <li class="width-set columnized" ><input type="radio" value="20" name="time">8 p.m.</li>
+                    <li class="width-set columnized" ><input type="radio" value="21" name="time">9 p.m.</li>
+                    <li class="width-set columnized" ><input type="radio" value="22" name="time">10 p.m.</li>
+                    <li class="width-set columnized" ><input type="radio" value="23" name="time">11 p.m.</li><br /><br />
+                    <h5>Weekly Tests:</h5>
+                    <li class="width-set columnized" ><input type="radio" value="MON" name="day">Mondays</li>
+                    <li class="width-set columnized" ><input type="radio" value="THU" name="day">Thursdays</li>
+                    <li class="width-set columnized" ><input type="radio" value="SUN" name="day">Sundays</li>
+                    <li class="width-set columnized" ><input type="radio" value="TUE" name="day">Tuesdays</li>
+                    <li class="width-set columnized" ><input type="radio" value="FRI" name="day">Fridays</li>
+                    <li class="width-set columnized" ></li>
+                    <li class="width-set columnized" ><input type="radio" value="WED" name="day">Wednesdays</li>
+                    <li class="width-set columnized" ><input type="radio" value="SAT" name="day">Saturdays</li>
+                    <li class="width-set columnized" ></li><br /><br />
+                    <h5>Monthly Test:</h5>
+                    <li class="width-set columnized" ><input type="radio" value="1" name="day">1st</li>                    
+                    <li class="width-set columnized" ><input type="radio" value="11" name="day">11th</li>  
+                    <li class="width-set columnized" ><input type="radio" value="21" name="day">21st</li>
+                    <li class="width-set columnized" ><input type="radio" value="2" name="day">2nd</li>                    
+                    <li class="width-set columnized" ><input type="radio" value="12" name="day">12th</li>
+                    <li class="width-set columnized" ><input type="radio" value="22" name="day">22nd</li>
+                    <li class="width-set columnized" ><input type="radio" value="3" name="day">3rd</li>
+                    <li class="width-set columnized" ><input type="radio" value="13" name="day">13th</li>
+                    <li class="width-set columnized" ><input type="radio" value="23" name="day">23rd</li>
+                    <li class="width-set columnized" ><input type="radio" value="4" name="day">4th</li>
+                    <li class="width-set columnized" ><input type="radio" value="14" name="day">14th</li>                
+                    <li class="width-set columnized" ><input type="radio" value="24" name="day">24th</li>
+                    <li class="width-set columnized" ><input type="radio" value="5" name="day">5th</li>
+                    <li class="width-set columnized" ><input type="radio" value="15" name="day">15th</li>
+                    <li class="width-set columnized" ><input type="radio" value="25" name="day">25th</li>
+                    <li class="width-set columnized" ><input type="radio" value="6" name="day">6th</li>
+                    <li class="width-set columnized" ><input type="radio" value="16" name="day">16th</li>
+                    <li class="width-set columnized" ><input type="radio" value="26" name="day">26th</li>
+                    <li class="width-set columnized" ><input type="radio" value="7" name="day">7th</li>
+                    <li class="width-set columnized" ><input type="radio" value="17" name="day">17th</li>
+                    <li class="width-set columnized" ><input type="radio" value="27" name="day">27th</li>
+                    <li class="width-set columnized" ><input type="radio" value="8" name="day">8th</li>
+                    <li class="width-set columnized" ><input type="radio" value="18" name="day">18th</li>
+                    <li class="width-set columnized" ><input type="radio" value="28" name="day">28th</li>
+                    <li class="width-set columnized" ><input type="radio" value="9" name="day">9th</li>
+                    <li class="width-set columnized" ><input type="radio" value="19" name="day">19th</li>
+                    <li class="width-set columnized" ></li>
+                    <li class="width-set columnized" ><input type="radio" value="10" name="day">10th</li>
+                    <li class="width-set columnized" ><input type="radio" value="20" name="day">20th</li> 
+                    <li class="width-set columnized" ></li><br /><br />
+                    <h5>End of Month (defaults to last day where necessary):</h5>
+                    <li class="width-set columnized" ><input type="radio" value="29" name="day">29th</li> 
+                    <li class="width-set columnized" ><input type="radio" value="30" name="day">30th</li> 
+                    <li class="width-set columnized" ><input type="radio" value="31" name="day">31st</li> 
                   </div>
                 </div>
                 <br />
