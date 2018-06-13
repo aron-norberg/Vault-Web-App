@@ -395,26 +395,26 @@
                                 <input id="" class=" double" onclick="" type="checkbox" />&nbsp;<%= urls[x].UrlId %> | <%= urls[x].Url %>
                             </li>
                         <% } %> -->
-                </ul>
-              </div>
-              <div class="modal-footer">
-                <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
-                <button type="button" onclick="showURLChoice()" class="btn btn-primary" data-dismiss="modal">Save selections</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <br />
-        <div style="display:none;">
-          <label for="name">Name: </label>
-          <textarea style="margin-left:5px;" id="name" rows="1" cols="38" placeholder="Enter new test name here"></textarea>
-        </div>
-        <button class="button" style="display:none;" type="button" class="btn btn-lg btn-warning" onclick="">save</button>
-        <button type="button" class="btn btn-md btn-primary width-set" onclick="runit()">run</button>
-        <br><br>
-        <button type="button" data-toggle="modal" data-target="#scheduleModal" class="btn btn-md btn-success width-set">schedule</button>
-
-        <!-- Modal -->
+                        </ul>
+                      </div>
+                      <div class="modal-footer">
+                        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                        <button type="button" onclick="showURLChoice()" class="btn btn-primary" data-dismiss="modal">Save selections</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <br />
+                <div style="display:none;">
+                  <label for="name">Name: </label>
+                  <textarea style="margin-left:5px;" id="name" rows="1" cols="38" placeholder="Enter new test name here"></textarea>
+                </div>
+                <button class="button" style="display:none;" type="button" class="btn btn-lg btn-warning" onclick="">save</button>
+                <button type="button" class="btn btn-md btn-primary width-set" onclick="runit()">run</button>
+                <br>
+                <br>
+                <button type="button" data-toggle="modal" data-target="#scheduleModal" class="btn btn-md btn-success width-set">schedule</button>
+                 <!-- Modal -->
         <!-- <form action="/add-to-schedule" method="GET"> -->
           <div class="modal fade" id="scheduleModal" tabindex="-1" role="dialog" aria-labelledby="ScheduleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -508,6 +508,30 @@
                   <button type="submit" class="btn btn-primary" data-dismiss="modal" onclick="scheduleIt()">Save changes</button>
                 </div>
               
+              </div>
+            </div>
+          </div>
+        <!-- </form> -->
+                <br />
+              </div>
+              <div class="col-lg-6 option-box">
+                <div id="testNames"></div>
+                <br>
+                <p><b>Languages:</b>
+                  <div id="chosenLangs"></div>
+                </p>
+                <p id="selectedTemplates"><b>Template:</b></p>
+                <p><b>Test Cases: </b>
+                  <div id="chosenTestCases"></div>
+                </p>
+                <p>
+                  <div id="selectedDomain"></div>
+                </p>
+                <p id="selectedURLs"><b>URLs: </b></p>
+                <p>
+                  <p><b>Description:</b></p>
+                  <textarea class="form-control" rows="5" id="description"></textarea>
+                </p>
               </div>
             </div>
           </div>
