@@ -26,6 +26,7 @@
                         <ul>
                                 <li><a href="#gettingUrls">Obtaining URL lists</a></li>
                                 <li><a href="#fileMap">Vault File Map</a></li>
+                                <li><a href="#updatingGit">Merging with Git Hub</a></li>
                         </ul>
                 </ul>
                 <li><a href="#database">Database Information</a></li>
@@ -313,7 +314,21 @@
         <p>Step 2: Crawling the website for all pages that we have not yet identified the template type of, the HTML body tag is reviewed for the "template-f(X)" class information.<br />
         &emsp;  url_concurrent_scrape_V2-step-2.py </p> 
         <p>Step 3: Redis information is pushed to the SQL database for testing.<br />
-        &emsp; redis-to-mysql-step-3.py</p>    
+        &emsp; redis-to-mysql-step-3.py</p> 
+        <p>Run these Python scripts in order. </p>   
+        <br /><br /> 
+
+        <div class="anchor" id="updatingGit"></div>
+        <h5>Merging with Git Hub</h5>
+        <p>GIT Repository with Python code: <a href="https://github.com/fluke-corporation">Github</a><br /></p>
+        <p>Step 1: Querying the SOLR database and obtaining a list of published URLs, the page template is determined (where possible) according 
+                to the URL structure. Information is then pushed to a <a href="https://redis.io/">Redis</a> datastore.<br />
+        &emsp;  solr_url_harvester-step-1.py </p>
+        <p>Step 2: Crawling the website for all pages that we have not yet identified the template type of, the HTML body tag is reviewed for the "template-f(X)" class information.<br />
+        &emsp;  url_concurrent_scrape_V2-step-2.py </p> 
+        <p>Step 3: Redis information is pushed to the SQL database for testing.<br />
+        &emsp; redis-to-mysql-step-3.py</p> 
+        <p>Run these Python scripts in order. </p>   
         <br /><br /> 
 
         <div class="anchor" id="fileMap"></div>
