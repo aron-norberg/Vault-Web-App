@@ -660,14 +660,17 @@ exports.addToSchedule = function(req, res) {
 
 exports.addNewFunctionalTest = function(req, res) {
 
-  console.log("this is the add new functional Test: \n");
-  console.log(req.body.newFeature)
-  console.log(req.body.newUrl)
-  console.log(req.body.testCases)
+  //console.log("this is the add new functional Test: \n");
 
+  let template = req.body.newFeature;
+  let url = req.body.newUrl;
+  let testCases = req.body.testCases.join(",");
 
-  db.sequelize.query("INSERT INTO TestSchedule (Languages, Template, TestCaseIds, URLsCount, Domain, Description, Schedule) VALUES ('" + testParams.languages + "','" + testParams.features + "','" + testParams.TestCaseSelections + "','" + testParams.Urls + "','" + testParams.domain + "','" + testParams.description + "','" + schedule + "');", function(err, row) {
-    if (err) throw err;
+  db.sequelize.query(`INSERT INTO QaFunctionalUrls (Template, URL, TestCaseId) VALUES ('${template}', '${url}', '${testCases}');`).then(result => {
+
+    if (result){
+      res.status(202).send('Functional Test Added to DB.');
+    }
 
   }).catch(function(err) {
     console.log('error: ' + err);

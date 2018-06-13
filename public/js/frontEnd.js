@@ -809,6 +809,22 @@ function getTestParameters() {
 
 }
 /***************************
+ * Purpose: Submit New Functional Test 
+ ****************************/
+
+$("#addNewFxTest").submit(function(event) {
+  event.preventDefault(); // Prevents the page from refreshing
+  let $this = $(this); // `this` refers to the current form element
+  $.post(
+    $this.attr("action"), // Gets the URL to sent the post to
+    $this.serialize(), // Serializes form data in standard format
+    function(data) { /** code to handle response **/ 
+      //console.log(data);
+    }
+
+  );
+});
+/***************************
  * Function: getTestCasesByFeature(this.value)
  * purpose: get test cases by feature after a  
  * user has selected from a dropdown (triggered by an onchange)
@@ -838,7 +854,7 @@ function getTestCasesByFeature(feature) {
       for (let i = 0; i < testCases.length; i++) {
         //console.log(testCases[i].TestCaseId);
         //console.log(testCases[i].TestCaseDescription);
-        $(testCaseContainer).append(`<br><input class="form-check-input" type="checkbox" name="testCases" id="test-case-${testCases[i].TestCaseId}" value="${testCases[i].TestCaseId}" required>${testCases[i].TestCaseDescription}<br>`);
+        $(testCaseContainer).append(`<br><input class="form-check-input" type="checkbox" name="testCases" id="test-case-${testCases[i].TestCaseId}" value="${testCases[i].TestCaseId}">${testCases[i].TestCaseDescription}<br>`);
       }
     }
   })
