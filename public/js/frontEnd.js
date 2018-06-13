@@ -10,7 +10,7 @@
  * Purpose: Hides container id='dashboard-2' if title = 'Dashboard' if not then it shows its on the dashboard page.
  * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
  * Date: May 2018
-************************/
+ ************************/
 
 function dashboardPage() {
   var dashboardTitle = document.getElementById('h2Title').innerHTML;
@@ -18,8 +18,7 @@ function dashboardPage() {
   if (dashboardTitle === 'Dashboard') {
     //document.getElementById('dashboard-1').style.display = "block";
     document.getElementById('dashboard-2').style.display = "none";
-  } 
-  else {
+  } else {
     document.getElementById('dashboard-1').style.display = "none";
     //document.getElementById('dashboard-2').style.display = "block";
   }
@@ -31,40 +30,39 @@ function dashboardPage() {
  * Purpose: Deletes Test result by TestPassId from TestPass, Status, and Result tables from the dashboard page.
  * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
  * Date: May 2018
-************************/
+ ************************/
 
 function deleteTestResults(Id) {
-  
+
   var delConfirm = confirm("Are you sure you want to delete test result ID: " + Id + "?");
-  
+
   if (delConfirm == true) {
-  
+
     $.ajax({
-    url: "/deleteTestResults",
-    type: "GET",
-    dataType: "html",
-    data: {
-      Id: Id
-    },
-    success : function() {
-      console.log('success');
-      window.location = '/dashboard';
-  
-    }, // end success : function()
-    error : function() {
-      console.log('error');
-  
-    } // end error : function()
-  
+      url: "/deleteTestResults",
+      type: "GET",
+      dataType: "html",
+      data: {
+        Id: Id
+      },
+      success: function() {
+        console.log('success');
+        window.location = '/dashboard';
+
+      }, // end success : function()
+      error: function() {
+        console.log('error');
+
+      } // end error : function()
+
     }); // end .ajax()
-  
-  }
-  else {
+
+  } else {
     //alert('Delete canceled!');
-  
+
   } // end if/else
-  
-  
+
+
 } // end deleteTestResults(Id)
 
 
@@ -73,7 +71,7 @@ function deleteTestResults(Id) {
  * Purpose: Add a 0 value to reliable and Notes to the testPass table in the database.
  * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
  * Date: May 2018
-************************/
+ ************************/
 
 function addUnreliableToTestResult() {
 
@@ -89,36 +87,35 @@ function addUnreliableToTestResult() {
       type: "Get",
       data: {
         Id: Id,
-        ckBox : ckBox,
-        notes : notes
+        ckBox: ckBox,
+        notes: notes
       },
-      success : function() {
+      success: function() {
         console.log('success');
         location.reload(true); //Refresh page
-  
+
       },
-      error : function() {
+      error: function() {
         console.log('error');
       }
-  
+
     }); // end .ajax()
 
-  }
-  else {
+  } else {
     //alert('unreliable canceled!');
-  
+
   } // end if/else
 
 } // end unreliableCheckBox()
 
 /***********************************************************************
  ***  DASHBOARD SCRIPTS - END
-***********************************************************************/
+ ***********************************************************************/
 
 
 /***********************************************************************
  ***  EXPORT RESULTS SCRIPTS - BEGIN
-***********************************************************************/
+ ***********************************************************************/
 
 function exportSelections() { //this function is triggered on the "Export Data" button.
 
@@ -345,9 +342,9 @@ function displayInfo(data, id) {
             thePage = "unknown";
         }
         console.log("I am a success.");
-        }
       }
-    })
+    }
+  })
 }
 
 
@@ -356,24 +353,24 @@ function displayInfo(data, id) {
  * Purpose: Adds the seleceted name from dropdown list to the database
  * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
  * Date: March 2018
-************************/
+ ************************/
 
 function getSelectVal(sel) {
 
   $.ajax({
-    url : "/addOwnerToResultsPage",
-    type : "GET",
-    dataType:"html",
+    url: "/addOwnerToResultsPage",
+    type: "GET",
+    dataType: "html",
     data: {
       Id: $(sel).closest("form").find("input[type=hidden]").prop("name", "Id").val(),
       users: sel.value
     },
-    success : function() {
+    success: function() {
       console.log('success');
-      location.reload(true);  //Refresh page
+      location.reload(true); //Refresh page
 
     }, // end success : function()
-    error : function() {
+    error: function() {
       console.log('error');
 
     } // end error : function()
@@ -388,14 +385,14 @@ function getSelectVal(sel) {
  * Purpose: Finds all notes on the results page with the text 'RESOLVED' and changes the font color.
  * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
  * Date: June 2018
-************************/
+ ************************/
 
 function resolvedInNotes() {
   //console.log('Hello Waldo!');
-  
+
   $(".notesMsg").each(function() {
 
-    $('.notesMsg:contains("RESOLVED")').css( {"color": "#28A745", "font-weight": "bold"} );
+    $('.notesMsg:contains("RESOLVED")').css({ "color": "#28A745", "font-weight": "bold" });
 
   }); // end $(".notesMsg").each(function()
 
@@ -404,12 +401,12 @@ function resolvedInNotes() {
 
 /***********************************************************************
  ***  EXPORT RESULTS SCRIPTS - END
-***********************************************************************/
+ ***********************************************************************/
 
 
 /***********************************************************************
  ***  GLOBAL - EXPORT RESULTS AND RUN TESTS - BEGIN
-***********************************************************************/
+ ***********************************************************************/
 
 // This function is used in the dropdowns where checkboxes (including "all" options) can be selected 
 // - Export Results page, Run Tests page
@@ -523,29 +520,29 @@ function displayChecked(checkedID, ULID, allID, destinationID, element) {
 //
 function filterFunction() {
 
-    var input, div, filter, ul, li, a, i;
-    input = document.getElementById("myInput");
-    filter = input.value.toUpperCase();
-    div = document.getElementById("tcSelection");
-    a = div.getElementsByTagName("option");
-    
-    for (i = 0; i < a.length; i++) {
-        if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
-            a[i].style.display = "";
-        } else {
-            a[i].style.display = "none";
-        }
+  var input, div, filter, ul, li, a, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  div = document.getElementById("tcSelection");
+  a = div.getElementsByTagName("option");
+
+  for (i = 0; i < a.length; i++) {
+    if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
     }
+  }
 }
 
 /***********************************************************************
  ***  GLOBAL - EXPORT RESULTS AND RUN TESTS - END
-***********************************************************************/
+ ***********************************************************************/
 
 
 /***********************************************************************
  ***  TEST CASE EDITOR SCRIPTS - BEGIN
-***********************************************************************/
+ ***********************************************************************/
 
 function grabTCsForFeature() {
 
@@ -717,9 +714,9 @@ function showURLChoice() {
 
 // Send a json object to server to run a test 
 // with given parameters
-function getTestParameters(){
+function getTestParameters() {
 
-  
+
   let noticeBox = document.getElementById("notice");
   let descriptionBox = document.getElementById("description");
   let urlParagraph = document.getElementById("selectedURLs");
@@ -747,12 +744,12 @@ function getTestParameters(){
   tcsCheckIfAll = tcs[1];
   tcsCheckIfAll = tcsCheckIfAll.split(";").pop();
 
-  if(tcsCheckIfAll.includes("all")){
+  if (tcsCheckIfAll.includes("all")) {
 
     tcs[0] = "all";
     tcs.length = 1;
 
-  }else{
+  } else {
 
     for (let i = 0; i < tcs.length - 1; i += 2) {
       tcs_filter.push(tcs[i]);
@@ -808,15 +805,48 @@ function getTestParameters(){
 
   let testParamsJSON = JSON.stringify(testParameters);
 
-  return(testParamsJSON);
+  return (testParamsJSON);
 
 }
+/***************************
+ * Function: getTestCasesByFeature(this.value)
+ * purpose: get test cases by feature after a  
+ * user has selected from a dropdown (triggered by an onchange)
+ ****************************/
 
+function getTestCasesByFeature(feature) {
 
+  feature = {
+    feature: feature
+  }
+
+  feature = JSON.stringify(feature);
+
+  $.ajax({
+    url: '/getTestCases',
+    type: 'POST',
+    data: feature,
+    contentType: "application/json",
+    error: function(data) {
+      console.log(data + "------------ GET TEST CASES FAILED -----------------");
+    },
+    success: function(testCases) {
+
+      let testCaseContainer = document.getElementById("test-case-fx-container");
+      $(testCaseContainer).empty();
+
+      for (let i = 0; i < testCases.length; i++) {
+        //console.log(testCases[i].TestCaseId);
+        //console.log(testCases[i].TestCaseDescription);
+        $(testCaseContainer).append(`<br><input class="form-check-input" type="checkbox" name="testCases" id="test-case-${testCases[i].TestCaseId}" value="${testCases[i].TestCaseId}" required>${testCases[i].TestCaseDescription}<br>`);
+      }
+    }
+  })
+}
 
 function runit() {
 
-  let testParamsJSON= getTestParameters();
+  let testParamsJSON = getTestParameters();
   console.log(testParamsJSON);
 
   $.ajax({
@@ -843,7 +873,7 @@ function runit() {
 
 function scheduleIt() {
 
-  let testParamsJSON= getTestParameters();
+  let testParamsJSON = getTestParameters();
   // testParamsJSON = JSON.parse(testParamsJSON);
   // console.log(testParamsJSON.languages);
 
@@ -852,21 +882,21 @@ function scheduleIt() {
   var timeOptions = document.getElementsByName('time');
   var time = "";
 
-  for (var i =0; i<dayOptions.length; i++){
-    if (dayOptions[i].checked){
-      day=dayOptions[i].value;
+  for (var i = 0; i < dayOptions.length; i++) {
+    if (dayOptions[i].checked) {
+      day = dayOptions[i].value;
       break;
     }
   }
-  for (var s =0; s<timeOptions.length; s++){
-    if (timeOptions[s].checked){
-      time=timeOptions[s].value;
+  for (var s = 0; s < timeOptions.length; s++) {
+    if (timeOptions[s].checked) {
+      time = timeOptions[s].value;
       break;
     }
   }
   testParamsJSON = JSON.parse(testParamsJSON);
-  testParamsJSON.day=day;
-  testParamsJSON.time=time;
+  testParamsJSON.day = day;
+  testParamsJSON.time = time;
   testParamsJSON = JSON.stringify(testParamsJSON);
 
   $.ajax({
@@ -879,7 +909,7 @@ function scheduleIt() {
       console.log(data + "Gherkin data has failed at ajax request response.");
     },
 
-    success: function(data) {                              
+    success: function(data) {
       alert("Your test has been scheduled.");
       console.log("post request successful");
       // data = JSON.parse(data);
@@ -1217,13 +1247,12 @@ function detectClassSwitch() {
     //console.log(elemList);
     count += 1;
     total = count;
-    
+
   } // end for()
 
   if (total == 0) {
     document.getElementById("deleteGherkin").disabled = false;
-  }
-  else {
+  } else {
     // Do nothing!
 
   } // end if/else
@@ -1280,7 +1309,7 @@ function deleteTc() {
  * Purpose: Deletes empty "Scenario:" text in testCaseDescription found in the tescase database when the test_case_editor.ejs page loads. 
  * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
  * Date: May 2018
-************************/
+ ************************/
 function cleanGherkin() {
 
   // The id var is only used to trigger the "exports.cleanGherkin_DB = function(req, res)" function in the api_DB_writer.js page.
@@ -1390,7 +1419,7 @@ function exportGherkin() {
  * Purpose: Updates the user's roles in database - Basic = 1 / Admin = 2.
  * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
  * Date: June 2018
-************************/
+ ************************/
 
 function updateUser() {
   var usersRadId = document.getElementsByName('updateUserRad');
@@ -1398,7 +1427,7 @@ function updateUser() {
   var usersId = 0;
   var usersRole = 0;
 
-  for (var i = 0; i < usersRadId.length; i++ ) {
+  for (var i = 0; i < usersRadId.length; i++) {
 
     if (usersRadId[i].checked === true) {
       //Id += usersRadId[i].value; //used for checkboxes
@@ -1416,7 +1445,7 @@ function updateUser() {
     } // end for()
 
 
-    if ( (usersRole == 1) || (usersRole == 2) ) {
+    if ((usersRole == 1) || (usersRole == 2)) {
 
       $.ajax({
         url: "/updateUser",
@@ -1426,33 +1455,30 @@ function updateUser() {
           Id: usersId,
           role: usersRole
         },
-        success : function(userName) {
+        success: function(userName) {
           //console.log('success');
           if (usersRole == 1) {
             var updatedRole = 'Basic';
-          }
-          else if (usersRole == 2) {
+          } else if (usersRole == 2) {
             var updatedRole = 'Admin';
           }
-  
+
           document.getElementById('updateConfirm').innerHTML = userName + ' has been updated to ' + updatedRole + ' role!';
           document.getElementById('updateConfirm').style.fontSize = "1.3em";
           document.getElementById('updateConfirm').style.fontWeight = "bold";
           document.getElementById('updateConfirm').style.color = "red";
-  
+
         },
-        error : function() {
+        error: function() {
           console.log('error');
         }
-  
+
       }); // end .ajax()
-    }
-    else {
+    } else {
       alert("Please select a user's access: Basic or Admin");
     } // end nested if/else
 
-  }
-  else {
+  } else {
     alert("Please select a user!");
   } // end if/else
 
@@ -1464,25 +1490,25 @@ function updateUser() {
  * Purpose: Removes a user form the database. 
  * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
  * Date: June 2018
-************************/
+ ************************/
 
 function removeUser() {
-  
+
   var usersRadId = document.getElementsByName('removeUserRad');
   var userData = [];
   var usersId = 0;
   var userName = '';
 
-  for (var i = 0; i < usersRadId.length; i++ ) {
+  for (var i = 0; i < usersRadId.length; i++) {
     if (usersRadId[i].checked === true) {
       //Id += usersRadId[i].value; //used for checkboxes
       userData = usersRadId[i].value; //used for radio buttons
-      usersId = userData.slice(0,2);
+      usersId = userData.slice(0, 2);
       userName = userData.slice(2);
     } // end if
   } // end for()
 
-  
+
   if (usersId != 0) {
 
     var delConfirm = confirm("Are you sure you want to delete user: " + userName + "?");
@@ -1496,7 +1522,7 @@ function removeUser() {
         data: {
           Id: usersId
         },
-        success : function(userName) {
+        success: function(userName) {
           //console.log('success');
           document.getElementById('removeConfirm').innerHTML = userName + ' has been removed!';
           document.getElementById('removeConfirm').style.fontSize = "1.3em";
@@ -1504,46 +1530,44 @@ function removeUser() {
           document.getElementById('removeConfirm').style.color = "red";
 
         },
-        error : function() {
+        error: function() {
           console.log('error');
         }
 
       }); // end .ajax()
 
-    }
-    else {
+    } else {
       //alert('Delete canceled!');
     } // end nested if/else
 
-  }
-  else {
+  } else {
     alert("Please select a user!");
-  
+
   } // end if/else
 
 } // end removeUser()
 
 /***********************************************************************
  ***  DOCUMENTATION SCRIPTS - BEGIN
-***********************************************************************/
+ ***********************************************************************/
 
-function showMore(something, theButton){
+function showMore(something, theButton) {
   var theThing = document.getElementById(something);
-  theThing.style.display="block";
+  theThing.style.display = "block";
   var myButton = document.getElementById(theButton);
-  myButton.style.display="none";
+  myButton.style.display = "none";
 }
 
-function showLess(something, theButton){
+function showLess(something, theButton) {
   var theThing = document.getElementById(something);
-  theThing.style.display="none";
+  theThing.style.display = "none";
   var myButton = document.getElementById(theButton);
-  myButton.style.display="block";
+  myButton.style.display = "block";
 }
 
 /***********************************************************************
  ***  DOCUMENTATION SCRIPTS - END
-***********************************************************************/
+ ***********************************************************************/
 
 
 /***********************************************************************
