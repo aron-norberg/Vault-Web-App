@@ -821,11 +821,14 @@ $("#addNewFxTest").submit(function(event) {
     $this.attr("action"), // Gets the URL to sent the post to
     $this.serialize(), // Serializes form data in standard format
     function(data) { /** code to handle response **/ 
-      //console.log(data);
-    }
+      console.log("Test Added");
+      alert("Functional Test Added.");
 
+      $('.modal').modal('hide');
+    }
   );
 });
+
 /***************************
  * Function: getTestCasesByFeature(this.value)
  * purpose: get test cases by feature after a  
