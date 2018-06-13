@@ -25,8 +25,10 @@
                         <li><a href="#developers">For Developers</a></li>
                         <ul>
                                 <li><a href="#gettingUrls">Obtaining URL lists</a></li>
+                                <li><a href="#docker">Setting up Docker</a></li>
                                 <li><a href="#fileMap">Vault File Map</a></li>
                                 <li><a href="#updatingGit">Merging with Git Hub</a></li>
+                                <li><a href="#accessSQL">Interacting With the Database</a></li>
                         </ul>
                 </ul>
                 <li><a href="#database">Database Information</a></li>
@@ -318,17 +320,40 @@
         <p>Run these Python scripts in order. </p>   
         <br /><br /> 
 
+        <div class="anchor" id="docker"></div>
+        <h5>Setting up Docker</h5>
+        <p>Download Docker for Windows <a href="https://nickjanetakis.com/blog/setting-up-docker-for-windows-and-wsl-to-work-flawlessly">here</a><br /></p>
+        <p>A tutorial on how Docker works can be found <a href="https://docs.docker.com/v17.12/docker-for-windows/">here</a>.</p>
+        <br /><br /> 
+
         <div class="anchor" id="updatingGit"></div>
         <h5>Merging with Git Hub</h5>
-        <p>GIT Repository with Python code: <a href="https://github.com/fluke-corporation">Github</a><br /></p>
-        <p>Step 1: Querying the SOLR database and obtaining a list of published URLs, the page template is determined (where possible) according 
-                to the URL structure. Information is then pushed to a <a href="https://redis.io/">Redis</a> datastore.<br />
-        &emsp;  solr_url_harvester-step-1.py </p>
-        <p>Step 2: Crawling the website for all pages that we have not yet identified the template type of, the HTML body tag is reviewed for the "template-f(X)" class information.<br />
-        &emsp;  url_concurrent_scrape_V2-step-2.py </p> 
-        <p>Step 3: Redis information is pushed to the SQL database for testing.<br />
-        &emsp; redis-to-mysql-step-3.py</p> 
-        <p>Run these Python scripts in order. </p>   
+        <p>The Fluke repository for Vault, Behat, and Python code is on <a href="https://github.com/fluke-corporation">GitHub</a><br /></p>
+        <p>If you are unfamiliar with GitHub, check out the <a href="https://guides.github.com/activities/hello-world/">tutorial</a> and create an account. </p>
+        <p>If you prefer to work from the command line, a tutorial for <a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git">Git Bash</a> can be found <a href="https://help.github.com/articles/adding-an-existing-project-to-github-using-the-command-line/">here.</a></p>
+        <p>The typical command line steps for updating GitHub are: <br />
+                &emsp; git add .<br />
+                &emsp; git commit -m "this is a note about what I updated"<br />
+                &emsp; git pull<br />
+                &emsp; git push<br />
+                &emsp; </p> 
+        <p>In order to push your changes to EC2 (the live app):<br />
+                &emsp; git push production master</p>
+        <br /><br /> 
+
+        <div class="anchor" id="accessSQL"></div>
+        <h5>Interacting With the Database</h5>
+        <p>In order to test Vault App changes on your computer (localhost), you will need to copy the EC2 database down.</p>
+        <p>To interact with your local mysql database: <br />
+                &emsp; From the Bash shell enter <br />
+                &emsp; &emsp; $ mysql -u root -proot <br />
+                &emsp; &emsp; $ use test;<br />
+                &emsp; &emsp; $ show tables;<br />
+                &emsp; &emsp; $ describe User;<br />
+                &emsp; &emsp; $ select * from User;<br />
+                &emsp; &emsp; $ select * from User limit 3; <br />
+                Additional commands can be found <a href="https://gist.github.com/hofmannsven/9164408">here.</a><br />
+                &emsp; </p> 
         <br /><br /> 
 
         <div class="anchor" id="fileMap"></div>
