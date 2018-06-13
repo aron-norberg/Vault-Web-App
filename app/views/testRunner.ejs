@@ -49,82 +49,82 @@
           <br /> Descriptions added here can be searched for on the Dashboard. </p>
       </div>
     </div>
-    <br><br>
+    <br>
+    <br>
     <!--  ------------------------------------------------------Button Options ---------------------------- -->
     <div class="row">
       <div class="col-lg-7 offset-lg-3">
-          <div class="nav nav-tabs" id="" role="tablist">
-                <a class="nav-item nav-link active" id="content-tab" data-toggle="tab" role="tab" href="#content" aria-controls="content" aria-selected="true">Content Test</a>
-                 <a class="nav-item nav-link" id="functional-tab" data-toggle=tab role="tab" href="#functional" aria-controls="functional" aria-selected="false">Functional Test</a>
-              <a class="nav-item nav-link" id="custom-tab" data-toggle=tab role="tab" href="#custom" aria-controls="custom" aria-selected="false">Custom Test</a>
-              <a class="nav-item nav-link" id="custom-tab" data-toggle=tab role="tab" href="#custom" aria-controls="custom" aria-selected="false">Test Queue/Schedule</a>
-          </div>
-
+        <div class="nav nav-tabs" id="" role="tablist">
+          <a class="nav-item nav-link active" id="content-tab" data-toggle="tab" role="tab" href="#content" aria-controls="content" aria-selected="true">Content Test</a>
+          <a class="nav-item nav-link" id="functional-tab" data-toggle=tab role="tab" href="#functional" aria-controls="functional" aria-selected="false">Functional Test</a>
+          <a class="nav-item nav-link" id="custom-tab" data-toggle=tab role="tab" href="#custom" aria-controls="custom" aria-selected="false">Custom Test</a>
+          <a class="nav-item nav-link" id="custom-tab" data-toggle=tab role="tab" href="#custom" aria-controls="custom" aria-selected="false">Test Queue/Schedule</a>
+        </div>
         <div class="tab-content">
           <div class="tab-pane fade show active" role="tabpanel" id="content" aria-labelledby="content-tab">
             <div class="row">
-                    <div class="col-lg-4 text-center">
-        <!--  ------------------------------------------------------Test Names ---------------------------- -->
-        <button style="display:none;" type="button" class="btn btn-lg btn-warning width-set" data-toggle="modal" data-target="#nameModal">
-          Test Names
-        </button>
-        <br />
-        <!-- Modal Test Names-->
-        <div class="modal fade" id="nameModal" tabindex="-1" role="dialog" aria-labelledby="nameModalTitle" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="nameModalTitle">Select a Test</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
+              <div class="col-lg-4 text-center">
+                <!--  ------------------------------------------------------Test Names ---------------------------- -->
+                <button style="display:none;" type="button" class="btn btn-lg btn-warning width-set" data-toggle="modal" data-target="#nameModal">
+                  Test Names
                 </button>
-              </div>
-              <div class="modal-body">
-                <!-- Pull in Test Names-->
-                <div class="form-check">
-                  <label for="1">
-                    <input class="form-check-input double" type="radio" name="langRadios" id="1" value="1">&nbsp; Kendall's crazy test
-                  </label>
+                <br />
+                <!-- Modal Test Names-->
+                <div class="modal fade" id="nameModal" tabindex="-1" role="dialog" aria-labelledby="nameModalTitle" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="nameModalTitle">Select a Test</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <!-- Pull in Test Names-->
+                        <div class="form-check">
+                          <label for="1">
+                            <input class="form-check-input double" type="radio" name="langRadios" id="1" value="1">&nbsp; Kendall's crazy test
+                          </label>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Run</button>
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Schedule</button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div class="modal-footer">
-                <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
-                <button type="button" class="btn btn-success" data-dismiss="modal">Run</button>
-                <button type="button" class="btn btn-success" data-dismiss="modal">Schedule</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!--  ------------------------------------------------------Languages ---------------------------- -->
-        <button type="button" style="border: 1px solid green;" class="btn btn-lg width-set topSpace" data-toggle="modal" data-target="#langModal">
-          Languages
-        </button>
-        <br />
-        <!-- Modal Languages-->
-        <div class="modal fade" id="langModal" tabindex="-1" role="dialog" aria-labelledby="langTitle" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="langTitle">Select Languages</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
+                <!--  ------------------------------------------------------Languages ---------------------------- -->
+                <button type="button" style="border: 1px solid green;" class="btn btn-lg width-set topSpace" data-toggle="modal" data-target="#langModal">
+                  Languages
                 </button>
-              </div>
-              <div class="modal-body">
-                <!-- <input type="text" placeholder="Search.." id="langSearch" onkeyup="filterFunction()"> -->
-                <!-- Search Bar  - the search function needs work as it currently filters out the checkbox-->
-                <ul style="list-style-type: none;" id="myUL">
-                  <% var allLangs=['en-us', 'en-au', 'en', 'en-ca', 'en-gb', 'en-id', 'en-ie', 'en-in', 'en-my','en-ph', 'en-sg', 'en-th', 'en-tt', 'en-vn', 'cs-cz', 'da-dk', 'de-de', 'de-at', 'de-ch','es-es','es-mx', 'es-ar', 
+                <br />
+                <!-- Modal Languages-->
+                <div class="modal fade" id="langModal" tabindex="-1" role="dialog" aria-labelledby="langTitle" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="langTitle">Select Languages</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <!-- <input type="text" placeholder="Search.." id="langSearch" onkeyup="filterFunction()"> -->
+                        <!-- Search Bar  - the search function needs work as it currently filters out the checkbox-->
+                        <ul style="list-style-type: none;" id="myUL">
+                          <% var allLangs=['en-us', 'en-au', 'en', 'en-ca', 'en-gb', 'en-id', 'en-ie', 'en-in', 'en-my','en-ph', 'en-sg', 'en-th', 'en-tt', 'en-vn', 'cs-cz', 'da-dk', 'de-de', 'de-at', 'de-ch','es-es','es-mx', 'es-ar', 
                     'es-bo', 'es-cl', 'es-co', 'es-cr', 'es-do', 'es-ec', 'es-gt', 'es-pe','es-sv','es-us','es-uy','es-ve','fi-fi','fr-fr','fr','fr-be','fr-ca','fr-ch','id-id','it-it','ja-jp','ko-kr','nl-nl','nl-be','no-no',
                     'pl-pl','pt-br','pt-pt','ru-ru','sv-se','th-th','tr-tr','vi-vn','zh-cn','cn','zh-tw'];%>
-                    <li class="width-set columnized">
-                      <span>
+                            <li class="width-set columnized">
+                              <span>
                         <input id="all" class="lang double" onclick="displayChecked(this.id, 'myUL', 'all', 'chosenLangs', 'span')" type="checkbox" />&nbsp;all</a>
                       </span>
-                    </li>
-                    <% for(var i=0; i < allLangs.length; i++) { %>
-                      <li class="width-set columnized">
-                        <span>
+                            </li>
+                            <% for(var i=0; i < allLangs.length; i++) { %>
+                              <li class="width-set columnized">
+                                <span>
                         <input id="<%= allLangs[i] %>" class="lang double" onclick="displayChecked(this.id, 'myUL', 'all', 'chosenLangs', 'span')" type="checkbox" />&nbsp;
                         <%= allLangs[i] %>
                         <span>
@@ -161,236 +161,233 @@
                 <h5 class="modal-title" id="FxTitle">Select Template Pages (Fx)</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
+                                </button>
+                      </div>
+                      <div class="modal-body">
+                        <!-- Use If statement to check if user has appropriate permissions. -->
+                        <div class="form-check">
+                          <label for="all">
+                            <input class="form-check-input double" type="radio" onclick="hideAllTC()" name="featureRadios" id="all" value="all"> All Features
+                          </label>
+                        </div>
+                        <!-- Use If statement to check if user has appropriate permissions. -->
+                        <div class="form-check">
+                          <label for="F1">
+                            <input class="form-check-input double" type="radio" name="featureRadios" id="F1" value="F1"> (F1) Home Page
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <label for="F2">
+                            <input class="form-check-input double" type="radio" name="featureRadios" id="F2" value="F2"> (F2) Product Table of Contents
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <label for="F3">
+                            <input class="form-check-input double" type="radio" name="featureRadios" id="F3" value="F3"> (F3) Product Sub-Category
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <label for="F4">
+                            <input class="form-check-input double" type="radio" name="featureRadios" id="F4" value="F4"> (F4) Product Display
+                          </label>
+                        </div>
+                        <div class="form-check" style="display: none">
+                          <label for="F5">
+                            <input class="form-check-input double" type="radio" name="featureRadios" id="F5" value="F5"> (F5) HTML Page
+                          </label>
+                        </div>
+                        <div class="form-check" style="display: none">
+                          <label for="F6">
+                            <input class="form-check-input double" type="radio" name="featureRadios" id="F6" value="F6"> (F6)
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <label for="F7">
+                            <input class="form-check-input double" type="radio" name="featureRadios" id="F7" value="F7"> (F7) New Fluke Products
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <label for="F8">
+                            <input class="form-check-input double" type="radio" name="featureRadios" id="F8" value="F8"> (F8) Promotions and Contests TOC
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <label for="F9">
+                            <input class="form-check-input double" type="radio" name="featureRadios" id="F9" value="F9"> (F9) Article Table of Contents
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <label for="F10">
+                            <input class="form-check-input double" type="radio" name="featureRadios" id="F10" value="F10"> (F10) Webcard Table of Contents
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <label for="F11">
+                            <input class="form-check-input double" type="radio" name="featureRadios" id="F11" value="F11"> (F11) Webcard
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <label for="F12">
+                            <input class="form-check-input double" type="radio" name="featureRadios" id="F12" value="F12"> (F12) Fluke News Table of Contents
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <label for="F13">
+                            <input class="form-check-input double" type="radio" name="featureRadios" id="F13" value="F13"> (F13) Fluke News Sub-Category
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <label for="F14">
+                            <input class="form-check-input double" type="radio" name="featureRadios" id="F14" value="F14"> (F14) Article
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <label for="F15">
+                            <input class="form-check-input double" type="radio" name="featureRadios" id="F15" value="F15"> (F15) Tradeshows and Seminars
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <label for="F16">
+                            <input class="form-check-input double" type="radio" name="featureRadios" id="F16" value="F16"> (F16) Training Library
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <label for="F17">
+                            <input class="form-check-input double" type="radio" name="featureRadios" id="F17" value="F17"> (F17) Webinars
+                          </label>
+                        </div>
+                        <div class="form-check" style="display: none">
+                          <label for="F18">
+                            <input class="form-check-input double" type="radio" name="featureRadios" id="F18" value="F18"> (F18)
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <label for="F19">
+                            <input class="form-check-input double" type="radio" name="featureRadios" id="F19" value="F19"> (F19) Manuals
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <label for="F20">
+                            <input class="form-check-input double" type="radio" name="featureRadios" id="F20" value="F20"> (F20) Press Releases
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <label for="F21">
+                            <input class="form-check-input double" type="radio" name="featureRadios" id="F21" value="F21"> (F21) Safety Notices
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <label for="F22">
+                            <input class="form-check-input double" type="radio" name="featureRadios" id="F22" value="F22"> (F22) Software Downloads
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <label for="F23">
+                            <input class="form-check-input double" type="radio" name="featureRadios" id="F23" value="F23"> (F23) Where to Buy
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <label for="F24">
+                            <input class="form-check-input double" type="radio" name="featureRadios" id="F24" value="F24"> (F24) Link to Offsite Location
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <label for="F25">
+                            <input class="form-check-input double" type="radio" name="featureRadios" id="F25" value="F25"> (F25) Promotions and Contests Page
+                          </label>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                        <button type="button" class="btn btn-primary" onclick="showTemplates();" data-dismiss="modal">Save selection</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--  ------------------------------------------------------Test Cases ---------------------------- -->
+                <button type="button" id="tcb" style="border: 1px solid green;" class="btn btn-lg width-set topSpace" data-toggle="modal" data-target="#casesModal" disabled>
+                  Test Cases
                 </button>
-              </div>
-              <div class="modal-body">
-                <!-- Use If statement to check if user has appropriate permissions. -->
-                <div class="form-check">
-                  <label for="all">
-                    <input class="form-check-input double" type="radio" onclick="hideAllTC()" name="featureRadios" id="all" value="all"> All Features
-                  </label>
-                </div>
-                <!-- Use If statement to check if user has appropriate permissions. -->
-                <div class="form-check">
-                  <label for="F1">
-                    <input class="form-check-input double" type="radio" name="featureRadios" id="F1" value="F1"> (F1) Home Page
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label for="F2">
-                    <input class="form-check-input double" type="radio" name="featureRadios" id="F2" value="F2"> (F2) Product Table of Contents
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label for="F3">
-                    <input class="form-check-input double" type="radio" name="featureRadios" id="F3" value="F3"> (F3) Product Sub-Category
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label for="F4">
-                    <input class="form-check-input double" type="radio" name="featureRadios" id="F4" value="F4"> (F4) Product Display
-                  </label>
-                </div>
-                <div class="form-check" style="display: none">
-                  <label for="F5">
-                    <input class="form-check-input double" type="radio" name="featureRadios" id="F5" value="F5"> (F5) HTML Page
-                  </label>
-                </div>
-                <div class="form-check" style="display: none">
-                  <label for="F6">
-                    <input class="form-check-input double" type="radio" name="featureRadios" id="F6" value="F6"> (F6)
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label for="F7">
-                    <input class="form-check-input double" type="radio" name="featureRadios" id="F7" value="F7"> (F7) New Fluke Products
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label for="F8">
-                    <input class="form-check-input double" type="radio" name="featureRadios" id="F8" value="F8"> (F8) Promotions and Contests TOC
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label for="F9">
-                    <input class="form-check-input double" type="radio" name="featureRadios" id="F9" value="F9"> (F9) Article Table of Contents
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label for="F10">
-                    <input class="form-check-input double" type="radio" name="featureRadios" id="F10" value="F10"> (F10) Webcard Table of Contents
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label for="F11">
-                    <input class="form-check-input double" type="radio" name="featureRadios" id="F11" value="F11"> (F11) Webcard
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label for="F12">
-                    <input class="form-check-input double" type="radio" name="featureRadios" id="F12" value="F12"> (F12) Fluke News Table of Contents
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label for="F13">
-                    <input class="form-check-input double" type="radio" name="featureRadios" id="F13" value="F13"> (F13) Fluke News Sub-Category
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label for="F14">
-                    <input class="form-check-input double" type="radio" name="featureRadios" id="F14" value="F14"> (F14) Article
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label for="F15">
-                    <input class="form-check-input double" type="radio" name="featureRadios" id="F15" value="F15"> (F15) Tradeshows and Seminars
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label for="F16">
-                    <input class="form-check-input double" type="radio" name="featureRadios" id="F16" value="F16"> (F16) Training Library
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label for="F17">
-                    <input class="form-check-input double" type="radio" name="featureRadios" id="F17" value="F17"> (F17) Webinars
-                  </label>
-                </div>
-                <div class="form-check" style="display: none">
-                  <label for="F18">
-                    <input class="form-check-input double" type="radio" name="featureRadios" id="F18" value="F18"> (F18)
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label for="F19">
-                    <input class="form-check-input double" type="radio" name="featureRadios" id="F19" value="F19"> (F19) Manuals
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label for="F20">
-                    <input class="form-check-input double" type="radio" name="featureRadios" id="F20" value="F20"> (F20) Press Releases
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label for="F21">
-                    <input class="form-check-input double" type="radio" name="featureRadios" id="F21" value="F21"> (F21) Safety Notices
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label for="F22">
-                    <input class="form-check-input double" type="radio" name="featureRadios" id="F22" value="F22"> (F22) Software Downloads
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label for="F23">
-                    <input class="form-check-input double" type="radio" name="featureRadios" id="F23" value="F23"> (F23) Where to Buy
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label for="F24">
-                    <input class="form-check-input double" type="radio" name="featureRadios" id="F24" value="F24"> (F24) Link to Offsite Location
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label for="F25">
-                    <input class="form-check-input double" type="radio" name="featureRadios" id="F25" value="F25"> (F25) Promotions and Contests Page
-                  </label>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
-                <button type="button" class="btn btn-primary" onclick="showTemplates();" data-dismiss="modal">Save selection</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!--  ------------------------------------------------------Test Cases ---------------------------- -->
-        <button type="button" id="tcb" style="border: 1px solid green;" class="btn btn-lg width-set topSpace" data-toggle="modal" data-target="#casesModal" disabled>
-          Test Cases
-        </button>
-        <br />
-        <!-- Modal Test Cases-->
-        <div class="modal fade" id="casesModal" tabindex="-1" role="dialog" aria-labelledby="casesTitle" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="casesTitle">Select Test Cases</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <ul style="text-align:left; list-style-type: none;" class="liAlign">
-                  <li class="list testcasechoice" id="allTCs">
-                    <span id="TestCaseParent">
+                <br />
+                <!-- Modal Test Cases-->
+                <div class="modal fade" id="casesModal" tabindex="-1" role="dialog" aria-labelledby="casesTitle" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="casesTitle">Select Test Cases</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <ul style="text-align:left; list-style-type: none;" class="liAlign">
+                          <li class="list testcasechoice" id="allTCs">
+                            <span id="TestCaseParent">
                       <input id="TCAll" class="double testcasechoice" type="checkbox" onclick="displayChecked(this.id, 'theTestCases', 'TCAll', 'chosenTestCases', 'p')">&nbsp;all
                     </span>
-                  </li>
-                </ul>
-                <ul style="text-align:left; list-style-type: none;" class="liAlign" id="theTestCases">
-                  <!-- <li class="list testcasechoice" id="allTCs">
+                          </li>
+                        </ul>
+                        <ul style="text-align:left; list-style-type: none;" class="liAlign" id="theTestCases">
+                          <!-- <li class="list testcasechoice" id="allTCs">
                     <span id="TestCaseParent">
                       <input id="TCAll" class="double testcasechoice" type="checkbox" onclick="displayChecked(this.id, 'theTestCases', 'TCAll', 'chosenTestCases', 'p')">&nbsp;all
                     </span>
                   </li> -->
-
-                  <!-- <input class="double testcasechoice" type="checkbox" />    These are populated by the grabTCsForFeature function on the runTest.js file -->
-                  
-                </ul>
-              </div>
-              <div class="modal-footer">
-                <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> Currently we do not need a separate exit button and the exit feature is built into SAVE-->
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Save selections</button>  
-                <!-- this button used to have onclick="showTCs()"  -->
-              </div>
-            </div>
-          </div>
-        </div>
-        <!--------------------------------------------------------URLs ---------------------------- -->
-        <button type="button" id="url" style="border: 1px solid green;" class="btn btn-lg width-set topSpace" data-toggle="modal" data-target="#urlsModal" disabled>
-          URLs
-        </button>
-        <br />
-        <!-- Modal URLs-->
-        <div class="modal fade" id="urlsModal" tabindex="-1" role="dialog" aria-labelledby="urlsTitle" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="urlsTitle">Select URLs</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
+                          <!-- <input class="double testcasechoice" type="checkbox" />    These are populated by the grabTCsForFeature function on the runTest.js file -->
+                        </ul>
+                      </div>
+                      <div class="modal-footer">
+                        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> Currently we do not need a separate exit button and the exit feature is built into SAVE-->
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Save selections</button>
+                        <!-- this button used to have onclick="showTCs()"  -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--------------------------------------------------------URLs ---------------------------- -->
+                <button type="button" id="url" style="border: 1px solid green;" class="btn btn-lg width-set topSpace" data-toggle="modal" data-target="#urlsModal" disabled>
+                  URLs
                 </button>
-              </div>
-              <div class="modal-body">
-                <ul style="text-align:left; list-style-type: none;">
-                  <li style="padding-bottom: 5%">
-                        <label for="domain-selection">Select Domain (Default is Staging)</label>
-                        <select class="form-control" id="domain-selection">
-                          <option>https://live-igcommerce.pantheonsite.io</option>
-                          <option>https://dev-igcommerce.pantheonsite.io</option>
-                          <option>https://test-igcommerce.pantheonsite.io</option>
-                          <option>http://test-chinapoc.flukedev.com</option>
-                          <option>http://dev-chinapoc.flukedev.com</option>
-                        </select>
-                  </li>
-
-                  <li>
-                    <input id="all" class="double aURL" type="radio" name="urlRadios" /> &nbsp;all URLs
-                  </li>
-                  <li>
-                    <input id="10" class="double topSpace aURL" type="radio" name="urlRadios" /> &nbsp;10 URLs
-                  </li>
-                  <li>
-                    <input id="1" class="double topSpace aURL" type="radio" name="urlRadios" /> &nbsp;1 URL
-                  </li>
-                  <li style="display:none;">
-                    <input id="oneURL" onclick="showInput()" class="double topSpace aURL" type="radio" name="urlRadios" /> &nbsp;Enter a URL for testing
-                  </li>
-                  <li style="display: none" id="typedURL">
-                    <input class="topSpace" id="enteredURL" type="text" />
-                  </li>
-                  <!-- Currently we are not letting the user select URLs individually as there are so many to choose from -->
-                  <!-- <% for (var x = 0; x < urls.length; x++){ %>
+                <br />
+                <!-- Modal URLs-->
+                <div class="modal fade" id="urlsModal" tabindex="-1" role="dialog" aria-labelledby="urlsTitle" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="urlsTitle">Select URLs</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <ul style="text-align:left; list-style-type: none;">
+                          <li style="padding-bottom: 5%">
+                            <label for="domain-selection">Select Domain (Default is Staging)</label>
+                            <select class="form-control" id="domain-selection">
+                              <option>https://live-igcommerce.pantheonsite.io</option>
+                              <option>https://dev-igcommerce.pantheonsite.io</option>
+                              <option>https://test-igcommerce.pantheonsite.io</option>
+                              <option>http://test-chinapoc.flukedev.com</option>
+                              <option>http://dev-chinapoc.flukedev.com</option>
+                            </select>
+                          </li>
+                          <li>
+                            <input id="all" class="double aURL" type="radio" name="urlRadios" /> &nbsp;all URLs
+                          </li>
+                          <li>
+                            <input id="10" class="double topSpace aURL" type="radio" name="urlRadios" /> &nbsp;10 URLs
+                          </li>
+                          <li>
+                            <input id="1" class="double topSpace aURL" type="radio" name="urlRadios" /> &nbsp;1 URL
+                          </li>
+                          <li style="display:none;">
+                            <input id="oneURL" onclick="showInput()" class="double topSpace aURL" type="radio" name="urlRadios" /> &nbsp;Enter a URL for testing
+                          </li>
+                          <li style="display: none" id="typedURL">
+                            <input class="topSpace" id="enteredURL" type="text" />
+                          </li>
+                          <!-- Currently we are not letting the user select URLs individually as there are so many to choose from -->
+                          <!-- <% for (var x = 0; x < urls.length; x++){ %>
                             <li>
                                 <input id="" class=" double" onclick="" type="checkbox" />&nbsp;<%= urls[x].UrlId %> | <%= urls[x].Url %>
                             </li>
@@ -535,32 +532,41 @@
               </div>
             </div>
           </div>
-        <!-- </form> -->
-
           <!-- Functional Test content -->
-
-              <div class="tab-pane fade" role="tabpanel" id="functional" aria-labelledby="content-tab">
-                <br>
-                <h4>Functional Test Selector:</h4>
-                <div class="custom-control custom-checkbox">
-                  <form class="form-group">
-
-                    <input type="checkbox" class="custom-control-input" id="customCheck1" >
-                    <label class="custom-control-label" for="customCheck1">F1 </label>
-                    
-                    <label for="functionalUrl">Url (Page to Test:)</label>
-                    <input type="text" class="form-control" id="functionalUrl" placeholder="http://www.test.com" value="default-url-to-be loaded from db">
-                </form>
-                </div>
-             </div>
-
+          <div class="tab-pane fade" role="tabpanel" id="functional" aria-labelledby="content-tab">
+            <br>
+            <button class="btn btn-outline-success btn-sm" data-target="#fx-add-test-feature" data-toggle="modal">Add New Test</button>
+            <br>
+            <hr>
+            <form class="form-group">
+              <!-- Outer loop per feature -->
+              <h5>Feature: F1</h5>
+              <hr>
+              <!-- Loop through this portion -->
+              <!-- Feature list group per feature with multiple subfeatures -->
+              <div class="list-group" style="margin-bottom:5px">
+                <span class="list-group-item"><h5>F1 - 1($id)</h5></li>
+                <!-- Sub Feature Item --> 
+                <span class="list-group-item">
+                  <div class="form-check form-check-inline" style="min-width: 100%">
+                      <input type="checkbox" class="form-check-input" id="checkbox-id$" style="margin-right:3%">
+                      <input type="text" class="form-control" id="url-id$" placeholder="http://www.sample.com" value="http://www.sample.com">
+                  </div>
+                </span>
+                <button class="btn-sm btn-primary" style="margin-top: 10px; float: right;" data-toggle="modal" data-target="#fx-testcase-modal-id">View/Edit Test Cases</button>
+                <!-- END -> Sub Feature Item -->
+              </div>
+              <!-- END -> Feature list group per feature with multiple sub fetures -->
+            </form>
+            <!-- end form for functional testing -->
+            <button class="btn btn-md btn-success">Run Selected Test(s)</button>
+            <button class="btn btn-md btn-info">Schedule Selected Test(s)</button>
+          </div>
           <div class="tab-pane fade" role="tabpanel" id="custom" aria-labelledby="content-tab">Custom test stuff Goes here</div>
         </div>
       </div>
-    </div>  
-
+    </div>
     <div class="row">
-
     </div>
     <!-- end of Row -->
     <div class="row" style="margin-top:2em;">
@@ -595,14 +601,11 @@
                       <td id="<%= liveStatus[i].id %>-progress"></td>
                       </td>
                       <td>
-
                         <button type="button" class="btn btn-sm btn-primary" onclick="getInfo(<%= liveStatus[i].id %>)">Info</button>&nbsp;
                         <button type="button" class="btn btn-sm btn-danger" onclick="stopTest(<%= liveStatus[i].id %>)">Stop</button>&nbsp;
                         <button type="button" class="btn btn-sm btn-success" onclick="getBehatLogFile(<%= liveStatus[i].id %>)">Log</button>
-                        
                       </td>
                       <td>
-
                       </td>
                     </tr>
                     <% }} %>
@@ -731,7 +734,7 @@
       $(`#${id} td:nth-child(3)`).text("Complete");
 
       // Remove the Row after 10 minutes
-      setTimeout(function(){
+      setTimeout(function() {
 
         $($oldRow).empty().remove(); // removes the row and the contents within row
         // Ten Minutes
@@ -746,8 +749,8 @@
     console.log("message from test Progress:\n");
 
     console.log(msg);
-    
-    if(msg.includes("percentage")){
+
+    if (msg.includes("percentage")) {
       // get id and percentage and update correct field
 
       let msgArray = msg.split(" ");
@@ -757,7 +760,7 @@
 
       $(`#${testId}-progress`).html(`${percentage} %`);
 
-    }else{
+    } else {
       // get id and mark test as complete.
 
       let msgArray = msg.split(" ");
