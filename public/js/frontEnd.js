@@ -904,9 +904,9 @@ function scheduleIt() {
   // console.log(testParamsJSON.languages);
 
   var dayOptions = document.getElementsByName('day');
-  var day = "";
+  var day = "false";
   var timeOptions = document.getElementsByName('time');
-  var time = "";
+  var time = "0";
 
   for (var i = 0; i < dayOptions.length; i++) {
     if (dayOptions[i].checked) {

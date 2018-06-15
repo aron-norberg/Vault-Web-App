@@ -637,11 +637,15 @@ exports.addToSchedule = function(req, res) {
   //   "Urls": urlChoices,
   //   "domain": domain,
   //   "description": description
-
-  if (isNaN(testParams.day)) {
-    schedule = "0 0 " + testParams.time + " ? * " + testParams.day + " *";
-  } else {
-    schedule = "0 0 " + testParams.time + " " + testParams.day + " * ? *";
+  if(testParams.day === "false"){
+    schedule = "0 0 " + testParams.time + " * * ?";
+  }
+  else{
+    if (isNaN(testParams.day)) {
+      schedule = "0 0 " + testParams.time + " ? * " + testParams.day + " *";
+    } else {
+      schedule = "0 0 " + testParams.time + " " + testParams.day + " * ? *";
+    }
   }
 
   db.sequelize.query("INSERT INTO TestSchedule (Languages, Template, TestCaseIds, URLsCount, Domain, Description, Schedule) VALUES ('" + testParams.languages + "','" + testParams.features + "','" + testParams.TestCaseSelections + "','" + testParams.Urls + "','" + testParams.domain + "','" + testParams.description + "','" + schedule + "');", function(err, row) {
