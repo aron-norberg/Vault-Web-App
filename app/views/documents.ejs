@@ -302,6 +302,7 @@
         If a user determines that a test is incorrectly failing, passing, or skipping, the PHP will need to be corrected so that proper results are obtained from test passes. <br />
         Below are the steps for setting up to edit PHP code.</p>
         <ul>
+                <li></li>
                 <li>Download <a href="https://code.visualstudio.com/?wt.mc_id=adw-brand&gclid=Cj0KCQjw6J7YBRC4ARIsAJMXXscxjk2LNn-ZbPrfIlAgUq6ZRr7E55gFGZHet94xl0e-bXx2rt7H_FIaAiGLEALw_wcB">
                         Visual Studio Code</a> </li>
                 <li><i>more to come...</i></li>
@@ -335,7 +336,7 @@
                 &emsp; git add .<br />
                 &emsp; git commit -m "this is a note about what I updated"<br />
                 &emsp; git pull<br />
-                &emsp; git push<br />
+                &emsp; git push<br /> At this point you will need to enter your GitHub user name and password
                 &emsp; </p> 
         <p>In order to push your changes to EC2 (the live app):<br />
                 &emsp; git push production master</p>
@@ -343,7 +344,7 @@
 
         <div class="anchor" id="accessSQL"></div>
         <h5>Interacting With the Database</h5>
-        <p>In order to test Vault App changes on your computer (localhost), you will need to copy the EC2 database down.</p>
+        <p>In order to test Vault App changes on your computer (localhost), you will need to install the EC2 database from the EC2 instance onto your machine.</p>
         <p>To interact with your local mysql database: <br />
                 &emsp; From the Bash shell enter <br />
                 &emsp; &emsp; $ mysql -u root -proot <br />
