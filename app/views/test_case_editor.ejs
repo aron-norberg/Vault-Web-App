@@ -15,7 +15,7 @@
         <div class="col-sm-12 col-lg-6 offset-lg-1 col-xl-5 offset-xl-2">
             <h2>Scenarios:</h2>
             <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">  
-            <select size="5" onChange="showIt(this)" id="tcSelection" ><!-- add data in here that shows if it is a Functional test-->
+            <select size="5" onChange="showIt(this)" id="tcSelection" ><!-- add data in here that shows if it is a Functional test ?-->
                 <% for(var i=0; i < testcases.length; i++){ %>
                     <option value="<%= testcases[i].Gherkin %>" style="white-space:pre-wrap; border-bottom: 1px solid #ddd;" id="<%=testcases[i].TestCaseId%>" data-functional="<%=testcases[i].IsFunctionalTest%>">
                         <%=testcases[i].TestCaseId%>  | <%= testcases[i].TestCaseDescription %> 
@@ -83,6 +83,7 @@
               <div class="text-center">
                 <% if (user.role == 2) { %>
                   <input type="button" id="deleteGherkin" class="btn btn-danger width-set" value="Delete Selected Test Case" onclick="deleteTc();" />
+                  <label for="deleteGherkin">You may not delete any Gherkin currently associated with a page template.</label>
                 <% } %>
               </div>
               

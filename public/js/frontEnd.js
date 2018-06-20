@@ -515,16 +515,21 @@ function displayChecked(checkedID, ULID, allID, destinationID, element) {
 }
 
 
-// Used for searching through a list
-// - Test Case Editor page
-//
+/************************
+ * Function: filterFunction()  -TEST CASE EDITOR PAGE 
+ * Purpose: Used for each character entered in the search field 
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 function filterFunction() {
 
   var input, div, filter, ul, li, a, i;
   input = document.getElementById("myInput");
   filter = input.value.toUpperCase();
+  console.log("filter is " + filter);
   div = document.getElementById("tcSelection");
   a = div.getElementsByTagName("option");
+  console.log( "a is "+a);
 
   for (i = 0; i < a.length; i++) {
     if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
@@ -1226,9 +1231,9 @@ function scheduleTest() {
   // console.log(testParamsJSON.languages);
 
   var dayOptions = document.getElementsByName('day');
-  var day = "";
+  var day = "false";
   var timeOptions = document.getElementsByName('time');
-  var time = "";
+  var time = "0";
 
   for (var i = 0; i < dayOptions.length; i++) {
     if (dayOptions[i].checked) {
@@ -1683,22 +1688,12 @@ function cleanGherkin() {
 
 } // end cleanGherkin()
 
-
-function filterFunction() {
-  var input, filter, ul, li, a, i;
-  input = document.getElementById("myInput");
-  filter = input.value.toUpperCase();
-  div = document.getElementById("tcSelection");
-  a = div.getElementsByTagName("option");
-  for (i = 0; i < a.length; i++) {
-    if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
-      a[i].style.display = "";
-    } else {
-      a[i].style.display = "none";
-    }
-  }
-}
-
+/************************
+ * Function: exportGherkin()
+ * Purpose: This function sends the data from the Test Case Editor page, through the express.js page to the postGherkin() function on test_case_editor.js where the database is accessed and updated 
+ * Author: Jennifer C Bronson, James Sandoval, Aron T Norberg
+ * Date: May 2018
+ ************************/
 function exportGherkin() {
 
   var arrayOfObjects = new Array();
