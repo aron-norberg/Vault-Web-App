@@ -367,8 +367,8 @@
                               <option>https://live-igcommerce.pantheonsite.io</option>
                               <option>https://dev-igcommerce.pantheonsite.io</option>
                               <option>https://test-igcommerce.pantheonsite.io</option>
-                              <option>http://test-chinapoc.flukedev.com</option>
-                              <option>http://dev-chinapoc.flukedev.com</option>
+                              <!--<option>http://test-chinapoc.flukedev.com</option>-->
+                              <!--<option>http://dev-chinapoc.flukedev.com</option>-->
                             </select>
                           </li>
                           <li>
@@ -407,108 +407,173 @@
                   <textarea style="margin-left:5px;" id="name" rows="1" cols="38" placeholder="Enter new test name here"></textarea>
                 </div>
                 <button class="button" style="display:none;" type="button" class="btn btn-lg btn-warning" onclick="">save</button>
-                <button type="button" class="btn btn-md btn-primary width-set" onclick="runit()">run</button>
+                <button type="button" class="btn btn-md btn-primary width-set" onclick="runContentTest()">run</button>
                 <br>
                 <br>
                 <button type="button" data-toggle="modal" data-target="#scheduleModal" class="btn btn-md btn-success width-set">schedule</button>
-                 <!-- Modal -->
-        <!-- <form action="/add-to-schedule" method="GET"> -->
-          <div class="modal fade" id="scheduleModal" tabindex="-1" role="dialog" aria-labelledby="ScheduleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="ScheduleModalLabel">Test Scheduler</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                
-                  <div>
-                    <h4>Select the hour and either the day of the week OR the day of the month:</h4>
-                    <h5>Hour of Test:</h5>
-                    <li class="width-set columnized" ><input type="radio" value="0" name="time">midnight</li>
-                    <li class="width-set columnized" ><input type="radio" value="1" name="time">1 a.m.</li>
-                    <li class="width-set columnized" ><input type="radio" value="2" name="time">2 a.m.</li>
-                    <li class="width-set columnized" ><input type="radio" value="3" name="time">3 a.m.</li>
-                    <li class="width-set columnized" ><input type="radio" value="4" name="time">4 a.m.</li>
-                    <li class="width-set columnized" ><input type="radio" value="5" name="time">5 a.m.</li>
-                    <li class="width-set columnized" ><input type="radio" value="6" name="time">6 a.m.</li>
-                    <li class="width-set columnized" ><input type="radio" value="7" name="time">7 a.m.</li>
-                    <li class="width-set columnized" ><input type="radio" value="8" name="time">8 a.m.</li>
-                    <li class="width-set columnized" ><input type="radio" value="9" name="time">9 a.m.</li>
-                    <li class="width-set columnized" ><input type="radio" value="10" name="time">10 a.m.</li>
-                    <li class="width-set columnized" ><input type="radio" value="11" name="time">11 a.m.</li>
-                    <li class="width-set columnized" ><input type="radio" value="12" name="time">noon</li>
-                    <li class="width-set columnized" ><input type="radio" value="13" name="time">1 p.m.</li>
-                    <li class="width-set columnized" ><input type="radio" value="14" name="time">2 p.m.</li>
-                    <li class="width-set columnized" ><input type="radio" value="15" name="time">3 p.m.</li>
-                    <li class="width-set columnized" ><input type="radio" value="16" name="time">4 p.m.</li>
-                    <li class="width-set columnized" ><input type="radio" value="17" name="time">5 p.m.</li>
-                    <li class="width-set columnized" ><input type="radio" value="18" name="time">6 p.m.</li>
-                    <li class="width-set columnized" ><input type="radio" value="19" name="time">7 p.m.</li>
-                    <li class="width-set columnized" ><input type="radio" value="20" name="time">8 p.m.</li>
-                    <li class="width-set columnized" ><input type="radio" value="21" name="time">9 p.m.</li>
-                    <li class="width-set columnized" ><input type="radio" value="22" name="time">10 p.m.</li>
-                    <li class="width-set columnized" ><input type="radio" value="23" name="time">11 p.m.</li><br /><br />
-                    <h5>Weekly Tests:</h5>
-                    <li class="width-set columnized" ><input type="radio" value="MON" name="day">Mondays</li>
-                    <li class="width-set columnized" ><input type="radio" value="THU" name="day">Thursdays</li>
-                    <li class="width-set columnized" ><input type="radio" value="SUN" name="day">Sundays</li>
-                    <li class="width-set columnized" ><input type="radio" value="TUE" name="day">Tuesdays</li>
-                    <li class="width-set columnized" ><input type="radio" value="FRI" name="day">Fridays</li>
-                    <li class="width-set columnized" ></li>
-                    <li class="width-set columnized" ><input type="radio" value="WED" name="day">Wednesdays</li>
-                    <li class="width-set columnized" ><input type="radio" value="SAT" name="day">Saturdays</li>
-                    <li class="width-set columnized" ></li><br /><br />
-                    <h5>Monthly Test:</h5>
-                    <li class="width-set columnized" ><input type="radio" value="1" name="day">1st</li>                    
-                    <li class="width-set columnized" ><input type="radio" value="11" name="day">11th</li>  
-                    <li class="width-set columnized" ><input type="radio" value="21" name="day">21st</li>
-                    <li class="width-set columnized" ><input type="radio" value="2" name="day">2nd</li>                    
-                    <li class="width-set columnized" ><input type="radio" value="12" name="day">12th</li>
-                    <li class="width-set columnized" ><input type="radio" value="22" name="day">22nd</li>
-                    <li class="width-set columnized" ><input type="radio" value="3" name="day">3rd</li>
-                    <li class="width-set columnized" ><input type="radio" value="13" name="day">13th</li>
-                    <li class="width-set columnized" ><input type="radio" value="23" name="day">23rd</li>
-                    <li class="width-set columnized" ><input type="radio" value="4" name="day">4th</li>
-                    <li class="width-set columnized" ><input type="radio" value="14" name="day">14th</li>                
-                    <li class="width-set columnized" ><input type="radio" value="24" name="day">24th</li>
-                    <li class="width-set columnized" ><input type="radio" value="5" name="day">5th</li>
-                    <li class="width-set columnized" ><input type="radio" value="15" name="day">15th</li>
-                    <li class="width-set columnized" ><input type="radio" value="25" name="day">25th</li>
-                    <li class="width-set columnized" ><input type="radio" value="6" name="day">6th</li>
-                    <li class="width-set columnized" ><input type="radio" value="16" name="day">16th</li>
-                    <li class="width-set columnized" ><input type="radio" value="26" name="day">26th</li>
-                    <li class="width-set columnized" ><input type="radio" value="7" name="day">7th</li>
-                    <li class="width-set columnized" ><input type="radio" value="17" name="day">17th</li>
-                    <li class="width-set columnized" ><input type="radio" value="27" name="day">27th</li>
-                    <li class="width-set columnized" ><input type="radio" value="8" name="day">8th</li>
-                    <li class="width-set columnized" ><input type="radio" value="18" name="day">18th</li>
-                    <li class="width-set columnized" ><input type="radio" value="28" name="day">28th</li>
-                    <li class="width-set columnized" ><input type="radio" value="9" name="day">9th</li>
-                    <li class="width-set columnized" ><input type="radio" value="19" name="day">19th</li>
-                    <li class="width-set columnized" ></li>
-                    <li class="width-set columnized" ><input type="radio" value="10" name="day">10th</li>
-                    <li class="width-set columnized" ><input type="radio" value="20" name="day">20th</li> 
-                    <li class="width-set columnized" ></li><br /><br />
-                    <h5>End of Month (defaults to last day where necessary):</h5>
-                    <li class="width-set columnized" ><input type="radio" value="29" name="day">29th</li> 
-                    <li class="width-set columnized" ><input type="radio" value="30" name="day">30th</li> 
-                    <li class="width-set columnized" ><input type="radio" value="31" name="day">31st</li> 
-                    
+                <!-- Schedule Test Modal -->
+                <!-- <form action="/add-to-schedule" method="GET"> -->
+                <div class="modal fade" id="scheduleModal" tabindex="-1" role="dialog" aria-labelledby="ScheduleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="ScheduleModalLabel">Test Scheduler</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div>
+                          <h4>Select the hour and either the day of the week OR the day of the month:</h4>
+                          <h5>Hour of Test:</h5>
+                          <li class="width-set columnized">
+                            <input type="radio" value="0" name="time">midnight</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="1" name="time">1 a.m.</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="2" name="time">2 a.m.</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="3" name="time">3 a.m.</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="4" name="time">4 a.m.</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="5" name="time">5 a.m.</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="6" name="time">6 a.m.</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="7" name="time">7 a.m.</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="8" name="time">8 a.m.</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="9" name="time">9 a.m.</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="10" name="time">10 a.m.</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="11" name="time">11 a.m.</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="12" name="time">noon</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="13" name="time">1 p.m.</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="14" name="time">2 p.m.</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="15" name="time">3 p.m.</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="16" name="time">4 p.m.</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="17" name="time">5 p.m.</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="18" name="time">6 p.m.</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="19" name="time">7 p.m.</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="20" name="time">8 p.m.</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="21" name="time">9 p.m.</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="22" name="time">10 p.m.</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="23" name="time">11 p.m.</li>
+                          <br />
+                          <br />
+                          <h5>Weekly Tests:</h5>
+                          <li class="width-set columnized">
+                            <input type="radio" value="MON" name="day">Mondays</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="THU" name="day">Thursdays</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="SUN" name="day">Sundays</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="TUE" name="day">Tuesdays</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="FRI" name="day">Fridays</li>
+                          <li class="width-set columnized"></li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="WED" name="day">Wednesdays</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="SAT" name="day">Saturdays</li>
+                          <li class="width-set columnized"></li>
+                          <br />
+                          <br />
+                          <h5>Monthly Test:</h5>
+                          <li class="width-set columnized">
+                            <input type="radio" value="1" name="day">1st</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="11" name="day">11th</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="21" name="day">21st</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="2" name="day">2nd</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="12" name="day">12th</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="22" name="day">22nd</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="3" name="day">3rd</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="13" name="day">13th</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="23" name="day">23rd</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="4" name="day">4th</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="14" name="day">14th</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="24" name="day">24th</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="5" name="day">5th</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="15" name="day">15th</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="25" name="day">25th</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="6" name="day">6th</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="16" name="day">16th</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="26" name="day">26th</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="7" name="day">7th</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="17" name="day">17th</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="27" name="day">27th</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="8" name="day">8th</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="18" name="day">18th</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="28" name="day">28th</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="9" name="day">9th</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="19" name="day">19th</li>
+                          <li class="width-set columnized"></li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="10" name="day">10th</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="20" name="day">20th</li>
+                          <li class="width-set columnized"></li>
+                          <br />
+                          <br />
+                          <h5>End of Month (defaults to last day where necessary):</h5>
+                          <li class="width-set columnized">
+                            <input type="radio" value="29" name="day">29th</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="30" name="day">30th</li>
+                          <li class="width-set columnized">
+                            <input type="radio" value="31" name="day">31st</li>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" data-dismiss="modal" onclick="scheduleContentTest()">Save changes</button>
+                      </div>
+                    </div>
                   </div>
-                
                 </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary" data-dismiss="modal" onclick="scheduleIt()">Save changes</button>
-                </div>
-              
-              </div>
-            </div>
-          </div>
-        <!-- </form> -->
+                <!-- Schedule Test Modal ends here -->
+                <!-- </form> -->
                 <br />
               </div>
               <div class="col-lg-6 option-box">
@@ -535,32 +600,42 @@
           <!-- Functional Test content -->
           <div class="tab-pane fade" role="tabpanel" id="functional" aria-labelledby="content-tab">
             <br>
-            <button class="btn btn-outline-success btn-sm" data-target="#fx-add-test-feature" data-toggle="modal">Add New Test</button>
-            <br>
+            <button class="btn btn-outline-success btn-sm" data-target="#fx-add-test-feature" data-toggle="modal" onclick="clearTestCasesOnNew()">Create New Test</button>
             <hr>
-            <form class="form-group">
-              <!-- Outer loop per feature -->
-              <h5>Feature: F1</h5>
-              <hr>
-              <!-- Loop through this portion -->
-              <!-- Feature list group per feature with multiple subfeatures -->
-              <div class="list-group" style="margin-bottom:5px">
-                <span class="list-group-item"><h5>F1 - 1($id)</h5></li>
+            <!-- end form for functional testing -->
+            <!-- Dynamic Data goes here -->
+            <form class="form-group" id="fx-test-container">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" class="test-check" id="checkAll"> Check All
+                </label>
+              </div>
+              <br>
+              <% for(let i=0; i < functionalTests.length; i++){ %>
+                <!-- Loop through this portion -->
+                <!-- Feature list group per feature with multiple subfeatures -->
+                <div class="list-group" style="margin-bottom:5px" id="main-test-node-<%= functionalTests[i].Template %>-<%= functionalTests[i].Id %>">
+                  <span class="list-group-item"><h5>Feature: <%= functionalTests[i].Template %>  Id:<%= functionalTests[i].Id %> </h5></li>
                 <!-- Sub Feature Item --> 
                 <span class="list-group-item">
                   <div class="form-check form-check-inline" style="min-width: 100%">
-                      <input type="checkbox" class="form-check-input" id="checkbox-id$" style="margin-right:3%">
-                      <input type="text" class="form-control" id="url-id$" placeholder="http://www.sample.com" value="http://www.sample.com">
+                      <input type="checkbox" class="form-check-input test-check" name="test-input" id="test-input-id-<%= functionalTests[i].Id %>" value="<%= functionalTests[i].Id %>" style="margin-right:3%">
+                      <div class="alert alert-primary" role="alert" style="width:100%"">
+                         <%= functionalTests[i].URL %>
+                      </div>
+                      <!--<input type="text" class="form-control" id="url-id$" placeholder="http://www.sample.com" value="http://www.sample.com">-->
                   </div>
                 </span>
-                <button class="btn-sm btn-primary" style="margin-top: 10px; float: right;" data-toggle="modal" data-target="#fx-testcase-modal-id">View/Edit Test Cases</button>
-                <!-- END -> Sub Feature Item -->
-              </div>
-              <!-- END -> Feature list group per feature with multiple sub fetures -->
-            </form>
-            <!-- end form for functional testing -->
-            <button class="btn btn-md btn-success">Run Selected Test(s)</button>
+                  <span class="btn-sm btn-primary edit-fx-test" style="margin-top: 10px; float: right;" data-toggle="modal" data-target="#fx-test-pass-edit-modal" id="test-pass-modal-id-<%= functionalTests[i].Id %>">View/Edit Test Cases</span>
+                  <!-- END -> Sub Feature Item -->
+                </div>
+                <!-- END -> Feature list group per feature with multiple sub fetures -->
+                <% } %>
+            
+             <!-- Consider Just doing a form submission --> 
+            <button type="submit" class="btn btn-md btn-success">Run Selected Test(s)</button>
             <button class="btn btn-md btn-info">Schedule Selected Test(s)</button>
+            </form>
           </div>
           <div class="tab-pane fade" role="tabpanel" id="custom" aria-labelledby="content-tab">Custom test stuff Goes here</div>
         </div>
@@ -636,11 +711,13 @@
               <div class="form-group" style="max-width: 20%">
                 <label for="featureSelect">Feature:</label>
                 <select class="custom-select" id="newFeature" name="newFeature" onchange="getTestCasesByFeature(this.value)" required>
-                   <option>Select:</option> 
+                  <option>Select:</option>
                   <% for(let i = 0; i < features.length;i++){ %>
-                    <option><%= features[i].Id %></option> 
-                  <% } %>
-                  <!-- Loop goes here -->
+                    <option>
+                      <%= features[i].Id %>
+                    </option>
+                    <% } %>
+                      <!-- Loop goes here -->
                 </select>
               </div>
               <div class="form-group">
@@ -650,10 +727,8 @@
               <hr>
               <fieldset class="form-group">
                 <label for="TestCases">Test Cases to Apply:</label>
-                
-                    <div class="form-check" id="test-case-fx-container">
-                      
-                    </div>
+                <div class="form-check test-case-fx-container">
+                </div>
               </fieldset>
             </div>
           </div>
@@ -666,27 +741,54 @@
     </div>
   </div>
   <!-- End add new fx feature test -->
-  <!-- #fx-testcase-modal- -->
-  <div class="modal fade" id="fx-testcase-modal-id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+
+    <!-- EDIT/VIEW new fx feature test -->
+  <div class="modal fade" id="fx-test-pass-edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Test Case View</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          ...
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary close" data-dismiss="modal">Save changes</button>
-        </div>
+        <form name="AddNewFunctionalTest" id="editFxTest" action="/edit-fx-test">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Edit/View Test Parameters</h5>
+            <h6 style="margin:10px;"><span id="fx-edit-id-info" class="alert-light"></span></h6>
+          </div>
+          <div class="modal-body">
+            <div class="form-row align-items-center">
+              <div class="form-group" style="max-width: 20%">
+                <label for="featureSelect">Feature:</label>
+                <select class="custom-select" id="editFeature" name="editFeature" onchange="getTestCasesByFeature(this.value)" required>
+                  <option>Select:</option>
+                  <% for(let i = 0; i < features.length;i++){ %>
+                    <option>
+                      <%= features[i].Id %>
+                    </option>
+                    <% } %>
+                      <!-- Loop goes here -->
+                </select>
+                <p class="small">Selection Disabled</p>
+              </div>
+              <div class="form-group">
+                <input type="hidden" name="id" id="edit-fx-id">
+                <label for="urlInput">URL to Test:</label>
+                <input type="text" name="editUrl" id="editUrl" class="form-control" placeholder="https://www..." required>
+              </div>
+              <hr>
+              <fieldset class="form-group">
+                <label for="TestCases">Test Cases to Apply:</label>
+                <div class="form-check test-case-fx-container" id="test-case-fx-edit-container">
+                </div>
+              </fieldset>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-danger mr-auto" id="fx-delete-button" data-dismiss="modal" onclick="deleteFxTestById()">Delete</button>
+            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-sm btn-primary">Save Test</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
-  <!-- End test case modal -->
+  <!-- END EDIT/VIEW Functional Test Modal -->
   <br>
   <br>
   <script>

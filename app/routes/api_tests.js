@@ -220,6 +220,103 @@ exports.getProcesses = function(req, res) {
 
 }
 
+/************************
+* Function postFxTest()
+* Purpose: Obtain form data from fx test 
+* and Initiate a test run
+/************************/
+
+exports.postFxTest = function(req, res, next) {
+
+  let now = new Date();
+  let testParamIds = req.body.ids;
+  let testParamObject = {};
+  let testArray = [];
+  let count = 0;
+
+  getfxTest(testParamIds);
+
+  function getfxTest(testParamIds) {
+    let testNumber = 1;
+    var promises = testParamIds.map((id) => { // return array of promises
+      return db.sequelize.query(`select * from QaFunctionalUrls where Id = ${id}`).then(data => {
+        data = data[0][0];
+        //console.log(data);
+        let testCases = data.TestCaseId.split(",")
+
+        let object = {
+          testNumber: testNumber++,
+          id: data.Id,
+          url: String(data.URL),
+          feature: data.Template,
+          testCases: testCases
+        }
+
+        count += testCases.length;
+
+        testArray.push(object);
+
+      }, function(err) {
+        console.error('error: ' + err);
+        return err;
+      });
+    });
+
+    Promise.all(promises).then(() => {
+
+      testParamObject.tests = testArray;
+      testParamObject.testType = "functional";
+      testParamObject.languages = "en-us";
+      testParamObject.description = "functional Test";
+      testParamObject.count = count;
+
+      // As a javascript Object:
+      console.log(testParamObject);
+
+      testParamObject = JSON.stringify(testParamObject);
+
+      // As a json object:
+      //console.log(testParamObject);
+
+      let currentTime = dateFormat(now, "ddddmmmmdSyyyyhMMsslTT");
+
+      let directory = behat_path + "/tmp/" + currentTime;
+
+          fs.mkdir(directory, function(err) {
+      if (err) {
+        console.log('failed to create directory', err);
+
+      } else {
+
+        fs.writeFile(directory + "/temp.json", testParamObject, function(err) {
+
+          if (err) {
+
+            console.log('error writing file', err);
+
+          } else {
+
+            let jsonPath = directory + "/temp.json";
+
+            req.jsonpath = jsonPath;
+
+            req.count = count
+
+            // console.log("Remove return statemement to continue to run test. aka start.pl");
+            // return false;
+
+            next();
+          }
+        });
+      }
+    });
+    })
+  }
+
+  res.status(200);
+
+}
+
 
 /************************
  * Function: postTest()
@@ -530,11 +627,11 @@ function getTotalNumberOfTestCases(testParameterObject) {
 }
 
 /********************
-* Function: getUrlsByLangFeatureLimit
-* Description: Obtain urls from query and return for count accumulation.
-* 
-*
-*********************/
+ * Function: getUrlsByLangFeatureLimit
+ * Description: Obtain urls from query and return for count accumulation.
+ * 
+ *
+ *********************/
 
 function getUrlsByLangFeatureLimit(testParameterObject, feature, language, limit, count) {
   return new Promise((resolve, reject) => {
@@ -589,9 +686,9 @@ function finalTestCaseCount(testParameterObject, languages, features, limit) {
         getUrlsByLangFeatureLimit(testParameterObject, feature, language, limit, count).then(count => {
 
 
-          count += count; 
+          count += count;
 
-          if(key1 + 1 == languages.length && key2 + 1 == features.length){
+          if (key1 + 1 == languages.length && key2 + 1 == features.length) {
 
             console.log("The correct count is: " + count);
 

@@ -654,6 +654,12 @@ function showInput() {
  * Date: June 2018
  ************************/
 
+
+/*### 
+### FOR DEVELOPMENT ONLY.
+### OUTPUT MUST BE UNCOMMENTED IN START.PL 
+### */
+
 function getBehatLogFile(id) {
 
   id = {
@@ -714,8 +720,7 @@ function showURLChoice() {
 
 // Send a json object to server to run a test 
 // with given parameters
-function getTestParameters() {
-
+function getContentTestParameters() {
 
   let noticeBox = document.getElementById("notice");
   let descriptionBox = document.getElementById("description");
@@ -738,13 +743,13 @@ function getTestParameters() {
 
   // Parse Test Case Data
   tcs = document.getElementById('chosenTestCases').innerHTML.split("\n");
-  console.log("tcs is "+ tcs);
+  console.log("tcs is " + tcs);
 
   // Validate if all 
   let tcsCheckIfAll = tcs;
   tcsCheckIfAll = tcs[1];
   tcsCheckIfAll = tcsCheckIfAll.split(";").pop();
-  console.log("tcsCheckIfAll is "+ tcsCheckIfAll);
+  console.log("tcsCheckIfAll is " + tcsCheckIfAll);
 
   if (tcsCheckIfAll == "all") {
 
@@ -773,7 +778,7 @@ function getTestParameters() {
   // Parse Domain Selection 
   let domain = document.getElementById("selectedDomain").innerHTML;
   domain = domain.substring(domain.indexOf("\ ") + 1);
-  console.log(domain);
+  //console.log(domain);
 
   // Parse description selection
   let description = descriptionBox.value;
@@ -802,7 +807,8 @@ function getTestParameters() {
     "TestCaseSelections": tcs,
     "Urls": urlChoices,
     "domain": domain,
-    "description": description
+    "description": description,
+    "testType": "content",
   };
 
   let testParamsJSON = JSON.stringify(testParameters);
@@ -810,23 +816,332 @@ function getTestParameters() {
   return (testParamsJSON);
 
 }
+/********************************
+ *
+ * Functional Test Section
+ *
+ ********************************/
+
+/***************************
+ * Purpose: Select All Functional Tests
+ ****************************/
+
+$("#checkAll").click(function() {
+  $(".test-check").prop('checked', $(this).prop('checked'));
+});
+
+/***************************
+ * Purpose: Pass functional Test id to form inside view/edit modal
+ * Open up Edit Page with selected Data
+ ****************************/
+
+$(document).on("click", ".edit-fx-test", function() {
+
+  let id = $(this).attr('id');
+  id = id.replace('test-pass-modal-id-', '');
+
+  id = {
+    id: id
+  }
+
+  $.ajax({
+    url: '/get-functional-test-by-id',
+    type: 'get',
+    data: id,
+    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+    dataType: "json",
+    error: function(data) {
+      console.log(data + "GET TEST CASES FAILED - FROM EDIT FX TEST ");
+    },
+    success: function(data) {
+      data = data[0][0];
+
+      let url = data.URL;
+      let id = data.Id;
+      let template = data.Template;
+      let testCases = data.TestCaseId;
+
+      testCases = testCases.split(",");
+
+      // Display Feature and Test Id 
+      $("#fx-edit-id-info").text(`Feature: ${template} - ID: ${id}`);
+
+      // Select Feature and disable selecting new one
+      // The use should delete if they want to create a new feature
+      $("#editFeature option").each(function() {
+        if ($(this).val() == template) {
+          $(this).attr("selected", "selected");
+          return false;
+        }
+      });
+
+      $("#editFeature").attr("disabled", true);
+
+      // Add the URl to the correct box -> Set the value 
+      $("#editUrl").val(url);
+
+      // Add id to hidden input field
+      $("#edit-fx-id").val(id);
+
+      //$("#fx-delete-button").text("test");
+
+      $("#fx-delete-button").attr('data-feature', template);
+
+      populateTestCases();
+
+      // Populate the test Case Options:
+      async function populateTestCases() {
+        let casesAdded = await getTestCasesByFeature(template);
+
+        if (casesAdded) {
+          // Select the test case Options 
+          for (let i = 0; i < testCases.length; i++) {
+            $("#test-case-fx-edit-container input").each(function() {
+              if ($(this).val() == testCases[i]) {
+                $(this).attr("checked", true);
+                return false;
+              }
+            });
+          }
+        }
+      }
+    }
+  })
+});
+/***************************
+ * Purpose: Clear Functional test Add form when new is selected
+ ****************************/
+
+function clearTestCasesOnNew() {
+  $("#newFeature option").each(function() {
+    if ($(this).val() == "Select:") {
+      $(this).attr("selected", "selected");
+      return false;
+    }
+  });
+
+  $("#newUrl").empty();
+
+  let testCaseContainer = $(".test-case-fx-container");
+  $(testCaseContainer).empty();
+
+}
+
+function deleteFxTestById() {
+
+  let feature = $("#fx-delete-button").attr('data-feature');
+  let id = $("#edit-fx-id").val();
+
+  id = {
+    id: id
+  }
+
+  $.ajax({
+    url: '/delete-fx-test-by-id',
+    type: 'DELETE',
+    data: id,
+    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+    dataType: "json",
+    error: function(data) {
+      console.log(data + "Delete FX Test Failed");
+    },
+    success: function(data) {
+
+      console.log(`#main-test-node-${feature}-${id.id}`);
+
+      $(`#main-test-node-${feature}-${id.id}`).remove();
+    }
+  })
+}
+/***************************
+ * Purpose: Submit Parameters to run/schedule functional test
+ * Description: Convert form data into json and send as paremeter to runner/scheduler
+ ****************************/
+
+$("#fx-test-container").submit(function(event) {
+
+  // prevent submit Default
+  event.preventDefault();
+  let $this = $(this);
+
+  // validation  
+  let $testSelections = $(this).find(":checkbox:checked");
+  let fxTestIdArray = [];
+
+  $.each($testSelections, (key, value) => {
+
+    if (value.id != "checkAll") {
+      fxTestIdArray.push(parseInt(value.value));
+    }
+
+  });
+
+  let fxTests = {
+    ids: fxTestIdArray
+  }
+
+  fxTests = JSON.stringify(fxTests);
+
+  $.ajax({
+    url: "/run-fx-test",
+    type: 'POST',
+    data: fxTests,
+    contentType: "application/json",
+    error: function(data) {
+      console.log(data + "run fx test Error");
+    },
+    success: function(data) {
+      console.log("Success from fx test.");
+    }
+  })
+})
+
+
 /***************************
  * Purpose: Submit New Functional Test 
+ * Description: Adds A new Test 
  ****************************/
 
 $("#addNewFxTest").submit(function(event) {
+  console.log("add fx function is called.");
   event.preventDefault(); // Prevents the page from refreshing
   let $this = $(this); // `this` refers to the current form element
+
+  let $testCases = $(this).find(":checkbox:checked");
+
+  // Test Case Selection Validation
+  if ($testCases.length < 1) {
+
+    alert("Please Choose a test case to Continue.")
+    return false;
+  }
+
   $.post(
     $this.attr("action"), // Gets the URL to sent the post to
     $this.serialize(), // Serializes form data in standard format
-    function(data) { /** code to handle response **/ 
-      console.log("Test Added");
-      alert("Functional Test Added.");
-
+    function(data) { /** code to handle response **/
       $('.modal').modal('hide');
+      alert("Functional Test Added.");
+      // Obtain the correct div element
+
+      data = data.split(",");
+      let newFeature = data[0];
+      let newFeatureNumber = data[0].substr(1);
+      let newId = data[1];
+
+      let newFxTestElement = `<div class="list-group" style="margin-bottom:5px" id="main-test-node-${newFeature}-${newId}">
+                  <span class="list-group-item"><h5>Feature: ${newFeature}  Id:${newId} </h5></li>
+                <!-- Sub Feature Item --> 
+                <span class="list-group-item">
+                  <div class="form-check form-check-inline" style="min-width: 100%">
+                      <input type="checkbox" class="form-check-input test-check" name="test-input" id="test-input-id-${newId}" value="${newId}" style="margin-right:3%">
+                      <div class="alert alert-primary" role="alert" style="width:100%"">
+                         <p>Url goes here</p>
+                      </div>
+                      <!--<input type="text" class="form-control" id="url-id$" placeholder="http://www.sample.com" value="http://www.sample.com">-->
+                  </div>
+                </span>
+                  <span class="btn-sm btn-primary edit-fx-test" style="margin-top: 10px; float: right;" data-toggle="modal" data-target="#fx-test-pass-edit-modal" id="test-pass-modal-id-${newId}">View/Edit Test Cases</span>
+                  <!-- END -> Sub Feature Item -->
+                </div>`;
+
+      //let newChildId = `#main-test-node-${newFeature}-${newId}`; 
+
+      // Obtain All test elements to find the correct one to append to
+      let $fxTestElements = $("div[id*=main-test-node]");
+
+      // If there are no main test nodes, add the first one.
+      if ($fxTestElements.length < 1) {
+
+        let $mainContainer = $("#fx-test-container div.checkbox");
+
+        // TODO ADD TEST TEST
+        $($mainContainer).after(newFxTestElement);
+        return true;
+
+      }
+
+      let fxSubElementArray = []
+      let fxTestExistsCount = 0;
+      let fxparentFeature = [];
+
+      $.each($fxTestElements, (key, value) => {
+
+        let elementString = value.id;
+        let fxElementArray = elementString.split('-');
+        let id = fxElementArray[4];
+        let feature = fxElementArray[3];
+        let featureNumber = feature.substr(1);
+
+        // Add the feature items to the sub element array if there are multiple/one elements
+        if (newFeatureNumber == featureNumber) {
+          fxSubElementArray.push(value);
+          fxTestExistsCount += 1;
+        }
+
+        // Get the parent features as long as they are less than the new feature number 
+        if (newFeatureNumber > featureNumber) {
+          fxparentFeature.push(value);
+        }
+
+      });
+
+      let parent = "";
+
+      // If feature does not exist Get last parent element and place new element after
+      if (fxTestExistsCount === 0) {
+
+        // Add first feature or if feature < first feature number
+        if (fxSubElementArray.length < 1 && fxparentFeature.length < 1) {
+
+          console.log("first feature/first child added")
+          parent = $("#fx-test-container div.checkbox");
+
+        // add feature as last child of pre-existing feature
+        } else {
+
+          console.log("New fx added here.");
+          parent = fxparentFeature[fxparentFeature.length - 1];
+        }
+
+      } else {
+
+        console.log("feature as last child of pre-existing feature");
+        
+        parent = fxSubElementArray[fxSubElementArray.length - 1];
+
+      }
+
+      $(parent).after(newFxTestElement);
     }
   );
+});
+
+/***************************
+ * Purpose: Submit Edit Functional Test 
+ ****************************/
+
+$("#editFxTest").submit(function(event) {
+  console.log("edit fx function is called.");
+  event.preventDefault(); // Prevents the page from refreshing
+  let $this = $(this); // `this` refers to the current form element
+
+  $.ajax({
+    url: $this.attr("action"),
+    type: 'PUT',
+    data: $this.serialize(),
+    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+    error: function(data) {
+      console.log(data + "Ajax Edit call failed.");
+    },
+    success: function(testCases) {
+      console.log("Test Edit Successfully Saved.");
+      console.log("response obtained from put")
+      $('.modal').modal('hide');
+    }
+  })
+
+
 });
 
 /***************************
@@ -837,38 +1152,49 @@ $("#addNewFxTest").submit(function(event) {
 
 function getTestCasesByFeature(feature) {
 
-  feature = {
-    feature: feature
-  }
+  return new Promise((resolve, reject) => {
 
-  feature = JSON.stringify(feature);
-
-  $.ajax({
-    url: '/getTestCases',
-    type: 'POST',
-    data: feature,
-    contentType: "application/json",
-    error: function(data) {
-      console.log(data + "------------ GET TEST CASES FAILED -----------------");
-    },
-    success: function(testCases) {
-
-      let testCaseContainer = document.getElementById("test-case-fx-container");
-      $(testCaseContainer).empty();
-
-      for (let i = 0; i < testCases.length; i++) {
-        //console.log(testCases[i].TestCaseId);
-        //console.log(testCases[i].TestCaseDescription);
-        $(testCaseContainer).append(`<br><input class="form-check-input" type="checkbox" name="testCases" id="test-case-${testCases[i].TestCaseId}" value="${testCases[i].TestCaseId}">${testCases[i].TestCaseDescription}<br>`);
-      }
+    feature = {
+      feature: feature
     }
+
+    feature = JSON.stringify(feature);
+
+    $.ajax({
+      url: '/getTestCases',
+      type: 'POST',
+      data: feature,
+      contentType: "application/json",
+      error: function(data) {
+        console.log(data + "------------ GET TEST CASES FAILED -----------------");
+        reject(false)
+      },
+      success: function(testCases) {
+
+        let testCaseContainer = $(".test-case-fx-container");
+        $(testCaseContainer).empty();
+
+        for (let i = 0; i < testCases.length; i++) {
+          //console.log(testCases[i].TestCaseId);
+          //console.log(testCases[i].TestCaseDescription);
+          $(testCaseContainer).append(`<br><input class="form-check-input" type="checkbox" name="testCases" id="test-case-${testCases[i].TestCaseId}" value="${testCases[i].TestCaseId}">${testCases[i].TestCaseId} : ${testCases[i].TestCaseDescription}<br>`);
+        }
+
+        resolve(true);
+
+      }
+    })
   })
 }
+/***************************
+ * Function: runContentTest()
+ * purpose: Run content tests in parallel
+ ****************************/
 
-function runit() {
+function runContentTest() {
 
-  let testParamsJSON = getTestParameters();
-  console.log(testParamsJSON);
+  let testParamsJSON = getContentTestParameters();
+  //console.log(testParamsJSON);
 
   $.ajax({
     url: '/run-test',
@@ -892,7 +1218,8 @@ function runit() {
   })
 }
 
-function scheduleIt() {
+
+function scheduleTest() {
 
   let testParamsJSON = getTestParameters();
   // testParamsJSON = JSON.parse(testParamsJSON);
@@ -1404,7 +1731,7 @@ function exportGherkin() {
     removePagesArray[q] = removePagesArray[q].replace(/[^\d+]+$/, '');
   }
 
-  var objBunnyEars = { //  for James and Aron  :P
+  var objBunnyEars = { //  for James and Aron  :P <- Blerggghaaahh
     "theID": theCaseID,
     "theScenario": newScenario,
     "theGherkin": newGherkin,

@@ -265,9 +265,14 @@ module.exports = function() {
   app.get('/getprocesses', isLoggedIn, api_tests.getProcesses);
   app.get('/startprocess', isLoggedIn, api_tests.startProcess);
 
+  // Run Content Tests
   app.post('/run-test', isLoggedIn, api_tests.postTest, api_tests.startProcess);
   app.get('/stop-test', isLoggedIn, api_tests.stopTest);
 
+  // Run Functional Test
+  app.post('/run-fx-test', isLoggedIn, api_tests.postFxTest, api_tests.startProcess);
+
+  
   app.post('/post-gherkin', isLoggedIn, test_case_editor.postGherkin);
   app.post('/new-gherkin', isLoggedIn, test_case_editor.newGherkin);
   app.post('/clean-gherkin', isLoggedIn, api_DB_writer.cleanGherkin_DB);
@@ -287,6 +292,15 @@ module.exports = function() {
 
   // Add New Functional Test
   app.post('/add-new-functional-test', isLoggedIn, api_testRunner.addNewFunctionalTest);
+
+  // Delete fx test by id
+  app.delete('/delete-fx-test-by-id', isLoggedIn, api_testRunner.deleteFxTestById);
+
+  // Edit fx test by id
+  app.put('/edit-fx-test', isLoggedIn, api_testRunner.editFunctionalTest);
+
+  // Get Functional Test Data By Id:
+  app.get('/get-functional-test-by-id', isLoggedIn, api_testRunner.getFunctionalTestById);
 
   // Language Detection Route
   app.post('/detect', language.postLanguage);

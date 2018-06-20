@@ -118,6 +118,12 @@ function getTestCasesAndUrlsFromDB() { //this is not in use currently with URLs 
           let features = allUniqueFeatures[0];
           cb(null, features);
         });
+      },
+      allFunctionalTests: function(cb) {
+        db.sequelize.query(`select * from QaFunctionalUrls;`).then(allFunctionalTests => {
+          let functionalTests = allFunctionalTests[0];
+          cb(null, functionalTests);
+        });
       }
     }, (err, results) => {
       if (results) {
@@ -469,7 +475,7 @@ function checkTestProcessWithSystemPS(testPassTableResults) {
       let pid = item.Note.replace(/PID: /, '');
       pid = pid.substring(0, pid.indexOf(':'));
 
-      console.log("The pid is " + pid);
+      //console.log("The pid is " + pid);
 
       if (!pid) {
 
@@ -548,6 +554,7 @@ exports.getOverview = function(req, res) {
         let theTCs = tcsAndUrls.testCases;
         let theURLs = tcsAndUrls.allTheUrls;
         let features = tcsAndUrls.allUniqueFeatures;
+        let functionalTests = tcsAndUrls.allFunctionalTests;
 
         for (var i = 1; i < theTCs.length; i++) {
           theTCs[i].HashValue = JSON.stringify(theTCs[i].HashValue);
@@ -559,44 +566,16 @@ exports.getOverview = function(req, res) {
 
         checkTestProcessWithSystemPS(testPassTableResults).then(statusResults => {
 
-          //console.log("This should be featurs:" + features);
-          for (var i = 0; i < features.length; i++) {
-            //console.log(features[i].Id);
+          // Sort the Array By Feature
+          functionalTests.sort(function(a, b) { return a.Template.substr(1) - b.Template.substr(1) || a.Id - b.Id });
+
+          for (let i = 0; i < functionalTests.length; i++) {
+
+            functionalTests[i].URL = String(functionalTests[i].URL);
+
+            //console.log(functionalTests[i]);
+
           }
-
-          // { id: 65, status: 'success' }
-
-          for (var i = statusTableResults.length - 1; i >= 0; i--) {
-            //console.log(statusTableResults[i]);
-          }
-
-          // TestPassId: 65,
-          // RunDate: '04-19-18 4:35:14 PM',
-          // StartTime: '04-19-18 4:35:14 PM',
-          // EndTime: '01-02-70 12:00:00 AM' }
-
-
-          for (var i = testPassTableResults.length - 1; i >= 0; i--) {
-            //console.log(testPassTableResults[i]);
-          }
-
-          /*
-
-            TestPassId: 40,
-            Template: 'F1',
-            Language: 'en-us',
-            TestCases: 'F1 - all',
-            RunDate: '04-19-18 3:44:55 PM',
-            UrlIds: buffer string,
-            Description: buffer string,
-            Reliable: null,
-            Note: 'PID: 15827' }
-
-          */
-
-          //req.flash('message', 'test flash!');
-
-          //console.log(req.flash('message'));  // [ 'test flash!' ]
 
           res.render('testRunner', {
             title: 'Run Tests',
@@ -609,6 +588,7 @@ exports.getOverview = function(req, res) {
             tcs: theTCs,
             urls: theURLs,
             features: features,
+            functionalTests: functionalTests,
             user: req.user
           });
         });
@@ -664,12 +644,20 @@ exports.addNewFunctionalTest = function(req, res) {
 
   let template = req.body.newFeature;
   let url = req.body.newUrl;
-  let testCases = req.body.testCases.join(",");
+  let testCases = "";
+
+  if (req.body.testCases.length > 1) {
+    testCases = req.body.testCases.join(",");
+  } else {
+    testCases = req.body.testCases[0];
+  }
 
   db.sequelize.query(`INSERT INTO QaFunctionalUrls (Template, URL, TestCaseId) VALUES ('${template}', '${url}', '${testCases}');`).then(result => {
 
-    if (result){
-      res.status(202).send('Functional Test Added to DB.');
+    let newId = result[0];
+
+    if (newId) {
+      res.status(202).send(`${template},${newId}`);
     }
 
   }).catch(function(err) {
@@ -677,4 +665,69 @@ exports.addNewFunctionalTest = function(req, res) {
     return err;
   })
 
+}
+
+exports.editFunctionalTest = function(req, res) {
+
+  console.log(req.body);
+
+  let id = req.body.id;
+  let url = req.body.editUrl;
+  let testCases = "";
+
+  if (req.body.testCases.length > 1) {
+    testCases = req.body.testCases.join(",");
+  } else {
+    testCases = req.body.testCases[0];
+  }
+
+
+  db.sequelize.query(`Update QaFunctionalUrls set URL = '${url}', TestCaseId = '${testCases}' where Id = ${id}`).then(result => {
+
+    console.log("database entry successful.");
+
+    res.send("success");
+
+  }).catch(function(err) {
+    res.send(204);
+    console.log('error: ' + err);
+    return err;
+  })
+}
+
+exports.getFunctionalTestById = function(req, res) {
+
+  let id = req.query.id;
+  console.log("The id of the test is: " + id);
+
+  db.sequelize.query(`Select * From QaFunctionalUrls where Id = ${id}`).then(row => {
+
+    if (row) {
+
+      row[0][0].URL = String(row[0][0].URL);
+      row = JSON.stringify(row);
+      res.status(200).send(row);
+
+    }
+
+  }).catch(function(err) {
+    res.status(500);
+    console.log('error: ' + err);
+    return err;
+  })
+}
+
+exports.deleteFxTestById = function(req, res) {
+  let id = req.body.id;
+
+  db.sequelize.query(`delete From QaFunctionalUrls where Id = ${id}`).then(success => {
+
+    res.status(204).send("success");
+
+  }).catch(function(err) {
+    res.status(500);
+    console.log('error: ');
+    console.log(err);
+    return err;
+  })
 }
